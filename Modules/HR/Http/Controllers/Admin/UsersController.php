@@ -21,6 +21,7 @@ class UsersController extends Controller
 
     public function index()
     {
+        // dd("fdjcvbh ");
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $users = User::all();
@@ -29,7 +30,7 @@ class UsersController extends Controller
 
         $permissions = Permission::get();
 
-        return view('admin.users.index', compact('users', 'roles', 'permissions'));
+        return view('hr::users.index', compact('users', 'roles', 'permissions'));
     }
 
     public function create()
@@ -40,7 +41,7 @@ class UsersController extends Controller
 
         $premissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.users.create', compact('roles', 'premissions'));
+        return view('hr::users.create', compact('roles', 'premissions'));
     }
 
     public function store(StoreUserRequest $request)
@@ -53,7 +54,7 @@ class UsersController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $user->id]);
         }
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('hr::users.index');
     }
 
     public function edit(User $user)
@@ -66,7 +67,7 @@ class UsersController extends Controller
 
         $user->load('roles', 'premissions');
 
-        return view('admin.users.edit', compact('roles', 'premissions', 'user'));
+        return view('hr::users.edit', compact('roles', 'premissions', 'user'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -75,7 +76,7 @@ class UsersController extends Controller
         $user->roles()->sync($request->input('roles', []));
         $user->premissions()->sync($request->input('premissions', []));
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('hr::users.index');
     }
 
     public function show(User $user)
@@ -84,7 +85,7 @@ class UsersController extends Controller
 
         $user->load('roles', 'premissions', 'departmentHeadDeparrtments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
 
-        return view('admin.users.show', compact('user'));
+        return view('hr::users.show', compact('user'));
     }
 
     public function destroy(User $user)

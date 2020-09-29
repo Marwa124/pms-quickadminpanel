@@ -11,8 +11,12 @@
 |
 */
 
-Route::prefix('hr')->namespace('Admin')->group(function() {
+Route::prefix('hr')->group(function() {
     Route::get('/', 'HRController@index');
+});
+
+
+Route::group(['as' => 'hr.', 'prefix' => 'admin/hr', 'namespace' => 'Admin'],function() {
 
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');

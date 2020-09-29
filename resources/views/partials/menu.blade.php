@@ -51,7 +51,7 @@
                     @endcan
                     @can('user_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.users.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.users.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-user c-sidebar-nav-icon">
 
                                 </i>

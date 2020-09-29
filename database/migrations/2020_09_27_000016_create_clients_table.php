@@ -34,6 +34,8 @@ class CreateClientsTable extends Migration
             $table->string('port')->nullable();
             $table->string('password')->nullable();
             $table->string('username')->nullable();
+            $table->string('photo')->nullable();
+            $table->tinyInteger('client_status')->default(1)->comment('my comment');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -117,6 +117,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Deparrtment::class, 'department_head_id', 'id');
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
     public function userAccountDetails()
     {
         return $this->hasMany(AccountDetail::class, 'user_id', 'id');
