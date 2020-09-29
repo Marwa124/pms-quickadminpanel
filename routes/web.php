@@ -9,6 +9,13 @@ Route::get('/home', function () {
     return redirect()->route('admin.home');
 });
 
+
+Route::get('user/upload','ImportsController@user');
+Route::Post('user/upload','ImportsController@storeUser');
+
+
+
+
 Auth::routes(['register' => false]);
 // Admin
 
