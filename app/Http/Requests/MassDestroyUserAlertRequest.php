@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\UserAlert;
+namespace Modules\HR\Http\Requests;
+
+use Modules\HR\Entities\MeetingMinute;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

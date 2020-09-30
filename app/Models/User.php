@@ -112,9 +112,14 @@ class User extends Authenticatable implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function departmentHeadDeparrtments()
+    public function departmentHeadDepartments()
     {
-        return $this->hasMany(Deparrtment::class, 'department_head_id', 'id');
+        return $this->hasMany(Department::class, 'department_head_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     public function userAccountDetails()
@@ -171,7 +176,7 @@ class User extends Authenticatable implements HasMedia
 
     public function setLastLoginAttribute($value)
     {
-        $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        // $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function premissions()
@@ -186,7 +191,7 @@ class User extends Authenticatable implements HasMedia
 
     public function setDateOfJoinAttribute($value)
     {
-        $this->attributes['date_of_join'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        // $this->attributes['date_of_join'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function getDateOfInsuranceAttribute($value)
@@ -196,6 +201,6 @@ class User extends Authenticatable implements HasMedia
 
     public function setDateOfInsuranceAttribute($value)
     {
-        $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        // $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 }

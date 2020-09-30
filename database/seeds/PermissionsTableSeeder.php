@@ -342,23 +342,23 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 84,
-                'title' => 'deparrtment_create',
+                'title' => 'department_create',
             ],
             [
                 'id'    => 85,
-                'title' => 'deparrtment_edit',
+                'title' => 'department_edit',
             ],
             [
                 'id'    => 86,
-                'title' => 'deparrtment_show',
+                'title' => 'department_show',
             ],
             [
                 'id'    => 87,
-                'title' => 'deparrtment_delete',
+                'title' => 'department_delete',
             ],
             [
                 'id'    => 88,
-                'title' => 'deparrtment_access',
+                'title' => 'department_access',
             ],
             [
                 'id'    => 89,
@@ -546,23 +546,23 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 135,
-                'title' => 'attendancess_create',
+                'title' => 'attendances_create',
             ],
             [
                 'id'    => 136,
-                'title' => 'attendancess_edit',
+                'title' => 'attendances_edit',
             ],
             [
                 'id'    => 137,
-                'title' => 'attendancess_show',
+                'title' => 'attendances_show',
             ],
             [
                 'id'    => 138,
-                'title' => 'attendancess_delete',
+                'title' => 'attendances_delete',
             ],
             [
                 'id'    => 139,
-                'title' => 'attendancess_access',
+                'title' => 'attendances_access',
             ],
             [
                 'id'    => 140,

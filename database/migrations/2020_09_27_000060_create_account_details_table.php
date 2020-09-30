@@ -18,6 +18,7 @@ class CreateAccountDetailsTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('mobile')->nullable();
+            $table->string('avatar')->nullable();
             $table->string('skype')->nullable();
             $table->string('language')->nullable();
             $table->date('joining_date')->nullable();

@@ -12,7 +12,7 @@ class AddRelationshipFieldsToTicketsTable extends Migration
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id', 'project_fk_2176638')->references('id')->on('projects');
             $table->unsignedInteger('department_id')->nullable();
-            $table->foreign('department_id', 'department_fk_2176644')->references('id')->on('deparrtments');
+            $table->foreign('department_id', 'department_fk_2176644')->references('id')->on('departments');
         });
     }
 }

@@ -512,9 +512,9 @@ return [
             'model_helper'      => ' ',
         ],
     ],
-    'deparrtment'            => [
-        'title'          => 'Deparrtments',
-        'title_singular' => 'Deparrtment',
+    'department'            => [
+        'title'          => 'Departments',
+        'title_singular' => 'Department',
         'fields'         => [
             'id'                               => 'ID',
             'id_helper'                        => ' ',
@@ -822,7 +822,7 @@ return [
         'title'          => 'Attendance',
         'title_singular' => 'Attendance',
     ],
-    'attendancess'           => [
+    'attendances'           => [
         'title'          => 'Attendances',
         'title_singular' => 'Attendance',
         'fields'         => [

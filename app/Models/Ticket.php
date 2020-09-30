@@ -60,7 +60,7 @@ class Ticket extends Model implements HasMedia
 
     public function department()
     {
-        return $this->belongsTo(Deparrtment::class, 'department_id');
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
     public function getFileAttribute()

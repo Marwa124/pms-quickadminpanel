@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyTicketRequest;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
-use App\Models\Deparrtment;
+use App\Models\Department;
 use App\Models\Permission;
 use App\Models\Project;
 use App\Models\Ticket;
@@ -28,11 +28,11 @@ class TicketsController extends Controller
 
         $projects = Project::get();
 
-        $deparrtments = Deparrtment::get();
+        $departments = Department::get();
 
         $permissions = Permission::get();
 
-        return view('admin.tickets.index', compact('tickets', 'projects', 'deparrtments', 'permissions'));
+        return view('admin.tickets.index', compact('tickets', 'projects', 'departments', 'permissions'));
     }
 
     public function create()
@@ -41,7 +41,7 @@ class TicketsController extends Controller
 
         $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $departments = Deparrtment::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $premissions = Permission::all()->pluck('title', 'id');
 
@@ -70,7 +70,7 @@ class TicketsController extends Controller
 
         $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $departments = Deparrtment::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $premissions = Permission::all()->pluck('title', 'id');
 

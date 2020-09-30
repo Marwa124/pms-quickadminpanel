@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Attendancess;
+use App\Models\attendances;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
-class StoreAttendancessRequest extends FormRequest
+class StoreAttendancesRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('attendancess_create');
+        return Gate::allows('attendances_create');
     }
 
     public function rules()

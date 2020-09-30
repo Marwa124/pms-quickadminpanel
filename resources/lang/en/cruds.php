@@ -512,9 +512,9 @@ return [
             'model_helper'      => ' ',
         ],
     ],
-    'deparrtment'            => [
-        'title'          => 'Deparrtments',
-        'title_singular' => 'Deparrtment',
+    'department'            => [
+        'title'          => 'Departments',
+        'title_singular' => 'Department',
         'fields'         => [
             'id'                               => 'ID',
             'id_helper'                        => ' ',
@@ -721,6 +721,8 @@ return [
             'name'               => 'Name',
             'name_helper'        => ' ',
             'leave_quota'        => 'Leave Quota',
+            'deducted_amount'        => 'Deducted Days',
+            'annual_monthly'        => 'Annual/Monthly',
             'leave_quota_helper' => ' ',
             'created_at'         => 'Created at',
             'created_at_helper'  => ' ',
@@ -822,7 +824,7 @@ return [
         'title'          => 'Attendance',
         'title_singular' => 'Attendance',
     ],
-    'attendancess'           => [
+    'attendances'           => [
         'title'          => 'Attendances',
         'title_singular' => 'Attendance',
         'fields'         => [

@@ -47,8 +47,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::post('tasks/media', 'TaskApiController@storeMedia')->name('tasks.storeMedia');
     Route::apiResource('tasks', 'TaskApiController');
 
-    // Deparrtments
-    Route::apiResource('deparrtments', 'DeparrtmentsApiController');
+    // Departments
+    Route::apiResource('departments', 'DepartmentsApiController');
 
     // Designations
     Route::apiResource('designations', 'DesignationsApiController');
@@ -82,8 +82,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Employee Awards
     Route::apiResource('employee-awards', 'EmployeeAwardsApiController');
 
-    // Attendancesses
-    Route::apiResource('attendancesses', 'AttendancessApiController');
+    // attendances
+    Route::apiResource('attendances', 'attendancesApiController');
 
     // Daily Attendances
     Route::apiResource('daily-attendances', 'DailyAttendancesApiController');

@@ -51,7 +51,7 @@
                     @endcan
                     @can('user_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("hr.users.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
+                            <a href="{{ route("admin.users.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-user c-sidebar-nav-icon">
 
                                 </i>
@@ -123,19 +123,19 @@
                     {{ trans('cruds.hr.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('deparrtment_access')
+                    @can('department_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.deparrtments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deparrtments") || request()->is("admin/deparrtments/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.departments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/departments") || request()->is("admin/departments/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-id-card-alt c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.deparrtment.title') }}
+                                {{ trans('cruds.department.title') }}
                             </a>
                         </li>
                     @endcan
                     @can('designation_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.designations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/designations") || request()->is("admin/designations/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.designations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/designations") || request()->is("admin/designations/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-puzzle-piece c-sidebar-nav-icon">
 
                                 </i>
@@ -145,7 +145,7 @@
                     @endcan
                     @can('overtime_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.overtimes.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/overtimes") || request()->is("admin/overtimes/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.overtimes.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/overtimes") || request()->is("admin/overtimes/*") ? "active" : "" }}">
                                 <i class="fa-fw far fa-clock c-sidebar-nav-icon">
 
                                 </i>
@@ -155,7 +155,7 @@
                     @endcan
                     @can('holiday_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.holidays.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/holidays") || request()->is("admin/holidays/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.holidays.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/holidays") || request()->is("admin/holidays/*") ? "active" : "" }}">
                                 <i class="fa-fw far fa-calendar-plus c-sidebar-nav-icon">
 
                                 </i>
@@ -165,7 +165,7 @@
                     @endcan
                     @can('training_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.trainings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/trainings") || request()->is("admin/trainings/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.trainings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/trainings") || request()->is("admin/trainings/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-suitcase c-sidebar-nav-icon">
 
                                 </i>
@@ -175,7 +175,7 @@
                     @endcan
                     @can('leave_category_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.leave-categories.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/leave-categories") || request()->is("admin/leave-categories/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.leave-categories.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/leave-categories") || request()->is("admin/leave-categories/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
                                 </i>
@@ -185,7 +185,7 @@
                     @endcan
                     @can('leave_application_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.leave-applications.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/leave-applications") || request()->is("admin/leave-applications/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.leave-applications.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/leave-applications") || request()->is("admin/leave-applications/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-plane c-sidebar-nav-icon">
 
                                 </i>
@@ -195,7 +195,7 @@
                     @endcan
                     @can('meeting_minute_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.meeting-minutes.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/meeting-minutes") || request()->is("admin/meeting-minutes/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.meeting-minutes.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/meeting-minutes") || request()->is("admin/meeting-minutes/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-briefcase c-sidebar-nav-icon">
 
                                 </i>
@@ -205,7 +205,7 @@
                     @endcan
                     @can('employee_award_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.employee-awards.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employee-awards") || request()->is("admin/employee-awards/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.employee-awards.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employee-awards") || request()->is("admin/employee-awards/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-trophy c-sidebar-nav-icon">
 
                                 </i>
@@ -222,19 +222,19 @@
                                 {{ trans('cruds.attendance.title') }}
                             </a>
                             <ul class="c-sidebar-nav-dropdown-items">
-                                @can('attendancess_access')
+                                @can('attendances_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.attendancesses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/attendancesses") || request()->is("admin/attendancesses/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/attendances") || request()->is("admin/attendances/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon">
 
                                             </i>
-                                            {{ trans('cruds.attendancess.title') }}
+                                            {{ trans('cruds.attendances.title') }}
                                         </a>
                                     </li>
                                 @endcan
                                 @can('daily_attendance_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
                                             <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
 
                                             </i>
@@ -244,7 +244,7 @@
                                 @endcan
                                 @can('monthly_attendance_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.monthly-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/monthly-attendances") || request()->is("admin/monthly-attendances/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.monthly-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/monthly-attendances") || request()->is("admin/monthly-attendances/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-folder c-sidebar-nav-icon">
 
                                             </i>
@@ -266,7 +266,7 @@
                             <ul class="c-sidebar-nav-dropdown-items">
                                 @can('employee_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.employees.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employees") || request()->is("admin/employees/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.employees.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employees") || request()->is("admin/employees/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-users c-sidebar-nav-icon">
 
                                             </i>
@@ -276,7 +276,7 @@
                                 @endcan
                                 @can('account_detail_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
                                             </i>
@@ -331,7 +331,7 @@
                     @endcan
                     @can('vacation_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.vacations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/vacations") || request()->is("admin/vacations/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.vacations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/vacations") || request()->is("admin/vacations/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-shuttle-van c-sidebar-nav-icon">
 
                                 </i>
@@ -823,7 +823,7 @@
                     @endcan
                     @can('employee_bank_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.employee-banks.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employee-banks") || request()->is("admin/employee-banks/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.employee-banks.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employee-banks") || request()->is("admin/employee-banks/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-university c-sidebar-nav-icon">
 
                                 </i>

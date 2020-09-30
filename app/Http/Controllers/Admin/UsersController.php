@@ -82,7 +82,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $user->load('roles', 'premissions', 'departmentHeadDeparrtments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
+        $user->load('roles', 'premissions', 'departmentHeadDepartments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
 
         return view('admin.users.show', compact('user'));
     }
@@ -115,3 +115,4 @@ class UsersController extends Controller
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 }
+

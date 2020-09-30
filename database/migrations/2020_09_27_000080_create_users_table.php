@@ -46,4 +46,11 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
         });
     }
+
+    public function down()
+    {
+        Schema::drop('users');
+
+        Schema::dropIfExists('users');
+    }
 }
