@@ -19,6 +19,7 @@ class CreateLeaveApplicationsTable extends Migration
             $table->integer('view_status')->nullable();
             $table->longText('comments')->nullable();
             $table->string('approved_by')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -28,6 +28,7 @@ class LeaveApplicationsController extends Controller
             $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
             $table = Datatables::of($query);
 
+            // dd(LeaveApplication::with(['user', 'leave_category']));
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
 
@@ -35,12 +36,14 @@ class LeaveApplicationsController extends Controller
                 $viewGate      = 'leave_application_show';
                 $editGate      = 'leave_application_edit';
                 $deleteGate    = 'leave_application_delete';
+                $modalId       = 'hr.';
                 $crudRoutePart = 'leave-applications';
 
                 return view('partials.datatablesActions', compact(
                     'viewGate',
                     'editGate',
                     'deleteGate',
+                    'modalId',
                     'crudRoutePart',
                     'row'
                 ));
@@ -53,6 +56,7 @@ class LeaveApplicationsController extends Controller
                 return $row->leave_category ? $row->leave_category->name : '';
             });
 
+            // return $table->make(true);
             $table->editColumn('leave_type', function ($row) {
                 return $row->leave_type ? LeaveApplication::LEAVE_TYPE_SELECT[$row->leave_type] : '';
             });
