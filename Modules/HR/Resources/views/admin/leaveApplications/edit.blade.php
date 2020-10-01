@@ -1,13 +1,15 @@
 @extends('layouts.admin')
 @section('content')
 
+@inject('leaveAppModel', 'Modules\HR\Entities\LeaveApplication');
+
 <div class="card">
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.leaveApplication.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.leave-applications.update", [$leaveApplication->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.leave-applications.update", [$leaveApplication->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
@@ -52,7 +54,7 @@
                 <label class="required">{{ trans('cruds.leaveApplication.fields.leave_type') }}</label>
                 <select class="form-control {{ $errors->has('leave_type') ? 'is-invalid' : '' }}" name="leave_type" id="leave_type" required>
                     <option value disabled {{ old('leave_type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\LeaveApplication::LEAVE_TYPE_SELECT as $key => $label)
+                    @foreach($leaveAppModel::LEAVE_TYPE_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('leave_type', $leaveApplication->leave_type) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
@@ -97,7 +99,7 @@
                 <label>{{ trans('cruds.leaveApplication.fields.application_status') }}</label>
                 <select class="form-control {{ $errors->has('application_status') ? 'is-invalid' : '' }}" name="application_status" id="application_status">
                     <option value disabled {{ old('application_status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\LeaveApplication::APPLICATION_STATUS_SELECT as $key => $label)
+                    @foreach($leaveAppModel::APPLICATION_STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('application_status', $leaveApplication->application_status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
@@ -229,7 +231,7 @@
 
 <script>
     Dropzone.options.attachmentsDropzone = {
-    url: '{{ route('admin.leave-applications.storeMedia') }}',
+    url: '{{ route('hr.admin.leave-applications.storeMedia') }}',
     maxFilesize: 2, // MB
     maxFiles: 1,
     addRemoveLinks: true,

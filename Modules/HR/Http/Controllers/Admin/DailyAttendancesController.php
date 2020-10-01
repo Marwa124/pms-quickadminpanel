@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Modules\HR\Http\Requests\Destroy\MassDestroyDailyAttendanceRequest;
 use Modules\HR\Http\Requests\Store\StoreDailyAttendanceRequest;
 use Modules\HR\Http\Requests\Update\UpdateDailyAttendanceRequest;
-use Modules\HR\Models\DailyAttendance;
+use Modules\HR\Entities\DailyAttendance;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -36,7 +36,7 @@ class DailyAttendancesController extends Controller
     {
         $dailyAttendance = DailyAttendance::create($request->all());
 
-        return redirect()->route('hr::admin.daily-attendances.index');
+        return redirect()->route('hr.admin.daily-attendances.index');
     }
 
     public function edit(DailyAttendance $dailyAttendance)
@@ -54,7 +54,7 @@ class DailyAttendancesController extends Controller
     {
         $dailyAttendance->update($request->all());
 
-        return redirect()->route('admin.daily-attendances.index');
+        return redirect()->route('hr.admin.daily-attendances.index');
     }
 
     public function show(DailyAttendance $dailyAttendance)

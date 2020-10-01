@@ -127,7 +127,7 @@ class LeaveApplicationsController extends Controller
             $leaveApplication->attachments->delete();
         }
 
-        return redirect()->route('hr::admin.leave-applications.index');
+        return redirect()->route('hr.admin.leave-applications.index');
     }
 
     public function show(LeaveApplication $leaveApplication)

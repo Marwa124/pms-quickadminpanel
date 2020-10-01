@@ -542,7 +542,7 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 134,
-                'title' => 'attendance_access',
+                'title' => 'attendances_access',
             ],
             [
                 'id'    => 135,
@@ -566,7 +566,7 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 140,
-                'title' => 'employeess_access',
+                'title' => 'employees_access',
             ],
             [
                 'id'    => 141,
@@ -1816,6 +1816,29 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 452,
                 'title' => 'profile_password_edit',
             ],
+            
+            /////////Requests////////////////
+            [
+                'id'    => 453,
+                'title' => 'employee_request_create',
+            ],
+            [
+                'id'    => 454,
+                'title' => 'employee_request_edit',
+            ],
+            [
+                'id'    => 455,
+                'title' => 'employee_request_show',
+            ],
+            [
+                'id'    => 456,
+                'title' => 'employee_request_delete',
+            ],
+            [
+                'id'    => 457,
+                'title' => 'employee_request_access',
+            ],
+            /////////Requests////////////////
         ];
 
         Permission::insert($permissions);

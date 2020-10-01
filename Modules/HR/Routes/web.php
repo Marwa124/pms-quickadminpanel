@@ -17,30 +17,26 @@ Route::prefix('hr')->group(function() {
 
 
 Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
-   
-    // Route::get('user-alerts/read', 'UserAlertsController@read');
-
-    // Users
-    // Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-    // Route::post('users/media', 'UsersController@storeMedia')->name('users.storeMedia');
-    // Route::post('users/ckmedia', 'UsersController@storeCKEditorImages')->name('users.storeCKEditorImages');
-    // Route::resource('users', 'UsersController');
     
     // Daily Attendances
     Route::delete('daily-attendances/destroy', 'DailyAttendancesController@massDestroy')->name('daily-attendances.massDestroy');
-    Route::resource('daily-attendances', 'DailyAttendancesController');
+    Route::resource('daily-attendances', 'DailyAttendancesController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
     // Monthly Attendances
     Route::resource('monthly-attendances', 'MonthlyAttendancesController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+
+    // Client Meetings
+    Route::delete('client-meetings/destroy', 'ClientMeetingsController@massDestroy')->name('client-meetings.massDestroy');
+    Route::resource('client-meetings', 'ClientMeetingsController');
+
+    // Survey
+    // Route::delete('survey/destroy', 'SurveyController@massDestroy')->name('survey.massDestroy');
+    // Route::resource('survey', 'SurveyController');
 
     // Employees
     Route::delete('employees/destroy', 'EmployeesController@massDestroy')->name('employees.massDestroy');
     Route::resource('employees', 'EmployeesController');
 
-     // User Alerts
-    //  Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
-    //  Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
- 
      // Departments
      Route::delete('departments/destroy', 'DepartmentsController@massDestroy')->name('departments.massDestroy');
      Route::resource('departments', 'DepartmentsController');

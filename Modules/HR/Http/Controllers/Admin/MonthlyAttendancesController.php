@@ -16,7 +16,7 @@ class MonthlyAttendancesController extends Controller
 
         $monthlyAttendances = MonthlyAttendance::all();
 
-        return view('admin.monthlyAttendances.index', compact('monthlyAttendances'));
+        return view('hr::admin.monthlyAttendances.index', compact('monthlyAttendances'));
     }
 
     public function show(MonthlyAttendance $monthlyAttendance)
@@ -25,6 +25,6 @@ class MonthlyAttendancesController extends Controller
 
         $monthlyAttendance->load('user');
 
-        return view('admin.monthlyAttendances.show', compact('monthlyAttendance'));
+        return view('hr::admin.monthlyAttendances.show', compact('monthlyAttendance'));
     }
 }

@@ -255,13 +255,43 @@
                             </ul>
                         </li>
                     @endcan
-                    @can('employeess_access')
+                    @can('employee_request_access')
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw far fa-edit c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.requests.title') }}
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('employee_request_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.client-meetings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/client-meetings") || request()->is("admin/client-meetings/*") ? "active" : "" }}">
+                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.clientMeeting.title') }}
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
+                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.survey.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('employees_access')
                         <li class="c-sidebar-nav-dropdown">
                             <a class="c-sidebar-nav-dropdown-toggle" href="#">
                                 <i class="fa-fw fas fa-users-cog c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.employeess.title') }}
+                                {{ trans('cruds.employees.title') }}
                             </a>
                             <ul class="c-sidebar-nav-dropdown-items">
                                 @can('employee_access')

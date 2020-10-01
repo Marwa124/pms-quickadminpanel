@@ -75,7 +75,7 @@
                             </td>
                             <td>
                                 @can('monthly_attendance_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.monthly-attendances.show', $monthlyAttendance->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.monthly-attendances.show', $monthlyAttendance->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan

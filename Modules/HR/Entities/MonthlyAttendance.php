@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\HR\Models;
+namespace Modules\HR\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
