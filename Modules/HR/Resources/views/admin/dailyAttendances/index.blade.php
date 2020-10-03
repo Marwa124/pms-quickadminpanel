@@ -5,6 +5,62 @@
         {{ trans('cruds.dailyAttendance.title_singular') }} {{ trans('global.list') }}
     </div>
 
+    <!-- Main content -->
+    <section class="content">
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{ __('Manage Attendance') }} </h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <!-- Notification Box -->
+                <div class="col-md-12">
+                    @if (!empty(Session::get('message')))
+                    <div class="alert alert-success alert-dismissible" id="notification_box">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <i class="icon fa fa-check"></i> {{ Session::get('message') }}
+                    </div>
+                    @elseif (!empty(Session::get('exception')))
+                    <div class="alert alert-warning alert-dismissible" id="notification_box">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <i class="icon fa fa-warning"></i> {{ Session::get('exception') }}
+                    </div>
+                    @endif
+                </div>
+                <!-- /.Notification Box -->
+                <div class="col-md-12">
+                    <form action="{{ route('hr.admin.daily-attendances.set') }}" method="post">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-6">
+                                <div class="input-group margin">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    <input class="form-control date" type="text" name="date" id="datepicker" required>
+                                    <span class="input-group-btn">
+                                      <button type="submit" class="btn btn-info btn-flat"><i class="icon fa fa-arrow-right"></i>{{ __('Go') }} </button>
+                                  </span>
+                              </div>
+                            </div>
+                        </div>
+                  </form>
+              </div>
+              <!-- /. end col -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix">
+
+          </div>
+          <!-- /.box-footer -->
+      </div>
+      <!-- /.box -->
+  </section>
+  <!-- /.content -->
+
     <div class="card-body">
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-DailyAttendance">
@@ -137,7 +193,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>

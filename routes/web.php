@@ -14,8 +14,6 @@ Route::get('user/upload','ImportsController@user');
 Route::Post('user/upload','ImportsController@storeUser');
 
 
-
-
 Auth::routes(['register' => false]);
 // Admin
 

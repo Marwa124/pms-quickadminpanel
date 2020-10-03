@@ -19,7 +19,7 @@ class UpdateClientMeetingRequest extends FormRequest
         return [
             'status' => [
                 'string',
-                'required',
+                'nullable',
             ],
             'approved_by' => [
                 'string',

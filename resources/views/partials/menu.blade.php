@@ -213,7 +213,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('attendance_access')
+                    @can('attendances_access')
                         <li class="c-sidebar-nav-dropdown">
                             <a class="c-sidebar-nav-dropdown-toggle" href="#">
                                 <i class="fa-fw far fa-edit c-sidebar-nav-icon">

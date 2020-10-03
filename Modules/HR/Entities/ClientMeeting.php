@@ -14,10 +14,18 @@ class ClientMeeting extends Model
     public $table = 'employee_requests';
 
     protected $dates = [
-        'created_day',
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    protected $time = [
+        'from_time',
+        'to_time',
+    ];
+
+    protected $date = [
+        'day',
     ];
 
     protected $guarded = [];
@@ -29,7 +37,7 @@ class ClientMeeting extends Model
 
     const MEETING_STATUS_SELECT = [
         'day'  => 'Day',
-        'hour'   => 'Hour',
+        'hour' => 'Hour',
     ];
 
     const STATUS_SELECT = [
@@ -39,9 +47,9 @@ class ClientMeeting extends Model
     ];
 
     const STATUS_COLOR = [
-        'pending'  => '#FFFF99',
-        'accepted'   => '#90EE90',
-        'rejected' => 'red',
+        'pending'  => 'yellow',
+        'approve'   => '#90EE90',
+        'reject' => 'red',
     ];
 
     protected function serializeDate(DateTimeInterface $date)

@@ -6,7 +6,7 @@ use Modules\HR\Http\Controllers\Controller;
 use Modules\HR\Http\Requests\Destroy\MassDestroyAttendancesRequest;
 use Modules\HR\Http\Requests\Store\StoreAttendancesRequest;
 use Modules\HR\Http\Requests\Update\UpdateAttendancesRequest;
-use Modules\HR\Entities\Attendances;
+use Modules\HR\Entities\Attendance;
 use Modules\HR\Entities\LeaveApplication;
 use App\Models\User;
 use Gate;
@@ -19,9 +19,9 @@ class AttendancesController extends Controller
     {
         abort_if(Gate::denies('attendances_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $attendances = attendances::all();
+        $attendances = Attendance::all();
 
-        return view('admin.attendances.index', compact('attendances'));
+        return view('hr::admin.attendances.index', compact('attendances'));
     }
 
     public function create()

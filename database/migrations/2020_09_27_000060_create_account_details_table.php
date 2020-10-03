@@ -24,8 +24,8 @@ class CreateAccountDetailsTable extends Migration
             $table->date('joining_date')->nullable();
             $table->string('present_address')->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->string('gender');
-            $table->string('marital_status');
+            $table->string('gender')->nullable();
+            $table->string('marital_status')->nullable();
             $table->string('father_name')->nullable();
             $table->string('mother_name')->nullable();
             $table->string('passport')->nullable();

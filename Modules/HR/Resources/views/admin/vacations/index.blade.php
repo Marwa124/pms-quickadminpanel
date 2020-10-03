@@ -3,7 +3,7 @@
 @can('vacation_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.vacations.create') }}">
+            <a class="btn btn-success" href="{{ route('hr.admin.vacations.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.vacation.title_singular') }}
             </a>
         </div>
@@ -65,19 +65,19 @@
                             </td>
                             <td>
                                 @can('vacation_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.vacations.show', $vacation->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.vacations.show', $vacation->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('vacation_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.vacations.edit', $vacation->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.vacations.edit', $vacation->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('vacation_delete')
-                                    <form action="{{ route('admin.vacations.destroy', $vacation->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('hr.admin.vacations.destroy', $vacation->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -106,7 +106,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.vacations.massDestroy') }}",
+    url: "{{ route('hr.admin.vacations.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -142,7 +142,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>

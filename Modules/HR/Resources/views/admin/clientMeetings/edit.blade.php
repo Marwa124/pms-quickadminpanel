@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 
-@inject('clientMeetingModel', 'Modules\HR\Entities\clientMeeting');
+@inject('clientMeetingModel', 'Modules\HR\Entities\clientMeeting')
 
 <div class="card">
     <div class="card-header">
@@ -61,21 +61,23 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.clientMeeting.fields.to_time_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label>{{ trans('cruds.clientMeeting.fields.status') }}</label>
-                @foreach($clientMeetingModel::APPROVE_RADIO as $key => $label)
-                    <div class="form-check {{ $errors->has('status') ? 'is-invalid' : '' }}">
-                        <input class="form-check-input" type="radio" id="status_{{ $key }}" name="status" value="{{ $key }}" {{ old('status', $clientMeeting->status) === (string) $key ? 'checked' : '' }}>
-                        <label class="form-check-label" for="status_{{ $key }}">{{ $label }}</label>
-                    </div>
-                @endforeach
-                @if($errors->has('status'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('status') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.clientMeeting.fields.status_helper') }}</span>
-            </div>
+            @if (Auth::user()->id != $clientMeeting->user->id)
+                <div class="form-group">
+                    <label>{{ trans('cruds.clientMeeting.fields.status') }}</label>
+                    @foreach($clientMeetingModel::APPROVE_RADIO as $key => $label)
+                        <div class="form-check {{ $errors->has('status') ? 'is-invalid' : '' }}">
+                            <input class="form-check-input" type="radio" id="status_{{ $key }}" name="status" value="{{ $key }}" {{ old('status', $clientMeeting->status) === (string) $key ? 'checked' : '' }}>
+                            <label class="form-check-label" for="status_{{ $key }}">{{ $label }}</label>
+                        </div>
+                    @endforeach
+                    @if($errors->has('status'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('status') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.clientMeeting.fields.status_helper') }}</span>
+                </div>
+            @endif
             <div class="form-group">
                 <label for="comments">{{ trans('cruds.clientMeeting.fields.comments') }}</label>
                 <textarea class="form-control ckeditor {{ $errors->has('comments') ? 'is-invalid' : '' }}" name="comments" id="comments">{!! old('comments', $clientMeeting->comments) !!}</textarea>

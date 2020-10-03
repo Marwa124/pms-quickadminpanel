@@ -2,15 +2,16 @@
 
 namespace Modules\HR\Http\Requests\Destroy;
 
+use App\Models\Vacation;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyOvertimeRequest extends FormRequest
+class MassDestroyVacationRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('overtime_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('vacation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -19,7 +20,7 @@ class MassDestroyOvertimeRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:overtimes,id',
+            'ids.*' => 'exists:vacations,id',
         ];
     }
 }

@@ -11,6 +11,7 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class ClientMeetingsController extends Controller
 {
@@ -18,22 +19,20 @@ class ClientMeetingsController extends Controller
     {
         abort_if(Gate::denies('employee_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-// dd($request->ajax());
-        
         if ($request->ajax()) {
             $query = ClientMeeting::with(['user'])->select(sprintf('%s.*', (new ClientMeeting)->table));
-            dd($query);
-            $table = Datatables::of($query);
+            $table = DataTables::of($query);
 
             $table->addColumn('status_color', ' ');
 
             // dd(LeaveApplication::with(['user', 'leave_category']));
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
+            $table->addColumn('status_color', '&nbsp;');
 
-            $table->editColumn('status_color', function ($row) {
-                return $row->status && Customer::STATUS_COLOR[$row->status] ? Customer::STATUS_COLOR[$row->status] : 'none';
-            });
+            // $table->editColumn('status_color', function ($row) {
+            //     return $row->status && ClientMeeting::STATUS_COLOR[$row->status] ? ClientMeeting::STATUS_COLOR[$row->status] : 'none';
+            // });
 
             $table->editColumn('actions', function ($row) {
                 $viewGate      = 'employee_request_show';
@@ -55,19 +54,27 @@ class ClientMeetingsController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : "";
             });
-            $table->addColumn('leave_category_name', function ($row) {
-                return $row->leave_category ? $row->leave_category->name : '';
+            $table->editColumn('day', function ($row) {
+                return $row->day ? $row->day : '';
             });
-
+            $table->editColumn('status_color', function ($row) {
+                return $row->status && ClientMeeting::STATUS_COLOR[$row->status] ? ClientMeeting::STATUS_COLOR[$row->status] : 'none';
+            });
+            $table->editColumn('status', function ($row) {
+                return $row->status ? ClientMeeting::STATUS_SELECT[$row->status] : '';
+            });
             // return $table->make(true);
-            $table->editColumn('leave_type', function ($row) {
-                return $row->leave_type ? ClientMeeting::LEAVE_TYPE_SELECT[$row->leave_type] : '';
+            $table->editColumn('day_hour', function ($row) {
+                return $row->day_hour ? ClientMeeting::MEETING_STATUS_SELECT[$row->day_hour] : '';
             });
-            $table->editColumn('hours', function ($row) {
-                return $row->hours ? $row->hours : "";
+            $table->editColumn('from_time', function ($row) {
+                return $row->from_time ? $row->from_time : "";
+            });
+            $table->editColumn('to_time', function ($row) {
+                return $row->to_time ? $row->to_time : "";
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'leave_category']);
+            $table->rawColumns(['actions', 'placeholder']);
 
             return $table->make(true);
         }
@@ -75,7 +82,7 @@ class ClientMeetingsController extends Controller
         return view('hr::admin.clientMeetings.index');
 
 
-        
+
 
         // $clientMeetings = ClientMeeting::all();
 
@@ -93,6 +100,7 @@ class ClientMeetingsController extends Controller
 
     public function store(StoreClientMeetingRequest $request)
     {
+        // dd($request->all());
         $clientMeetings = ClientMeeting::create($request->all());
 
         return redirect()->route('hr.admin.client-meetings.index');
@@ -123,7 +131,7 @@ class ClientMeetingsController extends Controller
 
         $clientMeeting->load('user');
 
-        return view('hr::admin.clientMeetings.show', compact('clientMeetings'));
+        return view('hr::admin.clientMeetings.show', compact('clientMeeting'));
     }
 
     public function destroy(ClientMeeting $clientMeeting)

@@ -1,15 +1,17 @@
 @extends('layouts.admin')
 @section('content')
+@inject('clientMeetingModel', 'Modules\HR\Entities\ClientMeeting')
+
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.leaveApplication.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.clientMeeting.title') }}
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('hr.admin.leave-applications.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.client-meetings.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -17,116 +19,80 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.id') }}
+                            {{ trans('cruds.clientMeeting.fields.id') }}
                         </th>
                         <td>
-                            {{ $leaveApplication->id }}
+                            {{ $clientMeeting->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.user') }}
+                            {{ trans('cruds.clientMeeting.fields.user') }}
                         </th>
                         <td>
-                            {{ $leaveApplication->user->name ?? '' }}
+                            {{ $clientMeeting->user->name ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.leave_category') }}
+                            {{ trans('cruds.clientMeeting.fields.day') }}
                         </th>
                         <td>
-                            {{ $leaveApplication->leave_category->name ?? '' }}
+                            {{ $clientMeeting->day ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.reason') }}
+                            {{ trans('cruds.clientMeeting.fields.day_hour') }}
                         </th>
                         <td>
-                            {!! $leaveApplication->reason !!}
+                            {{ $clientMeetingModel::MEETING_STATUS_SELECT[$clientMeeting->day_hour] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.leave_type') }}
+                            {{ trans('cruds.clientMeeting.fields.from_time') }}
                         </th>
                         <td>
-                            {{ Modules\HR\Entities\LeaveApplication::LEAVE_TYPE_SELECT[$leaveApplication->leave_type] ?? '' }}
+                            {{ $clientMeeting->from_time }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.hours') }}
+                            {{ trans('cruds.clientMeeting.fields.to_time') }}
                         </th>
                         <td>
-                            {{ $leaveApplication->hours }}
+                            {{ $clientMeeting->to_time }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.leave_start_date') }}
+                            {{ trans('cruds.clientMeeting.fields.status') }}
                         </th>
                         <td>
-                            {{ $leaveApplication->leave_start_date }}
+                            {{ $clientMeetingModel::STATUS_SELECT[$clientMeeting->status] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.leave_end_date') }}
+                            {{ trans('cruds.clientMeeting.fields.comments') }}
                         </th>
                         <td>
-                            {{ $leaveApplication->leave_end_date }}
+                            {!! $clientMeeting->comments !!}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.leaveApplication.fields.application_status') }}
+                            {{ trans('cruds.clientMeeting.fields.approved_by') }}
                         </th>
                         <td>
-                            {{ Modules\HR\Entities\LeaveApplication::APPLICATION_STATUS_SELECT[$leaveApplication->application_status] ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.leaveApplication.fields.view_status') }}
-                        </th>
-                        <td>
-                            {{ $leaveApplication->view_status }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.leaveApplication.fields.attachments') }}
-                        </th>
-                        <td>
-                            @if($leaveApplication->attachments)
-                                <a href="{{ $leaveApplication->attachments->getUrl() }}" target="_blank">
-                                    {{ trans('global.view_file') }}
-                                </a>
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.leaveApplication.fields.comments') }}
-                        </th>
-                        <td>
-                            {!! $leaveApplication->comments !!}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.leaveApplication.fields.approved_by') }}
-                        </th>
-                        <td>
-                            {{ $leaveApplication->approved_by }}
+                            {{ $clientMeeting->approved_by }}
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('hr.admin.leave-applications.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.client-meetings.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

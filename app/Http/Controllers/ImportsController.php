@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\FingerprintImport;
 use Illuminate\Http\Request;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportsController extends Controller
 {
-  
+
 
 
     public function user(){

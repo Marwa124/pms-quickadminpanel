@@ -24,7 +24,7 @@ class VacationsController extends Controller
 
         $vacations = Vacation::all();
 
-        return view('admin.vacations.index', compact('vacations'));
+        return view('hr::admin.vacations.index', compact('vacations'));
     }
 
     public function create()
@@ -33,7 +33,7 @@ class VacationsController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.vacations.create', compact('users'));
+        return view('hr::admin.vacations.create', compact('users'));
     }
 
     public function store(StoreVacationRequest $request)
@@ -44,7 +44,7 @@ class VacationsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $vacation->id]);
         }
 
-        return redirect()->route('admin.vacations.index');
+        return redirect()->route('hr.admin.vacations.index');
     }
 
     public function edit(Vacation $vacation)
@@ -55,14 +55,14 @@ class VacationsController extends Controller
 
         $vacation->load('user');
 
-        return view('admin.vacations.edit', compact('users', 'vacation'));
+        return view('hr::admin.vacations.edit', compact('users', 'vacation'));
     }
 
     public function update(UpdateVacationRequest $request, Vacation $vacation)
     {
         $vacation->update($request->all());
 
-        return redirect()->route('admin.vacations.index');
+        return redirect()->route('hr.admin.vacations.index');
     }
 
     public function show(Vacation $vacation)
@@ -71,7 +71,7 @@ class VacationsController extends Controller
 
         $vacation->load('user');
 
-        return view('admin.vacations.show', compact('vacation'));
+        return view('hr::admin.vacations.show', compact('vacation'));
     }
 
     public function destroy(Vacation $vacation)

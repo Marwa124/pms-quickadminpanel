@@ -13,8 +13,8 @@ class CreateEmployeeRequestsTable extends Migration
             $table->date('day')->nullable();
             $table->time('from_time')->nullable();
             $table->time('to_time')->nullable();
-            $table->string('day_hour')->nullable();
-            $table->string('status')->nullable()->default(pending)->comment('pending, accepted, rejected');
+            $table->string('day_hour')->default('day');
+            $table->string('status')->default('pending')->comment('pending, approved, rejected');
             $table->longText('comments')->nullable();
             $table->string('approved_by')->nullable();
             $table->integer('user_id')->unsigned()->nullable();

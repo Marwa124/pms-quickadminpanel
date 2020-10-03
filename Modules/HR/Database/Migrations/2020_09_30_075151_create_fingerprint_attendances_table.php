@@ -14,7 +14,7 @@ class CreateFingerprintAttendancesTable extends Migration
     public function up()
     {
         Schema::create('fingerprint_attendances', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('user_id')->unsigned()->default(0);
             $table->date('date')->nullable();
             $table->time('time')->nullable();

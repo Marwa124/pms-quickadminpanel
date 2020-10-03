@@ -10,6 +10,12 @@ use Modules\HR\Entities\DailyAttendance;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
+use Modules\HR\Entities\FingerprintAttendance;
+use Modules\HR\Entities\Holiday;
+use Modules\HR\Entities\SetTime;
+use Modules\HR\Entities\LeaveCategory;
+use Modules\HR\Entities\WorkingDay;
 use Symfony\Component\HttpFoundation\Response;
 
 class DailyAttendancesController extends Controller
@@ -21,6 +27,90 @@ class DailyAttendancesController extends Controller
         $dailyAttendances = DailyAttendance::all();
 
         return view('hr::admin.dailyAttendances.index', compact('dailyAttendances'));
+    }
+
+    public function set_attendance(Request $request)
+    {
+		$attendance_day = date("D", strtotime($request->date));
+
+		$weekly_holidays = WorkingDay::where('working_status', 0)
+			->get(['day'])
+			->toArray();
+
+		$monthly_holidays = Holiday::whereDate('start_date', '<=', $request->date)
+            ->whereDate('end_date', '>=', $request->date)
+            ->first(['start_date', 'end_date']);
+
+		if ($monthly_holidays['date'] == $request->date) {
+			return redirect()->back()->with('exception', 'You select a holiday !');
+		}
+
+		foreach ($weekly_holidays as $weekly_holiday) {
+			if ($attendance_day == $weekly_holiday['day']) {
+				return redirect()->back()->with('exception', 'You select a holiday !');
+			}
+		}
+
+		// $employees = AccountDetail::query()
+		// 	->leftjoin('designations as designations', 'account_details.designation_id', '=', 'designations.id')
+		// 	->orderBy('account_details.fullname', 'ASC')
+		// 	// ->where('account_details.access_label', '>=', 2)
+		// 	// ->where('account_details.access_label', '<=', 3)
+		// 	->get(['designations.designation_name', 'account_details.fullname', 'account_details.id'])
+        //     ->toArray();
+
+            $employees = AccountDetail::with('designation')
+            // ->get(['account_details.fullname', 'account_details.id'])
+            // ->select('designation.designation_name', 'account_details.fullname', 'account_details.id')
+            ->get()
+            ->toArray();
+            // dd($employees);
+
+		$leave_categories = LeaveCategory::get()
+			->where('deleted_at', null)
+			->toArray();
+		$date = $request->date;
+
+		$attendances = FingerprintAttendance::where('date', $date)
+			->get()
+			->toArray();
+
+		if (empty($attendances)) {
+			return view('hr::admin.dailyAttendances.set_attendance', compact('employees', 'leave_categories', 'date'));
+        }
+        // var_dump("pppp");
+        return view('hr::admin.dailyAttendances.set_attendance', compact('employees', 'leave_categories', 'date'));
+
+		// return view('hr::admin.dailyAttendances.edit_attendance', compact('employees', 'leave_categories', 'date', 'attendances'));
+    }
+
+    public function timeSet(Request $request) {
+
+        //return $request;
+
+        $id=$request->id;
+
+        $setimes= SetTime::all();
+
+        if($setimes->count()>0){
+         $setimes= SetTime::find($id);
+        $setimes->in_time = $request->in_time;
+        $setimes->out_time = $request->out_time;
+        $setimes->save();
+
+        return redirect()->back()->with('message', 'Set Update Successful!');
+
+        }else{
+
+         $setimes= new SetTime;
+        $setimes->created_by = auth()->user()->id;
+        $setimes->in_time = $request->in_time;
+        $setimes->out_time = $request->out_time;
+        $setimes->save();
+
+        return redirect()->back()->with('message', 'Set Successful!');
+        }
+
     }
 
     public function create()
