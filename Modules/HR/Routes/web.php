@@ -24,9 +24,10 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
     // Daily Attendances
     Route::delete('daily-attendances/destroy', 'DailyAttendancesController@massDestroy')->name('daily-attendances.massDestroy');
-    Route::post('daily-attendances/set', 'DailyAttendancesController@set_attendance')->name('daily-attendances.set');
-	Route::post('daily-attendances/time/set', 'DailyAttendancesController@timeSet')->name('daily-attendances.setTime');
-    Route::resource('daily-attendances', 'DailyAttendancesController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+    // Route::post('daily-attendances/set', 'DailyAttendancesController@set_attendance')->name('daily-attendances.set');
+    // Route::get('daily-attendances', 'DailyAttendancesController@index')->name('daily-attendances.set');
+    Route::post('daily-attendances/time/set', 'DailyAttendancesController@timeSet')->name('daily-attendances.setTime');
+    Route::resource('daily-attendances', 'DailyAttendancesController', ['except' => ['create', 'edit', 'update', 'destroy']]);
 
     // Monthly Attendances
     Route::resource('monthly-attendances', 'MonthlyAttendancesController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);

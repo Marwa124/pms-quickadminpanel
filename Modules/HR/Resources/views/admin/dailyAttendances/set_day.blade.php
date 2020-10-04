@@ -101,43 +101,6 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-        // echo "<pre>";
-        //     var_dump($fingerprintAttendances);
-        //     die();
-                    ?>
-                    @foreach($fingerprintAttendances as $key => $dailyAttendance)
-                        <tr data-entry-id="{{ $dailyAttendance->id }}">
-                            <td>
-
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->id ?? '' }}
-                            </td>
-                            <td>
-                                {{-- {{ $dailyAttendance->user->name ?? '' }} --}}
-                            </td>
-                            <td>
-                                {{-- {{ $dailyAttendance->clock_in ?? '' }} --}}
-                                {{ $dailyAttendance->date ?? '' }}
-                            </td>
-                            <td>
-                                {{-- {{ $dailyAttendance->clock_out ?? '' }} --}}
-                                {{ $dailyAttendance->time ?? '' }}
-                            </td>
-                            <td>
-                                @can('daily_attendance_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.daily-attendances.show', $dailyAttendance->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
             </table>
         </div>
     </div>
@@ -146,44 +109,46 @@
 
 
 @endsection
+
 @section('scripts')
 @parent
 <script>
     $(function () {
 
-  $("#table-daily-attendance").css('display', 'none');
-  $("#submit-date").on('click', function(e){
-      if ($("#datepicker").val() != '') {
-            $.ajax({
-                type: "POST",
-                // url: $(this).data('route')+'?day='+$("#datepicker").val(),
-                url: "{{route('hr.admin.daily-attendances.store')}}",
-                data: {
-                    _token: $(this).data('token'),
-                    day: $("#datepicker").val(),
-                },
-                success:function(response){
-                $("#table-daily-attendance").css('display', 'block');
+        // $("#table-daily-attendance").css('display', 'none');
+        $("#submit-date").on('click', function(e){
+            // $("#table-daily-attendance").css('display', 'block');
 
-                let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+                let dtOverrideGlobals = {
+                    processing: true,
+                    serverSide: true,
+                    retrieve: true,
+                    aaSorting: [],
+                    ajax: "{{ route('hr.admin.daily-attendances.index') }}",
+                    columns: [
+                        { data: 'placeholder', name: 'placeholder' },
+                        { data: 'id', name: 'id' },
+                        // { data: 'leave_category_name', name: 'leave_category.name' },
+                        { data: 'date', name: 'date' },
+                        { data: 'time', name: 'time' },
+                        // { data: 'leave_start_date', name: 'leave_start_date' },
+                        // { data: 'leave_end_date', name: 'leave_end_date' },
+                        { data: 'actions', name: '{{ trans('global.actions') }}' }
+                    ],
+                    orderCellsTop: true,
+                    order: [[ 1, 'desc' ]],
+                    pageLength: 25,
+                };
+                let table = $('.datatable-DailyAttendance').DataTable(dtOverrideGlobals);
+                $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+                    $($.fn.dataTable.tables(true)).DataTable()
+                        .columns.adjust();
+                });
 
-                    $.extend(true, $.fn.dataTable.defaults, {
-                        orderCellsTop: true,
-                        order: [[ 1, 'desc' ]],
-                        pageLength: 25,
-                    });
-                    let table = $('.datatable-DailyAttendance:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-                    $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-                        $($.fn.dataTable.tables(true)).DataTable()
-                            .columns.adjust();
-                    });
-                    // $('#table-daily-attendance tbody').empty(); // Empty <tbody>
-                },
-            });
-            }
-         });
+        });
 
-})
+
+});
 
 </script>
 @endsection

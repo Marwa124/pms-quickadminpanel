@@ -17,58 +17,17 @@ use Modules\HR\Entities\SetTime;
 use Modules\HR\Entities\LeaveCategory;
 use Modules\HR\Entities\WorkingDay;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class DailyAttendancesController extends Controller
 {
     public function index(Request $request)
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        // var_dump($request['day']);
         if ($request['day'] != '') {
-            // $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get()->toArray();
-            // return response()->json(['data' => $fingerprintAttendances]);
-
-            if ($request->ajax()) {
-                // $query = FingerprintAttendance::with(['user', 'leave_category'])->select(sprintf('%s.*', (new FingerprintAttendance)->table));
-                $query = FingerprintAttendance::select(sprintf('%s.*', (new FingerprintAttendance)->table));
-                $table = Datatables::of($query);
-    
-                // dd(LeaveApplication::with(['user', 'leave_category']));
-                $table->addColumn('placeholder', '&nbsp;');
-                $table->addColumn('actions', '&nbsp;');
-    
-                $table->editColumn('actions', function ($row) {
-                    $viewGate      = 'leave_application_show';
-                    $editGate      = 'leave_application_edit';
-                    $deleteGate    = 'leave_application_delete';
-                    $modalId       = 'hr.';
-                    $crudRoutePart = 'leave-applications';
-    
-                    return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'modalId',
-                        'crudRoutePart',
-                        'row'
-                    ));
-                });
-    
-                $table->editColumn('id', function ($row) {
-                    return $row->id ? $row->id : "";
-                });
-                $table->editColumn('date', function ($row) {
-                    return $row->date ? $row->date : "";
-                });
-                $table->editColumn('time', function ($row) {
-                    return $row->time ? $row->time : "";
-                });
-    
-                $table->rawColumns(['actions', 'placeholder', 'leave_category']);
-    
-                return $table->make(true);
-            }
-            //ajax end
+            $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get();
+            // return redirect()->route('hr.admin.daily-attendances.index')->with('fingerprintAttendances', $fingerprintAttendances);
+            return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
         }
         $fingerprintAttendances = [];
         return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
@@ -130,9 +89,7 @@ class DailyAttendancesController extends Controller
     }
 
     public function timeSet(Request $request) {
-
         //return $request;
-
         $id=$request->id;
 
         $setimes= SetTime::all();
@@ -167,11 +124,17 @@ class DailyAttendancesController extends Controller
         return view('hr::admin.dailyAttendances.create', compact('users'));
     }
 
-    public function store(StoreDailyAttendanceRequest $request)
+    // public function store(StoreDailyAttendanceRequest $request)
+    public function store(Request $request)
     {
-        $dailyAttendance = DailyAttendance::create($request->all());
+        if ($request['day'] != '') {
+            $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get();
+            return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
+        }
 
-        return redirect()->route('hr.admin.daily-attendances.index');
+        // $dailyAttendance = DailyAttendance::create($request->all());
+
+        // return redirect()->route('hr.admin.daily-attendances.index');
     }
 
     public function edit(DailyAttendance $dailyAttendance)
