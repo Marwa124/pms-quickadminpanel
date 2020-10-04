@@ -161,21 +161,21 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transaction.fields.premissions') }}
+                            {{ trans('cruds.transaction.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($transaction->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($transaction->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transaction.fields.attachement') }}
+                            {{ trans('cruds.transaction.fields.attachment') }}
                         </th>
                         <td>
-                            @if($transaction->attachement)
-                                <a href="{{ $transaction->attachement->getUrl() }}" target="_blank">
+                            @if($transaction->attachment)
+                                <a href="{{ $transaction->attachment->getUrl() }}" target="_blank">
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endif

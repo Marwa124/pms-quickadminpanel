@@ -20,13 +20,13 @@ class ReturnStockApiController extends Controller
     {
         abort_if(Gate::denies('return_stock_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new ReturnStockResource(ReturnStock::with(['supplier', 'user', 'premissions'])->get());
+        return new ReturnStockResource(ReturnStock::with(['supplier', 'user', 'permissions'])->get());
     }
 
     public function store(StoreReturnStockRequest $request)
     {
         $returnStock = ReturnStock::create($request->all());
-        $returnStock->premissions()->sync($request->input('premissions', []));
+        $returnStock->permissions()->sync($request->input('permissions', []));
 
         return (new ReturnStockResource($returnStock))
             ->response()
@@ -37,13 +37,13 @@ class ReturnStockApiController extends Controller
     {
         abort_if(Gate::denies('return_stock_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new ReturnStockResource($returnStock->load(['supplier', 'user', 'premissions']));
+        return new ReturnStockResource($returnStock->load(['supplier', 'user', 'permissions']));
     }
 
     public function update(UpdateReturnStockRequest $request, ReturnStock $returnStock)
     {
         $returnStock->update($request->all());
-        $returnStock->premissions()->sync($request->input('premissions', []));
+        $returnStock->permissions()->sync($request->input('permissions', []));
 
         return (new ReturnStockResource($returnStock))
             ->response()

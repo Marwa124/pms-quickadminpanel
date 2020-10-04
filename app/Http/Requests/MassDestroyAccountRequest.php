@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Acount;
+use App\Models\Account;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyAcountRequest extends FormRequest
+class MassDestroyAccountRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('acount_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('account_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -20,7 +20,7 @@ class MassDestroyAcountRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:acounts,id',
+            'ids.*' => 'exists:accounts,id',
         ];
     }
 }

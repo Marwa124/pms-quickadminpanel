@@ -73,16 +73,16 @@ class TaskController extends Controller
 
         $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.tasks.create', compact('statuses', 'tags', 'assigned_tos', 'projects', 'milestones', 'opportunities', 'work_trackings', 'leads', 'premissions'));
+        return view('admin.tasks.create', compact('statuses', 'tags', 'assigned_tos', 'projects', 'milestones', 'opportunities', 'work_trackings', 'leads', 'permissions'));
     }
 
     public function store(StoreTaskRequest $request)
     {
         $task = Task::create($request->all());
         $task->tags()->sync($request->input('tags', []));
-        $task->premissions()->sync($request->input('premissions', []));
+        $task->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
@@ -115,18 +115,18 @@ class TaskController extends Controller
 
         $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $task->load('status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'premissions');
+        $task->load('status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'permissions');
 
-        return view('admin.tasks.edit', compact('statuses', 'tags', 'assigned_tos', 'projects', 'milestones', 'opportunities', 'work_trackings', 'leads', 'premissions', 'task'));
+        return view('admin.tasks.edit', compact('statuses', 'tags', 'assigned_tos', 'projects', 'milestones', 'opportunities', 'work_trackings', 'leads', 'permissions', 'task'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $task->update($request->all());
         $task->tags()->sync($request->input('tags', []));
-        $task->premissions()->sync($request->input('premissions', []));
+        $task->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             if (!$task->attachment || $request->input('attachment') !== $task->attachment->file_name) {
@@ -147,7 +147,7 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $task->load('status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'premissions');
+        $task->load('status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'permissions');
 
         return view('admin.tasks.show', compact('task'));
     }

@@ -1,35 +1,35 @@
 @extends('layouts.admin')
 @section('content')
-@can('acount_create')
+@can('account_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.acounts.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.acount.title_singular') }}
+            <a class="btn btn-success" href="{{ route('admin.accounts.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.account.title_singular') }}
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.acount.title_singular') }} {{ trans('global.list') }}
+        {{ trans('cruds.account.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Acount">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Account">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.acount.fields.id') }}
+                            {{ trans('cruds.account.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.acount.fields.name') }}
+                            {{ trans('cruds.account.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.acount.fields.balance') }}
+                            {{ trans('cruds.account.fields.balance') }}
                         </th>
                         <th>
                             &nbsp;
@@ -52,35 +52,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($acounts as $key => $acount)
-                        <tr data-entry-id="{{ $acount->id }}">
+                    @foreach($accounts as $key => $account)
+                        <tr data-entry-id="{{ $account->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $acount->id ?? '' }}
+                                {{ $account->id ?? '' }}
                             </td>
                             <td>
-                                {{ $acount->name ?? '' }}
+                                {{ $account->name ?? '' }}
                             </td>
                             <td>
-                                {{ $acount->balance ?? '' }}
+                                {{ $account->balance ?? '' }}
                             </td>
                             <td>
-                                @can('acount_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.acounts.show', $acount->id) }}">
+                                @can('account_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.accounts.show', $account->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('acount_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.acounts.edit', $acount->id) }}">
+                                @can('account_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.accounts.edit', $account->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('acount_delete')
-                                    <form action="{{ route('admin.acounts.destroy', $acount->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('account_delete')
+                                    <form action="{{ route('admin.accounts.destroy', $account->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -105,11 +105,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('acount_delete')
+@can('account_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.acounts.massDestroy') }}",
+    url: "{{ route('admin.accounts.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -140,7 +140,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 25,
   });
-  let table = $('.datatable-Acount:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-Account:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

@@ -206,33 +206,33 @@
                 <span class="help-block">{{ trans('cruds.transaction.fields.total_balance_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="premissions">{{ trans('cruds.transaction.fields.premissions') }}</label>
+                <label for="permissions">{{ trans('cruds.transaction.fields.permissions') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
-                <select class="form-control select2 {{ $errors->has('premissions') ? 'is-invalid' : '' }}" name="premissions[]" id="premissions" multiple>
-                    @foreach($premissions as $id => $premissions)
-                        <option value="{{ $id }}" {{ in_array($id, old('premissions', [])) ? 'selected' : '' }}>{{ $premissions }}</option>
+                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
+                    @foreach($permissions as $id => $permissions)
+                        <option value="{{ $id }}" {{ in_array($id, old('permissions', [])) ? 'selected' : '' }}>{{ $permissions }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('premissions'))
+                @if($errors->has('permissions'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('premissions') }}
+                        {{ $errors->first('permissions') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.transaction.fields.premissions_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.transaction.fields.permissions_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="attachement">{{ trans('cruds.transaction.fields.attachement') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('attachement') ? 'is-invalid' : '' }}" id="attachement-dropzone">
+                <label for="attachment">{{ trans('cruds.transaction.fields.attachment') }}</label>
+                <div class="needsclick dropzone {{ $errors->has('attachment') ? 'is-invalid' : '' }}" id="attachment-dropzone">
                 </div>
-                @if($errors->has('attachement'))
+                @if($errors->has('attachment'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('attachement') }}
+                        {{ $errors->first('attachment') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.transaction.fields.attachement_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.transaction.fields.attachment_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required">{{ trans('cruds.transaction.fields.client_visible') }}</label>
@@ -407,7 +407,7 @@
 </script>
 
 <script>
-    Dropzone.options.attachementDropzone = {
+    Dropzone.options.attachmentDropzone = {
     url: '{{ route('admin.transactions.storeMedia') }}',
     maxFilesize: 2, // MB
     maxFiles: 1,
@@ -419,22 +419,22 @@
       size: 2
     },
     success: function (file, response) {
-      $('form').find('input[name="attachement"]').remove()
-      $('form').append('<input type="hidden" name="attachement" value="' + response.name + '">')
+      $('form').find('input[name="attachment"]').remove()
+      $('form').append('<input type="hidden" name="attachment" value="' + response.name + '">')
     },
     removedfile: function (file) {
       file.previewElement.remove()
       if (file.status !== 'error') {
-        $('form').find('input[name="attachement"]').remove()
+        $('form').find('input[name="attachment"]').remove()
         this.options.maxFiles = this.options.maxFiles + 1
       }
     },
     init: function () {
-@if(isset($transaction) && $transaction->attachement)
-      var file = {!! json_encode($transaction->attachement) !!}
+@if(isset($transaction) && $transaction->attachment)
+      var file = {!! json_encode($transaction->attachment) !!}
           this.options.addedfile.call(this, file)
       file.previewElement.classList.add('dz-complete')
-      $('form').append('<input type="hidden" name="attachement" value="' + file.file_name + '">')
+      $('form').append('<input type="hidden" name="attachment" value="' + file.file_name + '">')
       this.options.maxFiles = this.options.maxFiles - 1
 @endif
     },

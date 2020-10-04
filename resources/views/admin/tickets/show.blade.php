@@ -125,11 +125,11 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.premissions') }}
+                            {{ trans('cruds.ticket.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($ticket->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($ticket->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>

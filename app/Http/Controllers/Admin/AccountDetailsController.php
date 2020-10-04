@@ -1,14 +1,15 @@
 <?php
 
-namespace Modules\HR\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Modules\HR\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use Modules\HR\Http\Requests\Destroy\MassDestroyAccountDetailRequest;
-use Modules\HR\Http\Requests\Store\StoreAccountDetailRequest;
-use Modules\HR\Http\Requests\Update\UpdateAccountDetailRequest;
-use Modules\HR\Entities\AccountDetail;
+use App\Http\Requests\MassDestroyAccountDetailRequest;
+use App\Http\Requests\StoreAccountDetailRequest;
+use App\Http\Requests\UpdateAccountDetailRequest;
+use App\Models\AccountDetail;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\SetTime;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -36,7 +37,9 @@ class AccountDetailsController extends Controller
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.accountDetails.create', compact('users', 'designations'));
+        $set_times = SetTime::all()->pluck('name', 'id')->prepend(trans('global.timeTableSelect'), '');
+
+        return view('admin.accountDetails.create', compact('users', 'designations', 'set_times'));
     }
 
     public function store(StoreAccountDetailRequest $request)
@@ -62,9 +65,11 @@ class AccountDetailsController extends Controller
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $set_times = SetTime::all()->pluck('name', 'id')->prepend(trans('global.timeTableSelect'), '');
+
         $accountDetail->load('user', 'designation');
 
-        return view('admin.accountDetails.edit', compact('users', 'designations', 'accountDetail'));
+        return view('admin.accountDetails.edit', compact('users', 'designations', 'accountDetail', 'set_times'));
     }
 
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
@@ -90,7 +95,8 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $accountDetail->load('user', 'designation', 'userUserAlerts');
+        // $accountDetail->load('user', 'designation', 'userUserAlerts');
+        $accountDetail->load('user', 'designation', 'setTime');
 
         return view('admin.accountDetails.show', compact('accountDetail'));
     }

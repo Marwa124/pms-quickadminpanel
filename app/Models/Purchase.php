@@ -116,7 +116,7 @@ class Purchase extends Model implements HasMedia
         $this->attributes['due_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

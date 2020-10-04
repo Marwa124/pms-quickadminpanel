@@ -22,14 +22,14 @@ class SetTime extends Model
     protected $time = [
         'in_time',
         'out_time',
+        'allow_clock_in_late',
+        'allow_leave_early',
     ];
 
-    protected $fillable = [
-		'user_id', 'in_time', 'out_time',
-    ];
+    protected $guarded = [];
 
-    public function user()
+    public function accountDetailSetTimes()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasMany(AccountDetail::class, 'set_time_id', 'id');
     }
 }

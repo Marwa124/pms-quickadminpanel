@@ -27,15 +27,15 @@ class TaxRatesController extends Controller
     {
         abort_if(Gate::denies('tax_rate_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.taxRates.create', compact('premissions'));
+        return view('admin.taxRates.create', compact('permissions'));
     }
 
     public function store(StoreTaxRateRequest $request)
     {
         $taxRate = TaxRate::create($request->all());
-        $taxRate->premissions()->sync($request->input('premissions', []));
+        $taxRate->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.tax-rates.index');
     }
@@ -44,17 +44,17 @@ class TaxRatesController extends Controller
     {
         abort_if(Gate::denies('tax_rate_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $taxRate->load('premissions');
+        $taxRate->load('permissions');
 
-        return view('admin.taxRates.edit', compact('premissions', 'taxRate'));
+        return view('admin.taxRates.edit', compact('permissions', 'taxRate'));
     }
 
     public function update(UpdateTaxRateRequest $request, TaxRate $taxRate)
     {
         $taxRate->update($request->all());
-        $taxRate->premissions()->sync($request->input('premissions', []));
+        $taxRate->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.tax-rates.index');
     }
@@ -63,7 +63,7 @@ class TaxRatesController extends Controller
     {
         abort_if(Gate::denies('tax_rate_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $taxRate->load('premissions');
+        $taxRate->load('permissions');
 
         return view('admin.taxRates.show', compact('taxRate'));
     }

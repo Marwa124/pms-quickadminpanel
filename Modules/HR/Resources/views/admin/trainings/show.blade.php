@@ -89,10 +89,10 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.training.fields.perfirmance') }}
+                            {{ trans('cruds.training.fields.performance') }}
                         </th>
                         <td>
-                            {{ App\Models\Training::PERFIRMANCE_SELECT[$training->perfirmance] ?? '' }}
+                            {{ App\Models\Training::Performance_SELECT[$training->performance] ?? '' }}
                         </td>
                     </tr>
                     <tr>

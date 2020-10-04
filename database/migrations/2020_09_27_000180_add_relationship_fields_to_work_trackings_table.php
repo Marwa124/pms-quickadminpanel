@@ -12,7 +12,7 @@ class AddRelationshipFieldsToWorkTrackingsTable extends Migration
             $table->unsignedInteger('work_type_id');
             $table->foreign('work_type_id', 'work_type_fk_2176406')->references('id')->on('time_work_types');
             $table->unsignedInteger('account_id')->nullable();
-            $table->foreign('account_id', 'account_fk_2176507')->references('id')->on('acounts');
+            $table->foreign('account_id', 'account_fk_2176507')->references('id')->on('accounts');
         });
     }
 }

@@ -20,13 +20,13 @@ class TransfersApiController extends Controller
     {
         abort_if(Gate::denies('transfer_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransferResource(Transfer::with(['payment_method', 'premissions'])->get());
+        return new TransferResource(Transfer::with(['payment_method', 'permissions'])->get());
     }
 
     public function store(StoreTransferRequest $request)
     {
         $transfer = Transfer::create($request->all());
-        $transfer->premissions()->sync($request->input('premissions', []));
+        $transfer->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             $transfer->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
@@ -41,13 +41,13 @@ class TransfersApiController extends Controller
     {
         abort_if(Gate::denies('transfer_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransferResource($transfer->load(['payment_method', 'premissions']));
+        return new TransferResource($transfer->load(['payment_method', 'permissions']));
     }
 
     public function update(UpdateTransferRequest $request, Transfer $transfer)
     {
         $transfer->update($request->all());
-        $transfer->premissions()->sync($request->input('premissions', []));
+        $transfer->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             if (!$transfer->attachment || $request->input('attachment') !== $transfer->attachment->file_name) {

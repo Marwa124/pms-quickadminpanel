@@ -17,13 +17,13 @@ class TaxRatesApiController extends Controller
     {
         abort_if(Gate::denies('tax_rate_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TaxRateResource(TaxRate::with(['premissions'])->get());
+        return new TaxRateResource(TaxRate::with(['permissions'])->get());
     }
 
     public function store(StoreTaxRateRequest $request)
     {
         $taxRate = TaxRate::create($request->all());
-        $taxRate->premissions()->sync($request->input('premissions', []));
+        $taxRate->permissions()->sync($request->input('permissions', []));
 
         return (new TaxRateResource($taxRate))
             ->response()
@@ -34,13 +34,13 @@ class TaxRatesApiController extends Controller
     {
         abort_if(Gate::denies('tax_rate_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TaxRateResource($taxRate->load(['premissions']));
+        return new TaxRateResource($taxRate->load(['permissions']));
     }
 
     public function update(UpdateTaxRateRequest $request, TaxRate $taxRate)
     {
         $taxRate->update($request->all());
-        $taxRate->premissions()->sync($request->input('premissions', []));
+        $taxRate->permissions()->sync($request->input('permissions', []));
 
         return (new TaxRateResource($taxRate))
             ->response()

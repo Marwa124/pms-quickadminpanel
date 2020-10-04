@@ -139,6 +139,20 @@
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.designation_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="designation_id">{{ trans('cruds.accountDetail.fields.set_time') }}</label>
+                <select class="form-control select2 {{ $errors->has('set_time') ? 'is-invalid' : '' }}" name="set_time_id" id="set_time_id">
+                    @foreach($set_times as $id => $set_time)
+                        <option value="{{ $id }}" {{ old('set_time_id') == $id ? 'selected' : '' }}>{{ $set_time }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('set_time'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('set_time') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.accountDetail.fields.set_time_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label for="avatar">{{ trans('cruds.accountDetail.fields.avatar') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('avatar') ? 'is-invalid' : '' }}" id="avatar-dropzone">
                 </div>
@@ -195,19 +209,19 @@
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.gender_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required">{{ trans('cruds.accountDetail.fields.marital_status') }}</label>
-                <select class="form-control {{ $errors->has('marital_status') ? 'is-invalid' : '' }}" name="marital_status" id="marital_status" required>
-                    <option value disabled {{ old('marital_status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\AccountDetail::MARITAL_STATUS_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('marital_status', $accountDetail->marital_status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                <label class="required">{{ trans('cruds.accountDetail.fields.martial_status') }}</label>
+                <select class="form-control {{ $errors->has('martial_status') ? 'is-invalid' : '' }}" name="martial_status" id="martial_status" required>
+                    <option value disabled {{ old('martial_status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach(App\Models\AccountDetail::martial_status_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('martial_status', $accountDetail->martial_status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('marital_status'))
+                @if($errors->has('martial_status'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('marital_status') }}
+                        {{ $errors->first('martial_status') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.accountDetail.fields.marital_status_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.accountDetail.fields.martial_status_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="father_name">{{ trans('cruds.accountDetail.fields.father_name') }}</label>

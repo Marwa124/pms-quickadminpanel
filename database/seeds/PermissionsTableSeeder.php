@@ -890,23 +890,23 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 221,
-                'title' => 'acount_create',
+                'title' => 'account_create',
             ],
             [
                 'id'    => 222,
-                'title' => 'acount_edit',
+                'title' => 'account_edit',
             ],
             [
                 'id'    => 223,
-                'title' => 'acount_show',
+                'title' => 'account_show',
             ],
             [
                 'id'    => 224,
-                'title' => 'acount_delete',
+                'title' => 'account_delete',
             ],
             [
                 'id'    => 225,
-                'title' => 'acount_access',
+                'title' => 'account_access',
             ],
             [
                 'id'    => 226,
@@ -1839,6 +1839,28 @@ class PermissionsTableSeeder extends Seeder
                 'title' => 'employee_request_access',
             ],
             /////////Requests////////////////
+            /////////Set Times////////////////
+            [
+                'id'    => 458,
+                'title' => 'set_time_create',
+            ],
+            [
+                'id'    => 459,
+                'title' => 'set_time_edit',
+            ],
+            [
+                'id'    => 460,
+                'title' => 'set_time_show',
+            ],
+            [
+                'id'    => 461,
+                'title' => 'set_time_delete',
+            ],
+            [
+                'id'    => 462,
+                'title' => 'set_time_access',
+            ],
+            /////////Set Times////////////////
         ];
 
         Permission::insert($permissions);

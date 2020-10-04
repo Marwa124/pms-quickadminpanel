@@ -20,13 +20,13 @@ class PurchaseApiController extends Controller
     {
         abort_if(Gate::denies('purchase_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new PurchaseResource(Purchase::with(['supplier', 'user', 'premissions'])->get());
+        return new PurchaseResource(Purchase::with(['supplier', 'user', 'permissions'])->get());
     }
 
     public function store(StorePurchaseRequest $request)
     {
         $purchase = Purchase::create($request->all());
-        $purchase->premissions()->sync($request->input('premissions', []));
+        $purchase->permissions()->sync($request->input('permissions', []));
 
         return (new PurchaseResource($purchase))
             ->response()
@@ -37,13 +37,13 @@ class PurchaseApiController extends Controller
     {
         abort_if(Gate::denies('purchase_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new PurchaseResource($purchase->load(['supplier', 'user', 'premissions']));
+        return new PurchaseResource($purchase->load(['supplier', 'user', 'permissions']));
     }
 
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
         $purchase->update($request->all());
-        $purchase->premissions()->sync($request->input('premissions', []));
+        $purchase->permissions()->sync($request->input('permissions', []));
 
         return (new PurchaseResource($purchase))
             ->response()

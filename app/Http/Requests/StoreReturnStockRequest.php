@@ -59,10 +59,10 @@ class StoreReturnStockRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'premissions.*'     => [
+            'permissions.*'     => [
                 'integer',
             ],
-            'premissions'       => [
+            'permissions'       => [
                 'array',
             ],
             'total_tax'         => [

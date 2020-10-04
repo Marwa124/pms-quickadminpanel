@@ -48,15 +48,15 @@ class BugsController extends Controller
 
         $tasks = Task::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.bugs.create', compact('projects', 'opportunities', 'tasks', 'premissions'));
+        return view('admin.bugs.create', compact('projects', 'opportunities', 'tasks', 'permissions'));
     }
 
     public function store(StoreBugRequest $request)
     {
         $bug = Bug::create($request->all());
-        $bug->premissions()->sync($request->input('premissions', []));
+        $bug->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $bug->id]);
@@ -75,17 +75,17 @@ class BugsController extends Controller
 
         $tasks = Task::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $bug->load('project', 'opportunities', 'task', 'premissions');
+        $bug->load('project', 'opportunities', 'task', 'permissions');
 
-        return view('admin.bugs.edit', compact('projects', 'opportunities', 'tasks', 'premissions', 'bug'));
+        return view('admin.bugs.edit', compact('projects', 'opportunities', 'tasks', 'permissions', 'bug'));
     }
 
     public function update(UpdateBugRequest $request, Bug $bug)
     {
         $bug->update($request->all());
-        $bug->premissions()->sync($request->input('premissions', []));
+        $bug->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.bugs.index');
     }
@@ -94,7 +94,7 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $bug->load('project', 'opportunities', 'task', 'premissions');
+        $bug->load('project', 'opportunities', 'task', 'permissions');
 
         return view('admin.bugs.show', compact('bug'));
     }

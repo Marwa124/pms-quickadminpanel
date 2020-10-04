@@ -21,7 +21,7 @@ class Announcement extends Model implements HasMedia
     ];
 
     protected $appends = [
-        'attachements',
+        'attachments',
     ];
 
     const STATUS_SELECT = [
@@ -87,8 +87,8 @@ class Announcement extends Model implements HasMedia
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function getAttachementsAttribute()
+    public function getAttachmentsAttribute()
     {
-        return $this->getMedia('attachements')->last();
+        return $this->getMedia('attachments')->last();
     }
 }

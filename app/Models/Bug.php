@@ -70,7 +70,7 @@ class Bug extends Model implements HasMedia
         return $this->belongsTo(Task::class, 'task_id');
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

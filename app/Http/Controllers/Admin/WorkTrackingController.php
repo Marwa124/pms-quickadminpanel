@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyWorkTrackingRequest;
 use App\Http\Requests\StoreWorkTrackingRequest;
 use App\Http\Requests\UpdateWorkTrackingRequest;
-use App\Models\Acount;
+use App\Models\Account;
 use App\Models\Permission;
 use App\Models\TimeWorkType;
 use App\Models\WorkTracking;
@@ -31,17 +31,17 @@ class WorkTrackingController extends Controller
 
         $work_types = TimeWorkType::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.workTrackings.create', compact('work_types', 'premissions', 'accounts'));
+        return view('admin.workTrackings.create', compact('work_types', 'permissions', 'accounts'));
     }
 
     public function store(StoreWorkTrackingRequest $request)
     {
         $workTracking = WorkTracking::create($request->all());
-        $workTracking->premissions()->sync($request->input('premissions', []));
+        $workTracking->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.work-trackings.index');
     }
@@ -52,19 +52,19 @@ class WorkTrackingController extends Controller
 
         $work_types = TimeWorkType::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $workTracking->load('work_type', 'premissions', 'account');
+        $workTracking->load('work_type', 'permissions', 'account');
 
-        return view('admin.workTrackings.edit', compact('work_types', 'premissions', 'accounts', 'workTracking'));
+        return view('admin.workTrackings.edit', compact('work_types', 'permissions', 'accounts', 'workTracking'));
     }
 
     public function update(UpdateWorkTrackingRequest $request, WorkTracking $workTracking)
     {
         $workTracking->update($request->all());
-        $workTracking->premissions()->sync($request->input('premissions', []));
+        $workTracking->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.work-trackings.index');
     }
@@ -73,7 +73,7 @@ class WorkTrackingController extends Controller
     {
         abort_if(Gate::denies('work_tracking_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $workTracking->load('work_type', 'premissions', 'account');
+        $workTracking->load('work_type', 'permissions', 'account');
 
         return view('admin.workTrackings.show', compact('workTracking'));
     }

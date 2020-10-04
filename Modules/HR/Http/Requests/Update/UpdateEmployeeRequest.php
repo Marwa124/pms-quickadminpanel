@@ -38,10 +38,10 @@ class UpdateEmployeeRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'premissions.*'          => [
+            'permissions.*'          => [
                 'integer',
             ],
-            'premissions'            => [
+            'permissions'            => [
                 'array',
             ],
             'smtp_email_type'        => [
@@ -76,7 +76,7 @@ class UpdateEmployeeRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'marketting_username'    => [
+            'marketing_username'    => [
                 'string',
                 'nullable',
             ],

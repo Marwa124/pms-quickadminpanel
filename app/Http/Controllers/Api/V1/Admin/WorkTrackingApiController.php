@@ -17,13 +17,13 @@ class WorkTrackingApiController extends Controller
     {
         abort_if(Gate::denies('work_tracking_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new WorkTrackingResource(WorkTracking::with(['work_type', 'premissions', 'account'])->get());
+        return new WorkTrackingResource(WorkTracking::with(['work_type', 'permissions', 'account'])->get());
     }
 
     public function store(StoreWorkTrackingRequest $request)
     {
         $workTracking = WorkTracking::create($request->all());
-        $workTracking->premissions()->sync($request->input('premissions', []));
+        $workTracking->permissions()->sync($request->input('permissions', []));
 
         return (new WorkTrackingResource($workTracking))
             ->response()
@@ -34,13 +34,13 @@ class WorkTrackingApiController extends Controller
     {
         abort_if(Gate::denies('work_tracking_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new WorkTrackingResource($workTracking->load(['work_type', 'premissions', 'account']));
+        return new WorkTrackingResource($workTracking->load(['work_type', 'permissions', 'account']));
     }
 
     public function update(UpdateWorkTrackingRequest $request, WorkTracking $workTracking)
     {
         $workTracking->update($request->all());
-        $workTracking->premissions()->sync($request->input('premissions', []));
+        $workTracking->permissions()->sync($request->input('permissions', []));
 
         return (new WorkTrackingResource($workTracking))
             ->response()

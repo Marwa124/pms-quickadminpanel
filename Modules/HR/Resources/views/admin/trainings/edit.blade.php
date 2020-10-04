@@ -105,19 +105,19 @@
                 <span class="help-block">{{ trans('cruds.training.fields.status_helper') }}</span>
             </div>
             <div class="form-group">
-                <label>{{ trans('cruds.training.fields.perfirmance') }}</label>
-                <select class="form-control {{ $errors->has('perfirmance') ? 'is-invalid' : '' }}" name="perfirmance" id="perfirmance">
-                    <option value disabled {{ old('perfirmance', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Training::PERFIRMANCE_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('perfirmance', $training->perfirmance) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                <label>{{ trans('cruds.training.fields.performance') }}</label>
+                <select class="form-control {{ $errors->has('performance') ? 'is-invalid' : '' }}" name="performance" id="performance">
+                    <option value disabled {{ old('performance', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach(App\Models\Training::Performance_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('performance', $training->performance) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('perfirmance'))
+                @if($errors->has('performance'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('perfirmance') }}
+                        {{ $errors->first('performance') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.training.fields.perfirmance_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.training.fields.performance_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="remarks">{{ trans('cruds.training.fields.remarks') }}</label>

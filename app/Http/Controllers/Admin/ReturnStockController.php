@@ -43,15 +43,15 @@ class ReturnStockController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.returnStocks.create', compact('suppliers', 'users', 'premissions'));
+        return view('admin.returnStocks.create', compact('suppliers', 'users', 'permissions'));
     }
 
     public function store(StoreReturnStockRequest $request)
     {
         $returnStock = ReturnStock::create($request->all());
-        $returnStock->premissions()->sync($request->input('premissions', []));
+        $returnStock->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $returnStock->id]);
@@ -68,17 +68,17 @@ class ReturnStockController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $returnStock->load('supplier', 'user', 'premissions');
+        $returnStock->load('supplier', 'user', 'permissions');
 
-        return view('admin.returnStocks.edit', compact('suppliers', 'users', 'premissions', 'returnStock'));
+        return view('admin.returnStocks.edit', compact('suppliers', 'users', 'permissions', 'returnStock'));
     }
 
     public function update(UpdateReturnStockRequest $request, ReturnStock $returnStock)
     {
         $returnStock->update($request->all());
-        $returnStock->premissions()->sync($request->input('premissions', []));
+        $returnStock->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.return-stocks.index');
     }
@@ -87,7 +87,7 @@ class ReturnStockController extends Controller
     {
         abort_if(Gate::denies('return_stock_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $returnStock->load('supplier', 'user', 'premissions');
+        $returnStock->load('supplier', 'user', 'permissions');
 
         return view('admin.returnStocks.show', compact('returnStock'));
     }

@@ -10,7 +10,7 @@ use Modules\HR\Entities\DailyAttendance;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
-use Modules\HR\Entities\AccountDetail;
+use App\Models\AccountDetail;
 use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\Holiday;
 use Modules\HR\Entities\SetTime;
@@ -20,13 +20,58 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DailyAttendancesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // var_dump($request['day']);
+        if ($request['day'] != '') {
+            // $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get()->toArray();
+            // return response()->json(['data' => $fingerprintAttendances]);
 
-        $dailyAttendances = DailyAttendance::all();
-
-        return view('hr::admin.dailyAttendances.index', compact('dailyAttendances'));
+            if ($request->ajax()) {
+                // $query = FingerprintAttendance::with(['user', 'leave_category'])->select(sprintf('%s.*', (new FingerprintAttendance)->table));
+                $query = FingerprintAttendance::select(sprintf('%s.*', (new FingerprintAttendance)->table));
+                $table = Datatables::of($query);
+    
+                // dd(LeaveApplication::with(['user', 'leave_category']));
+                $table->addColumn('placeholder', '&nbsp;');
+                $table->addColumn('actions', '&nbsp;');
+    
+                $table->editColumn('actions', function ($row) {
+                    $viewGate      = 'leave_application_show';
+                    $editGate      = 'leave_application_edit';
+                    $deleteGate    = 'leave_application_delete';
+                    $modalId       = 'hr.';
+                    $crudRoutePart = 'leave-applications';
+    
+                    return view('partials.datatablesActions', compact(
+                        'viewGate',
+                        'editGate',
+                        'deleteGate',
+                        'modalId',
+                        'crudRoutePart',
+                        'row'
+                    ));
+                });
+    
+                $table->editColumn('id', function ($row) {
+                    return $row->id ? $row->id : "";
+                });
+                $table->editColumn('date', function ($row) {
+                    return $row->date ? $row->date : "";
+                });
+                $table->editColumn('time', function ($row) {
+                    return $row->time ? $row->time : "";
+                });
+    
+                $table->rawColumns(['actions', 'placeholder', 'leave_category']);
+    
+                return $table->make(true);
+            }
+            //ajax end
+        }
+        $fingerprintAttendances = [];
+        return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
     }
 
     public function set_attendance(Request $request)

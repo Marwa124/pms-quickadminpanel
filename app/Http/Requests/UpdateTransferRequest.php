@@ -51,10 +51,10 @@ class UpdateTransferRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'premissions.*'     => [
+            'permissions.*'     => [
                 'integer',
             ],
-            'premissions'       => [
+            'permissions'       => [
                 'array',
             ],
         ];

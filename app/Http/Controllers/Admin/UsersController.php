@@ -38,16 +38,16 @@ class UsersController extends Controller
 
         $roles = Role::all()->pluck('title', 'id');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.users.create', compact('roles', 'premissions'));
+        return view('admin.users.create', compact('roles', 'permissions'));
     }
 
     public function store(StoreUserRequest $request)
     {
         $user = User::create($request->all());
         $user->roles()->sync($request->input('roles', []));
-        $user->premissions()->sync($request->input('premissions', []));
+        $user->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $user->id]);
@@ -62,18 +62,18 @@ class UsersController extends Controller
 
         $roles = Role::all()->pluck('title', 'id');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $user->load('roles', 'premissions');
+        $user->load('roles', 'permissions');
 
-        return view('admin.users.edit', compact('roles', 'premissions', 'user'));
+        return view('admin.users.edit', compact('roles', 'permissions', 'user'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
-        $user->premissions()->sync($request->input('premissions', []));
+        $user->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.users.index');
     }
@@ -82,7 +82,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $user->load('roles', 'premissions', 'departmentHeadDepartments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
+        $user->load('roles', 'permissions', 'departmentHeadDepartments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
 
         return view('admin.users.show', compact('user'));
     }

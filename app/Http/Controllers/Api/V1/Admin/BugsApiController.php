@@ -20,13 +20,13 @@ class BugsApiController extends Controller
     {
         abort_if(Gate::denies('bug_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new BugResource(Bug::with(['project', 'opportunities', 'task', 'premissions'])->get());
+        return new BugResource(Bug::with(['project', 'opportunities', 'task', 'permissions'])->get());
     }
 
     public function store(StoreBugRequest $request)
     {
         $bug = Bug::create($request->all());
-        $bug->premissions()->sync($request->input('premissions', []));
+        $bug->permissions()->sync($request->input('permissions', []));
 
         return (new BugResource($bug))
             ->response()
@@ -37,13 +37,13 @@ class BugsApiController extends Controller
     {
         abort_if(Gate::denies('bug_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new BugResource($bug->load(['project', 'opportunities', 'task', 'premissions']));
+        return new BugResource($bug->load(['project', 'opportunities', 'task', 'permissions']));
     }
 
     public function update(UpdateBugRequest $request, Bug $bug)
     {
         $bug->update($request->all());
-        $bug->premissions()->sync($request->input('premissions', []));
+        $bug->permissions()->sync($request->input('permissions', []));
 
         return (new BugResource($bug))
             ->response()

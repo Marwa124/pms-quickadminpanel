@@ -34,15 +34,15 @@ class SuppliersController extends Controller
 
         $customer_groups = CustomerGroup::all()->pluck('type', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.suppliers.create', compact('customer_groups', 'premissions'));
+        return view('admin.suppliers.create', compact('customer_groups', 'permissions'));
     }
 
     public function store(StoreSupplierRequest $request)
     {
         $supplier = Supplier::create($request->all());
-        $supplier->premissions()->sync($request->input('premissions', []));
+        $supplier->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.suppliers.index');
     }
@@ -53,17 +53,17 @@ class SuppliersController extends Controller
 
         $customer_groups = CustomerGroup::all()->pluck('type', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $supplier->load('customer_group', 'premissions');
+        $supplier->load('customer_group', 'permissions');
 
-        return view('admin.suppliers.edit', compact('customer_groups', 'premissions', 'supplier'));
+        return view('admin.suppliers.edit', compact('customer_groups', 'permissions', 'supplier'));
     }
 
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
         $supplier->update($request->all());
-        $supplier->premissions()->sync($request->input('premissions', []));
+        $supplier->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.suppliers.index');
     }
@@ -72,7 +72,7 @@ class SuppliersController extends Controller
     {
         abort_if(Gate::denies('supplier_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $supplier->load('customer_group', 'premissions');
+        $supplier->load('customer_group', 'permissions');
 
         return view('admin.suppliers.show', compact('supplier'));
     }

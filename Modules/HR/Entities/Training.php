@@ -43,7 +43,7 @@ class Training extends Model implements HasMedia
         'terminated' => 'Terminated',
     ];
 
-    const PERFIRMANCE_SELECT = [
+    const Performance_SELECT = [
         'concluded'    => 'Concluded',
         'satisfactory' => 'Satisfactory',
         'average'      => 'Average',
@@ -60,7 +60,7 @@ class Training extends Model implements HasMedia
         'finish_date',
         'training_cost',
         'status',
-        'perfirmance',
+        'performance',
         'remarks',
         'created_at',
         'updated_at',

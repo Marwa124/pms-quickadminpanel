@@ -35,7 +35,7 @@
                             {{ trans('cruds.ticket.fields.status') }}
                         </th>
                         <th>
-                            {{ trans('cruds.ticket.fields.premissions') }}
+                            {{ trans('cruds.ticket.fields.permissions') }}
                         </th>
                         <th>
                             &nbsp;
@@ -92,7 +92,7 @@
                                 {{ $ticket->status ?? '' }}
                             </td>
                             <td>
-                                @foreach($ticket->premissions as $key => $item)
+                                @foreach($ticket->permissions as $key => $item)
                                     <span class="badge badge-info">{{ $item->title }}</span>
                                 @endforeach
                             </td>

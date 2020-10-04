@@ -25,6 +25,7 @@ return [
     'month'                                => 'Month',
     'no'                                   => 'No',
     'pleaseSelect'                         => 'Please select',
+    'timeTableSelect'                      => 'Select a time table',
     'register'                             => 'Register',
     'remember_me'                          => 'Remember me',
     'reset_password'                       => 'Reset Password',

@@ -43,15 +43,15 @@ class PurchaseController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.purchases.create', compact('suppliers', 'users', 'premissions'));
+        return view('admin.purchases.create', compact('suppliers', 'users', 'permissions'));
     }
 
     public function store(StorePurchaseRequest $request)
     {
         $purchase = Purchase::create($request->all());
-        $purchase->premissions()->sync($request->input('premissions', []));
+        $purchase->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $purchase->id]);
@@ -68,17 +68,17 @@ class PurchaseController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $purchase->load('supplier', 'user', 'premissions');
+        $purchase->load('supplier', 'user', 'permissions');
 
-        return view('admin.purchases.edit', compact('suppliers', 'users', 'premissions', 'purchase'));
+        return view('admin.purchases.edit', compact('suppliers', 'users', 'permissions', 'purchase'));
     }
 
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
         $purchase->update($request->all());
-        $purchase->premissions()->sync($request->input('premissions', []));
+        $purchase->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.purchases.index');
     }
@@ -87,7 +87,7 @@ class PurchaseController extends Controller
     {
         abort_if(Gate::denies('purchase_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $purchase->load('supplier', 'user', 'premissions');
+        $purchase->load('supplier', 'user', 'permissions');
 
         return view('admin.purchases.show', compact('purchase'));
     }

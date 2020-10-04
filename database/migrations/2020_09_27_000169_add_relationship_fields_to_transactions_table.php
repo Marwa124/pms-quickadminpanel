@@ -12,7 +12,7 @@ class AddRelationshipFieldsToTransactionsTable extends Migration
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id', 'project_fk_2178818')->references('id')->on('projects');
             $table->unsignedInteger('account_id');
-            $table->foreign('account_id', 'account_fk_2178819')->references('id')->on('acounts');
+            $table->foreign('account_id', 'account_fk_2178819')->references('id')->on('accounts');
             $table->unsignedInteger('invoice_id');
             $table->foreign('invoice_id', 'invoice_fk_2178820')->references('id')->on('invoices');
             $table->unsignedInteger('payment_method_id')->nullable();

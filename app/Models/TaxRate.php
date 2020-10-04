@@ -31,7 +31,7 @@ class TaxRate extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

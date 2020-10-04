@@ -14,6 +14,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable()->unique();
             $table->datetime('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->integer('role_id')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('username')->nullable();
             $table->string('activated')->nullable();
@@ -23,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->date('last_login')->nullable();
             $table->string('online_time')->nullable();
             $table->string('smtp_email_type')->nullable();
-            $table->string('smtp_encription')->nullable();
+            $table->string('smtp_encryption')->nullable();
             $table->string('smtp_action')->nullable();
             $table->string('smtp_host_name')->nullable();
             $table->string('smtp_user_name')->nullable();
@@ -32,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('smtp_additional_flag')->nullable();
             $table->string('last_postmaster_run')->nullable();
             $table->string('media_path_slug')->nullable();
-            $table->string('marketting_username')->nullable();
+            $table->string('marketing_username')->nullable();
             $table->string('marketing_password')->nullable();
             $table->string('marketing_type')->nullable();
             $table->string('sp_username')->nullable();

@@ -38,15 +38,15 @@ class ProjectsController extends Controller
 
         $clients = Client::all()->pluck('primary_contact', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.projects.create', compact('clients', 'premissions'));
+        return view('admin.projects.create', compact('clients', 'permissions'));
     }
 
     public function store(StoreProjectRequest $request)
     {
         $project = Project::create($request->all());
-        $project->premissions()->sync($request->input('premissions', []));
+        $project->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $project->id]);
@@ -61,17 +61,17 @@ class ProjectsController extends Controller
 
         $clients = Client::all()->pluck('primary_contact', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $project->load('client', 'premissions');
+        $project->load('client', 'permissions');
 
-        return view('admin.projects.edit', compact('clients', 'premissions', 'project'));
+        return view('admin.projects.edit', compact('clients', 'permissions', 'project'));
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $project->update($request->all());
-        $project->premissions()->sync($request->input('premissions', []));
+        $project->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.projects.index');
     }
@@ -80,7 +80,7 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $project->load('client', 'premissions');
+        $project->load('client', 'permissions');
 
         return view('admin.projects.show', compact('project'));
     }

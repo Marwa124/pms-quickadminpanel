@@ -20,13 +20,13 @@ class TicketsApiController extends Controller
     {
         abort_if(Gate::denies('ticket_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TicketResource(Ticket::with(['project', 'department', 'premissions'])->get());
+        return new TicketResource(Ticket::with(['project', 'department', 'permissions'])->get());
     }
 
     public function store(StoreTicketRequest $request)
     {
         $ticket = Ticket::create($request->all());
-        $ticket->premissions()->sync($request->input('premissions', []));
+        $ticket->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('file', false)) {
             $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
@@ -41,13 +41,13 @@ class TicketsApiController extends Controller
     {
         abort_if(Gate::denies('ticket_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TicketResource($ticket->load(['project', 'department', 'premissions']));
+        return new TicketResource($ticket->load(['project', 'department', 'permissions']));
     }
 
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
         $ticket->update($request->all());
-        $ticket->premissions()->sync($request->input('premissions', []));
+        $ticket->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('file', false)) {
             if (!$ticket->file || $request->input('file') !== $ticket->file->file_name) {

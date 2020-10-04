@@ -17,7 +17,7 @@ class CreateTrainingsTable extends Migration
             $table->date('finish_date')->nullable();
             $table->decimal('training_cost', 15, 2)->nullable();
             $table->string('status')->nullable();
-            $table->string('perfirmance')->nullable();
+            $table->string('performance')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
             $table->softDeletes();

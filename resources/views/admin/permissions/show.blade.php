@@ -48,7 +48,7 @@
     </div>
     <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
         <li class="nav-item">
-            <a class="nav-link" href="#premissions_employees" role="tab" data-toggle="tab">
+            <a class="nav-link" href="#permissions_employees" role="tab" data-toggle="tab">
                 {{ trans('cruds.employee.title') }}
             </a>
         </li>
@@ -59,8 +59,8 @@
         </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane" role="tabpanel" id="premissions_employees">
-            @includeIf('admin.permissions.relationships.premissionsEmployees', ['employees' => $permission->premissionsEmployees])
+        <div class="tab-pane" role="tabpanel" id="permissions_employees">
+            @includeIf('admin.permissions.relationships.permissionsEmployees', ['employees' => $permission->permissionsEmployees])
         </div>
         <div class="tab-pane" role="tabpanel" id="permission_trainings">
             @includeIf('admin.permissions.relationships.permissionTrainings', ['trainings' => $permission->permissionTrainings])

@@ -34,15 +34,15 @@ class EmployeesController extends Controller
 
         $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.employees.create', compact('roles', 'premissions'));
+        return view('admin.employees.create', compact('roles', 'permissions'));
     }
 
     public function store(StoreEmployeeRequest $request)
     {
         $employee = Employee::create($request->all());
-        $employee->premissions()->sync($request->input('premissions', []));
+        $employee->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.employees.index');
     }
@@ -53,17 +53,17 @@ class EmployeesController extends Controller
 
         $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $employee->load('role', 'premissions');
+        $employee->load('role', 'permissions');
 
-        return view('admin.employees.edit', compact('roles', 'premissions', 'employee'));
+        return view('admin.employees.edit', compact('roles', 'permissions', 'employee'));
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->all());
-        $employee->premissions()->sync($request->input('premissions', []));
+        $employee->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.employees.index');
     }
@@ -72,7 +72,7 @@ class EmployeesController extends Controller
     {
         abort_if(Gate::denies('employee_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $employee->load('role', 'premissions');
+        $employee->load('role', 'permissions');
 
         return view('admin.employees.show', compact('employee'));
     }

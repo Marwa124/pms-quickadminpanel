@@ -3,13 +3,13 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.acount.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.account.title') }}
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.acounts.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.accounts.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -17,50 +17,50 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.acount.fields.id') }}
+                            {{ trans('cruds.account.fields.id') }}
                         </th>
                         <td>
-                            {{ $acount->id }}
+                            {{ $account->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.acount.fields.name') }}
+                            {{ trans('cruds.account.fields.name') }}
                         </th>
                         <td>
-                            {{ $acount->name }}
+                            {{ $account->name }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.acount.fields.description') }}
+                            {{ trans('cruds.account.fields.description') }}
                         </th>
                         <td>
-                            {{ $acount->description }}
+                            {{ $account->description }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.acount.fields.balance') }}
+                            {{ trans('cruds.account.fields.balance') }}
                         </th>
                         <td>
-                            {{ $acount->balance }}
+                            {{ $account->balance }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.acount.fields.premissions') }}
+                            {{ trans('cruds.account.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($acount->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($account->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.acounts.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.accounts.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

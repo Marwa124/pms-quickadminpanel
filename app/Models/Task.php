@@ -139,7 +139,7 @@ class Task extends Model implements HasMedia
         return $this->belongsTo(Lead::class, 'lead_id');
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

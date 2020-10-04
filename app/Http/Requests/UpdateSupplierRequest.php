@@ -41,10 +41,10 @@ class UpdateSupplierRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'premissions.*'     => [
+            'permissions.*'     => [
                 'integer',
             ],
-            'premissions'       => [
+            'permissions'       => [
                 'array',
             ],
         ];

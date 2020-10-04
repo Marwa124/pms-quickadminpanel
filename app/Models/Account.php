@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
-class Acount extends Model
+class Account extends Model
 {
     use SoftDeletes;
 
-    public $table = 'acounts';
+    public $table = 'accounts';
 
     public static $searchable = [
         'name',
@@ -36,7 +36,7 @@ class Acount extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

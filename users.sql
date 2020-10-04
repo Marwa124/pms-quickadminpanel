@@ -43,7 +43,7 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   `online_time` int(11) DEFAULT NULL,
   `smtp_email_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `smtp_encription` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `smtp_encryption` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `smtp_action` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `smtp_host_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `smtp_user_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `users` (
   `smtp_additional_flag` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_postmaster_run` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `media_path_slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `marketting_username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `marketing_username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `marketing_password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `marketing_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sp_username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `username`, `activated`, `banned`, `ban_reason`, `last_ip`, `last_login`, `online_time`, `smtp_email_type`, `smtp_encription`, `smtp_action`, `smtp_host_name`, `smtp_user_name`, `smtp_password`, `smtp_port`, `smtp_additional_flag`, `last_postmaster_run`, `media_path_slug`, `marketting_username`, `marketing_password`, `marketing_type`, `sp_username`, `sp_password`, `vacation_balance`, `vacation_counterdown`, `date_of_join`, `date_of_insurance`, `vacation_verified`, `role_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `username`, `activated`, `banned`, `ban_reason`, `last_ip`, `last_login`, `online_time`, `smtp_email_type`, `smtp_encryption`, `smtp_action`, `smtp_host_name`, `smtp_user_name`, `smtp_password`, `smtp_port`, `smtp_additional_flag`, `last_postmaster_run`, `media_path_slug`, `marketing_username`, `marketing_password`, `marketing_type`, `sp_username`, `sp_password`, `vacation_balance`, `vacation_counterdown`, `date_of_join`, `date_of_insurance`, `vacation_verified`, `role_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Admin', 'admin@admin.com', NULL, '$2y$10$l4lxnsIGTo5mEhGh3q756.Q51fJWdRB.QTpCsUHp8oR7fo6EqaXoW', NULL, '', NULL, NULL, NULL, '', NULL, NULL, '', '', '', '', '', NULL, '', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL),
 (7, 'ceo', 'ceo@onetecgroup.com', NULL, '$2y$10$XI.F3VmDU2Ob/xzP3x9Rweolx9/vHZeAFs49VKm92fhvo6o.utZA6', NULL, NULL, 1, 0, 'NULL', '197.246.246.232', NULL, 1584350260, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'marketing@onetecgroup.com', 'hple1901w', 'cutomer', NULL, NULL, 21, 21, NULL, NULL, 0, NULL, '2020-09-30 03:01:35', '2020-09-30 03:01:35', NULL),
 (8, 'mosayed', 'mohab@onetecgroup.com', NULL, '$2y$10$rwYBh3yHBpPuG/MpTrKFf.9EyzwCdVzwqZIS7ecja7VxpHXml4Ah2', NULL, NULL, 1, 0, 'NULL', '41.42.178.84', NULL, 1584366179, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'marketing@onetecgroup.com', 'hple1901w', 'cutomer', 'marketing@onetecgroup.com', 'hple1901w', 21, 21, NULL, NULL, 0, NULL, '2020-09-30 03:01:35', '2020-09-30 03:01:35', NULL),

@@ -43,10 +43,10 @@ class StoreWorkTrackingRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'premissions.*'          => [
+            'permissions.*'          => [
                 'integer',
             ],
-            'premissions'            => [
+            'permissions'            => [
                 'array',
             ],
             'email_send'             => [

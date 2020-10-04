@@ -64,7 +64,7 @@ class Employee extends Model
         'online_time',
         'active_email',
         'smtp_email_type',
-        'smtp_encription',
+        'smtp_encryption',
         'smtp_action',
         'smtp_host_name',
         'smtp_user_name',
@@ -73,7 +73,7 @@ class Employee extends Model
         'smtp_additional_flag',
         'last_postmaster_run',
         'media_path_slug',
-        'marketting_username',
+        'marketing_username',
         'marketing_password',
         'marketing_type',
         'sp_username',
@@ -108,7 +108,7 @@ class Employee extends Model
         $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

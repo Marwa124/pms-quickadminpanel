@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\HR\Entities;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Modules\HR\Entities\Designation;
 
 class AccountDetail extends Model implements HasMedia
 {
@@ -42,7 +43,7 @@ class AccountDetail extends Model implements HasMedia
         'deleted_at',
     ];
 
-    const MARITAL_STATUS_SELECT = [
+    const martial_status_SELECT = [
         'unmarried' => 'Unmarried',
         'married'   => 'Married',
         'divorced'  => 'Divorced',
@@ -67,7 +68,7 @@ class AccountDetail extends Model implements HasMedia
         'present_address',
         'date_of_birth',
         'gender',
-        'marital_status',
+        'martial_status',
         'father_name',
         'mother_name',
         'passport',
@@ -76,6 +77,11 @@ class AccountDetail extends Model implements HasMedia
         'updated_at',
         'deleted_at',
     ];
+
+    public function setTime()
+    {
+        return $this->belongsTo(SetTime::class, 'set_time_id');
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -88,10 +94,10 @@ class AccountDetail extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function userUserAlerts()
-    {
-        return $this->belongsToMany(UserAlert::class);
-    }
+    // public function userUserAlerts()
+    // {
+    //     return $this->belongsToMany(UserAlert::class);
+    // }
 
     public function user()
     {

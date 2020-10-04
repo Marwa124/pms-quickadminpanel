@@ -17,7 +17,7 @@ class Transaction extends Model implements HasMedia
     public $table = 'transactions';
 
     protected $appends = [
-        'attachement',
+        'attachment',
     ];
 
     const BILLABLE_RADIO = [
@@ -99,7 +99,7 @@ class Transaction extends Model implements HasMedia
 
     public function account()
     {
-        return $this->belongsTo(Acount::class, 'account_id');
+        return $this->belongsTo(Account::class, 'account_id');
     }
 
     public function invoice()
@@ -122,14 +122,14 @@ class Transaction extends Model implements HasMedia
         $this->attributes['date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }
 
-    public function getAttachementAttribute()
+    public function getAttachmentAttribute()
     {
-        return $this->getMedia('attachement')->last();
+        return $this->getMedia('attachment')->last();
     }
 
     public function expense_category()

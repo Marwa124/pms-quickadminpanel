@@ -20,13 +20,13 @@ class ProposalsApiController extends Controller
     {
         abort_if(Gate::denies('proposal_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new ProposalResource(Proposal::with(['premissions'])->get());
+        return new ProposalResource(Proposal::with(['permissions'])->get());
     }
 
     public function store(StoreProposalRequest $request)
     {
         $proposal = Proposal::create($request->all());
-        $proposal->premissions()->sync($request->input('premissions', []));
+        $proposal->permissions()->sync($request->input('permissions', []));
 
         return (new ProposalResource($proposal))
             ->response()
@@ -37,13 +37,13 @@ class ProposalsApiController extends Controller
     {
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new ProposalResource($proposal->load(['premissions']));
+        return new ProposalResource($proposal->load(['permissions']));
     }
 
     public function update(UpdateProposalRequest $request, Proposal $proposal)
     {
         $proposal->update($request->all());
-        $proposal->premissions()->sync($request->input('premissions', []));
+        $proposal->permissions()->sync($request->input('permissions', []));
 
         return (new ProposalResource($proposal))
             ->response()

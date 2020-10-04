@@ -30,7 +30,7 @@ class Permission extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function premissionsEmployees()
+    public function permissionsEmployees()
     {
         return $this->belongsToMany(Employee::class);
     }

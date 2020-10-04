@@ -90,7 +90,7 @@
                         <tr>
                             <td>{{ $sl++ }}</td>
                             <td>
-                                <a href="{{ route('hr.admin.account-details.show', $employee['id']) }}">{{ $employee['fullname'] }}</a>
+                                <a href="{{ route('admin.account-details.show', $employee['id']) }}">{{ $employee['fullname'] }}</a>
                                 <input type="hidden" name="user_id[]" value="{{ $employee['id'] }}">
                                 <input type="hidden" name="attendance_date[]" value="{{ $date }}">
                             </td>

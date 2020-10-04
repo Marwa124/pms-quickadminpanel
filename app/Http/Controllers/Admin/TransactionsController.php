@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
-use App\Models\Acount;
+use App\Models\Account;
 use App\Models\ExpenseCategory;
 use App\Models\Invoice;
 use App\Models\PaymentMethod;
@@ -38,26 +38,26 @@ class TransactionsController extends Controller
 
         $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $invoices = Invoice::all()->pluck('recur_start_date', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $payment_methods = PaymentMethod::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
         $expense_categories = ExpenseCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.transactions.create', compact('projects', 'accounts', 'invoices', 'payment_methods', 'premissions', 'expense_categories'));
+        return view('admin.transactions.create', compact('projects', 'accounts', 'invoices', 'payment_methods', 'permissions', 'expense_categories'));
     }
 
     public function store(StoreTransactionRequest $request)
     {
         $transaction = Transaction::create($request->all());
-        $transaction->premissions()->sync($request->input('premissions', []));
+        $transaction->permissions()->sync($request->input('permissions', []));
 
-        if ($request->input('attachement', false)) {
-            $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachement')))->toMediaCollection('attachement');
+        if ($request->input('attachment', false)) {
+            $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
         }
 
         if ($media = $request->input('ck-media', false)) {
@@ -73,36 +73,36 @@ class TransactionsController extends Controller
 
         $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $invoices = Invoice::all()->pluck('recur_start_date', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $payment_methods = PaymentMethod::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
         $expense_categories = ExpenseCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $transaction->load('project', 'account', 'invoice', 'payment_method', 'premissions', 'expense_category');
+        $transaction->load('project', 'account', 'invoice', 'payment_method', 'permissions', 'expense_category');
 
-        return view('admin.transactions.edit', compact('projects', 'accounts', 'invoices', 'payment_methods', 'premissions', 'expense_categories', 'transaction'));
+        return view('admin.transactions.edit', compact('projects', 'accounts', 'invoices', 'payment_methods', 'permissions', 'expense_categories', 'transaction'));
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $transaction->update($request->all());
-        $transaction->premissions()->sync($request->input('premissions', []));
+        $transaction->permissions()->sync($request->input('permissions', []));
 
-        if ($request->input('attachement', false)) {
-            if (!$transaction->attachement || $request->input('attachement') !== $transaction->attachement->file_name) {
-                if ($transaction->attachement) {
-                    $transaction->attachement->delete();
+        if ($request->input('attachment', false)) {
+            if (!$transaction->attachment || $request->input('attachment') !== $transaction->attachment->file_name) {
+                if ($transaction->attachment) {
+                    $transaction->attachment->delete();
                 }
 
-                $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachement')))->toMediaCollection('attachement');
+                $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
             }
-        } elseif ($transaction->attachement) {
-            $transaction->attachement->delete();
+        } elseif ($transaction->attachment) {
+            $transaction->attachment->delete();
         }
 
         return redirect()->route('admin.transactions.index');
@@ -112,7 +112,7 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transaction->load('project', 'account', 'invoice', 'payment_method', 'premissions', 'expense_category');
+        $transaction->load('project', 'account', 'invoice', 'payment_method', 'permissions', 'expense_category');
 
         return view('admin.transactions.show', compact('transaction'));
     }

@@ -33,15 +33,15 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.proposals.create', compact('premissions'));
+        return view('admin.proposals.create', compact('permissions'));
     }
 
     public function store(StoreProposalRequest $request)
     {
         $proposal = Proposal::create($request->all());
-        $proposal->premissions()->sync($request->input('premissions', []));
+        $proposal->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
@@ -54,17 +54,17 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $proposal->load('premissions');
+        $proposal->load('permissions');
 
-        return view('admin.proposals.edit', compact('premissions', 'proposal'));
+        return view('admin.proposals.edit', compact('permissions', 'proposal'));
     }
 
     public function update(UpdateProposalRequest $request, Proposal $proposal)
     {
         $proposal->update($request->all());
-        $proposal->premissions()->sync($request->input('premissions', []));
+        $proposal->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.proposals.index');
     }
@@ -73,7 +73,7 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $proposal->load('premissions');
+        $proposal->load('permissions');
 
         return view('admin.proposals.show', compact('proposal'));
     }

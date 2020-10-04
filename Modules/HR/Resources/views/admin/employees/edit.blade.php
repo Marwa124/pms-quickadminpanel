@@ -140,22 +140,22 @@
                 <span class="help-block">{{ trans('cruds.employee.fields.online_time_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="premissions">{{ trans('cruds.employee.fields.premissions') }}</label>
+                <label for="permissions">{{ trans('cruds.employee.fields.permissions') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
-                <select class="form-control select2 {{ $errors->has('premissions') ? 'is-invalid' : '' }}" name="premissions[]" id="premissions" multiple>
-                    @foreach($premissions as $id => $premissions)
-                        <option value="{{ $id }}" {{ (in_array($id, old('premissions', [])) || $employee->premissions->contains($id)) ? 'selected' : '' }}>{{ $premissions }}</option>
+                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
+                    @foreach($permissions as $id => $permissions)
+                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $employee->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('premissions'))
+                @if($errors->has('permissions'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('premissions') }}
+                        {{ $errors->first('permissions') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.employee.fields.premissions_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.employee.fields.permissions_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="active_email">{{ trans('cruds.employee.fields.active_email') }}</label>
@@ -258,14 +258,14 @@
                 <span class="help-block">{{ trans('cruds.employee.fields.media_path_slug_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="marketting_username">{{ trans('cruds.employee.fields.marketting_username') }}</label>
-                <input class="form-control {{ $errors->has('marketting_username') ? 'is-invalid' : '' }}" type="text" name="marketting_username" id="marketting_username" value="{{ old('marketting_username', $employee->marketting_username) }}">
-                @if($errors->has('marketting_username'))
+                <label for="marketing_username">{{ trans('cruds.employee.fields.marketing_username') }}</label>
+                <input class="form-control {{ $errors->has('marketing_username') ? 'is-invalid' : '' }}" type="text" name="marketing_username" id="marketing_username" value="{{ old('marketing_username', $employee->marketing_username) }}">
+                @if($errors->has('marketing_username'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('marketting_username') }}
+                        {{ $errors->first('marketing_username') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.employee.fields.marketting_username_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.employee.fields.marketing_username_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="marketing_password">{{ trans('cruds.employee.fields.marketing_password') }}</label>

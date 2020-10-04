@@ -103,11 +103,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
     // Route::resource('designations', 'DesignationsController');
 
-    // // Account Details
-    // Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
-    // Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
-    // Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
-    // Route::resource('account-details', 'AccountDetailsController');
+    // Account Details
+    Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
+    Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
+    Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
+    Route::resource('account-details', 'AccountDetailsController');
 
     // // Overtimes
     // Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
@@ -144,10 +144,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // // Employee Awards
     // Route::delete('employee-awards/destroy', 'EmployeeAwardsController@massDestroy')->name('employee-awards.massDestroy');
     // Route::resource('employee-awards', 'EmployeeAwardsController');
-
-    // // attendanceses
-    // Route::delete('attendanceses/destroy', 'attendancesController@massDestroy')->name('attendanceses.massDestroy');
-    // Route::resource('attendanceses', 'attendancesController');
 
     // // Daily Attendances
     // Route::delete('daily-attendances/destroy', 'DailyAttendancesController@massDestroy')->name('daily-attendances.massDestroy');
@@ -234,9 +230,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('work-trackings/destroy', 'WorkTrackingController@massDestroy')->name('work-trackings.massDestroy');
     Route::resource('work-trackings', 'WorkTrackingController');
 
-    // Acounts
-    Route::delete('acounts/destroy', 'AcountsController@massDestroy')->name('acounts.massDestroy');
-    Route::resource('acounts', 'AcountsController');
+    // Accounts
+    Route::delete('accounts/destroy', 'AccountsController@massDestroy')->name('accounts.massDestroy');
+    Route::resource('accounts', 'AccountsController');
 
     // Milestones
     Route::delete('milestones/destroy', 'MilestonesController@massDestroy')->name('milestones.massDestroy');

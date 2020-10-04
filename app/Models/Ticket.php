@@ -68,7 +68,7 @@ class Ticket extends Model implements HasMedia
         return $this->getMedia('file')->last();
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

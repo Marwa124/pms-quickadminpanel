@@ -20,16 +20,16 @@ class TransactionsApiController extends Controller
     {
         abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransactionResource(Transaction::with(['project', 'account', 'invoice', 'payment_method', 'premissions', 'expense_category'])->get());
+        return new TransactionResource(Transaction::with(['project', 'account', 'invoice', 'payment_method', 'permissions', 'expense_category'])->get());
     }
 
     public function store(StoreTransactionRequest $request)
     {
         $transaction = Transaction::create($request->all());
-        $transaction->premissions()->sync($request->input('premissions', []));
+        $transaction->permissions()->sync($request->input('permissions', []));
 
-        if ($request->input('attachement', false)) {
-            $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachement')))->toMediaCollection('attachement');
+        if ($request->input('attachment', false)) {
+            $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
         }
 
         return (new TransactionResource($transaction))
@@ -41,24 +41,24 @@ class TransactionsApiController extends Controller
     {
         abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransactionResource($transaction->load(['project', 'account', 'invoice', 'payment_method', 'premissions', 'expense_category']));
+        return new TransactionResource($transaction->load(['project', 'account', 'invoice', 'payment_method', 'permissions', 'expense_category']));
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $transaction->update($request->all());
-        $transaction->premissions()->sync($request->input('premissions', []));
+        $transaction->permissions()->sync($request->input('permissions', []));
 
-        if ($request->input('attachement', false)) {
-            if (!$transaction->attachement || $request->input('attachement') !== $transaction->attachement->file_name) {
-                if ($transaction->attachement) {
-                    $transaction->attachement->delete();
+        if ($request->input('attachment', false)) {
+            if (!$transaction->attachment || $request->input('attachment') !== $transaction->attachment->file_name) {
+                if ($transaction->attachment) {
+                    $transaction->attachment->delete();
                 }
 
-                $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachement')))->toMediaCollection('attachement');
+                $transaction->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
             }
-        } elseif ($transaction->attachement) {
-            $transaction->attachement->delete();
+        } elseif ($transaction->attachment) {
+            $transaction->attachment->delete();
         }
 
         return (new TransactionResource($transaction))

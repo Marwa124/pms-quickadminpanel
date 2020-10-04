@@ -40,7 +40,7 @@ class Supplier extends Model
         return $this->belongsTo(CustomerGroup::class, 'customer_group_id');
     }
 
-    public function premissions()
+    public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

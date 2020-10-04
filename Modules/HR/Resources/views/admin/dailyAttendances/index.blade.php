@@ -34,20 +34,23 @@
                 </div>
                 <!-- /.Notification Box -->
                 <div class="col-md-12">
-                    <form action="{{ route('hr.admin.daily-attendances.set') }}" method="post">
-                        {{ csrf_field() }}
+                    {{-- <form action="{{ route('hr.admin.daily-attendances.index') }}" method="get"> --}}
+                        {{-- {{ csrf_field() }} --}}
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
                                 <div class="input-group margin">
                                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                     <input class="form-control date" type="text" name="date" id="datepicker" required>
                                     <span class="input-group-btn">
-                                      <button type="submit" class="btn btn-info btn-flat"><i class="icon fa fa-arrow-right"></i>{{ __('Go') }} </button>
+                                      <button id="submit-date" type="submit" class="btn btn-info btn-flat"
+                                      data-token="{{csrf_token()}}"
+                                      data-route="{{route('hr.admin.daily-attendances.index')}}"
+                                      ><i class="icon fa fa-arrow-right"></i>{{ __('Go') }} </button>
                                   </span>
                               </div>
                             </div>
-                        </div>
-                  </form>
+                        {{-- </div> --}}
+                  {{-- </form> --}}
               </div>
               <!-- /. end col -->
           </div>
@@ -61,7 +64,7 @@
   </section>
   <!-- /.content -->
 
-    <div class="card-body">
+    <div class="card-body" id="table-daily-attendance">
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-DailyAttendance">
                 <thead>
@@ -98,48 +101,6 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach($dailyAttendances as $key => $dailyAttendance)
-                        <tr data-entry-id="{{ $dailyAttendance->id }}">
-                            <td>
-
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->user->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->clock_in ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->clock_out ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->absent ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->vacation ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->holiday ?? '' }}
-                            </td>
-                            <td>
-                                {{ $dailyAttendance->created_day ?? '' }}
-                            </td>
-                            <td>
-                                @can('daily_attendance_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.daily-attendances.show', $dailyAttendance->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
             </table>
         </div>
     </div>
@@ -153,6 +114,76 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+
+
+  $("#table-daily-attendance").css('display', 'none');
+  $("#submit-date").on('click', function(e){
+      if ($("#datepicker").val() != '') {
+          console.log($("#datepicker").val());
+        $("#table-daily-attendance").css('display', 'block');
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: $(this).data('route'),
+                data: { 
+                    _token: $(this).data('token'),
+                    day: $("#datepicker").val(),
+                },
+                success:function(response){
+                    console.log(response['data']);
+                    console.log($("#datepicker").val());
+
+                    
+                    var len = 0;
+                    // $('#table-daily-attendance tbody').empty(); // Empty <tbody>
+                    if(response['data'] != null){
+                        len = response['data'].length;
+                    }
+
+                    if(len > 0){
+                        for(var i=0; i<len; i++){
+                            var id = response['data'][i].id;
+                            var date = response['data'][i].date;
+                            var time = response['data'][i].time;
+                            // var email = response['data'][i].email;
+
+                            var tr_str = "<tr data-entry-id='" + id + "'>" +
+                            "<td> </td>" +
+                            "<td align='center'>" + (i+1) + "</td>" +
+                            "<td align='center'>" + date + "</td>" +
+                            "<td align='center'>" + time + "</td>" +
+                            "</tr>";
+
+                            $("#table-daily-attendance tbody").append(tr_str);
+                        }
+                    }else{
+                        var tr_str = "<tr>" +
+                            "<td align='center' colspan='4'>No record found.</td>" +
+                        "</tr>";
+
+                        $("#table-daily-attendance tbody").append(tr_str);
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+                },
+                error:function(error){
+                    console.log(error);
+                }
+            });
+            }
+         });
 // @can('daily_attendance_delete')
 //   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
 //   let deleteButton = {

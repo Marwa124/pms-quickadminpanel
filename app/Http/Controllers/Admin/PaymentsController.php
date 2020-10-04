@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyPaymentRequest;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
-use App\Models\Acount;
+use App\Models\Account;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Transaction;
@@ -35,7 +35,7 @@ class PaymentsController extends Controller
 
         $invoices = Invoice::all()->pluck('recur_start_date', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $transactions = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -59,7 +59,7 @@ class PaymentsController extends Controller
 
         $invoices = Invoice::all()->pluck('recur_start_date', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $transactions = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 

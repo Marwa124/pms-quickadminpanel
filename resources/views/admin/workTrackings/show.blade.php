@@ -81,11 +81,11 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.workTracking.fields.premissions') }}
+                            {{ trans('cruds.workTracking.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($workTracking->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($workTracking->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>

@@ -30,10 +30,10 @@ class StoreEmployeeRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'premissions.*'     => [
+            'permissions.*'     => [
                 'integer',
             ],
-            'premissions'       => [
+            'permissions'       => [
                 'array',
             ],
             'date_of_join'      => [

@@ -51,11 +51,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
      Route::resource('designations', 'DesignationsController');
 
-     // Account Details
-     Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
-     Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
-     Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
-     Route::resource('account-details', 'AccountDetailsController');
+    //  // Account Details
+    //  Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
+    //  Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
+    //  Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
+    //  Route::resource('account-details', 'AccountDetailsController');
 
      // Overtimes
      Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
@@ -66,6 +66,10 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      // Holidays
      Route::delete('holidays/destroy', 'HolidaysController@massDestroy')->name('holidays.massDestroy');
      Route::resource('holidays', 'HolidaysController');
+
+     // Set Time
+     Route::delete('set-times/destroy', 'SetTimesController@massDestroy')->name('set-times.massDestroy');
+     Route::resource('set-times', 'SetTimesController');
 
      // Trainings
      Route::delete('trainings/destroy', 'TrainingsController@massDestroy')->name('trainings.massDestroy');

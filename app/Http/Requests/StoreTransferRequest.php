@@ -51,10 +51,10 @@ class StoreTransferRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'premissions.*'     => [
+            'permissions.*'     => [
                 'integer',
             ],
-            'premissions'       => [
+            'permissions'       => [
                 'array',
             ],
         ];

@@ -194,22 +194,22 @@
                 <span class="help-block">{{ trans('cruds.purchase.fields.show_quantity_as_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="premissions">{{ trans('cruds.purchase.fields.premission') }}</label>
+                <label for="permissions">{{ trans('cruds.purchase.fields.permission') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
-                <select class="form-control select2 {{ $errors->has('premissions') ? 'is-invalid' : '' }}" name="premissions[]" id="premissions" multiple>
-                    @foreach($premissions as $id => $premission)
-                        <option value="{{ $id }}" {{ (in_array($id, old('premissions', [])) || $purchase->premissions->contains($id)) ? 'selected' : '' }}>{{ $premission }}</option>
+                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
+                    @foreach($permissions as $id => $permission)
+                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $purchase->permissions->contains($id)) ? 'selected' : '' }}>{{ $permission }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('premissions'))
+                @if($errors->has('permissions'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('premissions') }}
+                        {{ $errors->first('permissions') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.purchase.fields.premission_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.purchase.fields.permission_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="total_tax">{{ trans('cruds.purchase.fields.total_tax') }}</label>

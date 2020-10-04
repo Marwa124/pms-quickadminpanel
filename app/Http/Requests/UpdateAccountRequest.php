@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Acount;
+use App\Models\Account;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
-class UpdateAcountRequest extends FormRequest
+class UpdateAccountRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('acount_edit');
+        return Gate::allows('account_edit');
     }
 
     public function rules()
@@ -20,7 +20,7 @@ class UpdateAcountRequest extends FormRequest
             'name'          => [
                 'string',
                 'required',
-                'unique:acounts,name,' . request()->route('acount')->id,
+                'unique:accounts,name,' . request()->route('account')->id,
             ],
             'description'   => [
                 'string',
@@ -30,10 +30,10 @@ class UpdateAcountRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'premissions.*' => [
+            'permissions.*' => [
                 'integer',
             ],
-            'premissions'   => [
+            'permissions'   => [
                 'array',
             ],
         ];

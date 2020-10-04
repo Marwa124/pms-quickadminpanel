@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyPurchasePaymentRequest;
 use App\Http\Requests\StorePurchasePaymentRequest;
 use App\Http\Requests\UpdatePurchasePaymentRequest;
-use App\Models\Acount;
+use App\Models\Account;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
 use App\Models\Transaction;
@@ -35,7 +35,7 @@ class PurchasePaymentsController extends Controller
 
         $purchases = Purchase::all()->pluck('reference_no', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $transactions = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -59,7 +59,7 @@ class PurchasePaymentsController extends Controller
 
         $purchases = Purchase::all()->pluck('reference_no', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $accounts = Acount::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $transactions = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 

@@ -62,10 +62,10 @@ class UpdateTransactionRequest extends FormRequest
             'total_balance'  => [
                 'numeric',
             ],
-            'premissions.*'  => [
+            'permissions.*'  => [
                 'integer',
             ],
-            'premissions'    => [
+            'permissions'    => [
                 'array',
             ],
             'client_visible' => [

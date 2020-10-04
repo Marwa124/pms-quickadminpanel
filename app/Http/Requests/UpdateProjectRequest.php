@@ -73,10 +73,10 @@ class UpdateProjectRequest extends FormRequest
                 'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
-            'premissions.*'      => [
+            'permissions.*'      => [
                 'integer',
             ],
-            'premissions'        => [
+            'permissions'        => [
                 'array',
             ],
             'hourly_rate'        => [

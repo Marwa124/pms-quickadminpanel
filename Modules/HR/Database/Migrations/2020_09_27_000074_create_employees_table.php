@@ -24,7 +24,7 @@ class CreateEmployeesTable extends Migration
             $table->string('online_time')->nullable();
             $table->string('active_email')->nullable();
             $table->string('smtp_email_type')->nullable();
-            $table->string('smtp_encription')->nullable();
+            $table->string('smtp_encryption')->nullable();
             $table->string('smtp_action')->nullable();
             $table->string('smtp_host_name')->nullable();
             $table->string('smtp_user_name')->nullable();
@@ -33,7 +33,7 @@ class CreateEmployeesTable extends Migration
             $table->string('smtp_additional_flag')->nullable();
             $table->string('last_postmaster_run')->nullable();
             $table->string('media_path_slug')->nullable();
-            $table->string('marketting_username')->nullable();
+            $table->string('marketing_username')->nullable();
             $table->string('marketing_password')->nullable();
             $table->string('marketing_type')->nullable();
             $table->string('sp_username')->nullable();

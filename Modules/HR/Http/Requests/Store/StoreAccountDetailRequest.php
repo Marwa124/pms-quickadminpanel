@@ -75,7 +75,7 @@ class StoreAccountDetailRequest extends FormRequest
             'gender'          => [
                 'required',
             ],
-            'marital_status'  => [
+            'martial_status'  => [
                 'required',
             ],
             'father_name'     => [

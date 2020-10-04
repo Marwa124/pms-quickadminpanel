@@ -17,13 +17,13 @@ class EmployeesApiController extends Controller
     {
         abort_if(Gate::denies('employee_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new EmployeeResource(Employee::with(['role', 'premissions'])->get());
+        return new EmployeeResource(Employee::with(['role', 'permissions'])->get());
     }
 
     public function store(StoreEmployeeRequest $request)
     {
         $employee = Employee::create($request->all());
-        $employee->premissions()->sync($request->input('premissions', []));
+        $employee->permissions()->sync($request->input('permissions', []));
 
         return (new EmployeeResource($employee))
             ->response()
@@ -34,13 +34,13 @@ class EmployeesApiController extends Controller
     {
         abort_if(Gate::denies('employee_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new EmployeeResource($employee->load(['role', 'premissions']));
+        return new EmployeeResource($employee->load(['role', 'permissions']));
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->all());
-        $employee->premissions()->sync($request->input('premissions', []));
+        $employee->permissions()->sync($request->input('permissions', []));
 
         return (new EmployeeResource($employee))
             ->response()

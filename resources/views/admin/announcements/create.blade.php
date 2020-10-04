@@ -99,15 +99,15 @@
                 <span class="help-block">{{ trans('cruds.announcement.fields.all_client_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="attachements">{{ trans('cruds.announcement.fields.attachements') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('attachements') ? 'is-invalid' : '' }}" id="attachements-dropzone">
+                <label for="attachments">{{ trans('cruds.announcement.fields.attachments') }}</label>
+                <div class="needsclick dropzone {{ $errors->has('attachments') ? 'is-invalid' : '' }}" id="attachments-dropzone">
                 </div>
-                @if($errors->has('attachements'))
+                @if($errors->has('attachments'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('attachements') }}
+                        {{ $errors->first('attachments') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.announcement.fields.attachements_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.announcement.fields.attachments_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
@@ -188,7 +188,7 @@
 </script>
 
 <script>
-    Dropzone.options.attachementsDropzone = {
+    Dropzone.options.attachmentsDropzone = {
     url: '{{ route('admin.announcements.storeMedia') }}',
     maxFilesize: 2, // MB
     maxFiles: 1,
@@ -200,22 +200,22 @@
       size: 2
     },
     success: function (file, response) {
-      $('form').find('input[name="attachements"]').remove()
-      $('form').append('<input type="hidden" name="attachements" value="' + response.name + '">')
+      $('form').find('input[name="attachments"]').remove()
+      $('form').append('<input type="hidden" name="attachments" value="' + response.name + '">')
     },
     removedfile: function (file) {
       file.previewElement.remove()
       if (file.status !== 'error') {
-        $('form').find('input[name="attachements"]').remove()
+        $('form').find('input[name="attachments"]').remove()
         this.options.maxFiles = this.options.maxFiles + 1
       }
     },
     init: function () {
-@if(isset($announcement) && $announcement->attachements)
-      var file = {!! json_encode($announcement->attachements) !!}
+@if(isset($announcement) && $announcement->attachments)
+      var file = {!! json_encode($announcement->attachments) !!}
           this.options.addedfile.call(this, file)
       file.previewElement.classList.add('dz-complete')
-      $('form').append('<input type="hidden" name="attachements" value="' + file.file_name + '">')
+      $('form').append('<input type="hidden" name="attachments" value="' + file.file_name + '">')
       this.options.maxFiles = this.options.maxFiles - 1
 @endif
     },

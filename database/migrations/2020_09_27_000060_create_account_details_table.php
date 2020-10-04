@@ -25,11 +25,12 @@ class CreateAccountDetailsTable extends Migration
             $table->string('present_address')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('gender')->nullable();
-            $table->string('marital_status')->nullable();
+            $table->string('martial_status')->nullable();
             $table->string('father_name')->nullable();
             $table->string('mother_name')->nullable();
             $table->string('passport')->nullable();
             $table->string('direction')->nullable();
+            $table->integer('set_time_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

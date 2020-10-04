@@ -85,22 +85,22 @@
                 <span class="help-block">{{ trans('cruds.workTracking.fields.notify_work_not_achive_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="premissions">{{ trans('cruds.workTracking.fields.premissions') }}</label>
+                <label for="permissions">{{ trans('cruds.workTracking.fields.permissions') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
-                <select class="form-control select2 {{ $errors->has('premissions') ? 'is-invalid' : '' }}" name="premissions[]" id="premissions" multiple>
-                    @foreach($premissions as $id => $premissions)
-                        <option value="{{ $id }}" {{ (in_array($id, old('premissions', [])) || $workTracking->premissions->contains($id)) ? 'selected' : '' }}>{{ $premissions }}</option>
+                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
+                    @foreach($permissions as $id => $permissions)
+                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $workTracking->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('premissions'))
+                @if($errors->has('permissions'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('premissions') }}
+                        {{ $errors->first('permissions') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.workTracking.fields.premissions_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.workTracking.fields.permissions_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="email_send">{{ trans('cruds.workTracking.fields.email_send') }}</label>

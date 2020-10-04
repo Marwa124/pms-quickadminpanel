@@ -20,14 +20,14 @@ class TaskApiController extends Controller
     {
         abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TaskResource(Task::with(['status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'premissions'])->get());
+        return new TaskResource(Task::with(['status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'permissions'])->get());
     }
 
     public function store(StoreTaskRequest $request)
     {
         $task = Task::create($request->all());
         $task->tags()->sync($request->input('tags', []));
-        $task->premissions()->sync($request->input('premissions', []));
+        $task->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
@@ -42,14 +42,14 @@ class TaskApiController extends Controller
     {
         abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TaskResource($task->load(['status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'premissions']));
+        return new TaskResource($task->load(['status', 'tags', 'assigned_to', 'project', 'milestone', 'opportunities', 'work_tracking', 'lead', 'permissions']));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $task->update($request->all());
         $task->tags()->sync($request->input('tags', []));
-        $task->premissions()->sync($request->input('premissions', []));
+        $task->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             if (!$task->attachment || $request->input('attachment') !== $task->attachment->file_name) {

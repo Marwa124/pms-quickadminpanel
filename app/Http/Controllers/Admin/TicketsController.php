@@ -43,15 +43,15 @@ class TicketsController extends Controller
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.tickets.create', compact('projects', 'departments', 'premissions'));
+        return view('admin.tickets.create', compact('projects', 'departments', 'permissions'));
     }
 
     public function store(StoreTicketRequest $request)
     {
         $ticket = Ticket::create($request->all());
-        $ticket->premissions()->sync($request->input('premissions', []));
+        $ticket->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('file', false)) {
             $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
@@ -72,17 +72,17 @@ class TicketsController extends Controller
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $premissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-        $ticket->load('project', 'department', 'premissions');
+        $ticket->load('project', 'department', 'permissions');
 
-        return view('admin.tickets.edit', compact('projects', 'departments', 'premissions', 'ticket'));
+        return view('admin.tickets.edit', compact('projects', 'departments', 'permissions', 'ticket'));
     }
 
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
         $ticket->update($request->all());
-        $ticket->premissions()->sync($request->input('premissions', []));
+        $ticket->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('file', false)) {
             if (!$ticket->file || $request->input('file') !== $ticket->file->file_name) {
@@ -103,7 +103,7 @@ class TicketsController extends Controller
     {
         abort_if(Gate::denies('ticket_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $ticket->load('project', 'department', 'premissions');
+        $ticket->load('project', 'department', 'permissions');
 
         return view('admin.tickets.show', compact('ticket'));
     }

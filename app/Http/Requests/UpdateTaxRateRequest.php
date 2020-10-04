@@ -26,10 +26,10 @@ class UpdateTaxRateRequest extends FormRequest
                 'numeric',
                 'required',
             ],
-            'premissions.*' => [
+            'permissions.*' => [
                 'integer',
             ],
-            'premissions'   => [
+            'permissions'   => [
                 'array',
             ],
         ];

@@ -207,11 +207,11 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.task.fields.premissions') }}
+                            {{ trans('cruds.task.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($task->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($task->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>

@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Acount;
+use App\Models\Account;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
-class StoreAcountRequest extends FormRequest
+class StoreAccountRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('acount_create');
+        return Gate::allows('account_create');
     }
 
     public function rules()
@@ -20,7 +20,7 @@ class StoreAcountRequest extends FormRequest
             'name'          => [
                 'string',
                 'required',
-                'unique:acounts',
+                'unique:accounts',
             ],
             'description'   => [
                 'string',
@@ -30,10 +30,10 @@ class StoreAcountRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'premissions.*' => [
+            'permissions.*' => [
                 'integer',
             ],
-            'premissions'   => [
+            'permissions'   => [
                 'array',
             ],
         ];

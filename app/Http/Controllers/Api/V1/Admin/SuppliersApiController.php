@@ -17,13 +17,13 @@ class SuppliersApiController extends Controller
     {
         abort_if(Gate::denies('supplier_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new SupplierResource(Supplier::with(['customer_group', 'premissions'])->get());
+        return new SupplierResource(Supplier::with(['customer_group', 'permissions'])->get());
     }
 
     public function store(StoreSupplierRequest $request)
     {
         $supplier = Supplier::create($request->all());
-        $supplier->premissions()->sync($request->input('premissions', []));
+        $supplier->permissions()->sync($request->input('permissions', []));
 
         return (new SupplierResource($supplier))
             ->response()
@@ -34,13 +34,13 @@ class SuppliersApiController extends Controller
     {
         abort_if(Gate::denies('supplier_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new SupplierResource($supplier->load(['customer_group', 'premissions']));
+        return new SupplierResource($supplier->load(['customer_group', 'permissions']));
     }
 
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
         $supplier->update($request->all());
-        $supplier->premissions()->sync($request->input('premissions', []));
+        $supplier->permissions()->sync($request->input('permissions', []));
 
         return (new SupplierResource($supplier))
             ->response()

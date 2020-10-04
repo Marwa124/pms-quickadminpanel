@@ -115,11 +115,11 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.user.fields.premissions') }}
+                            {{ trans('cruds.user.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($user->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($user->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>
@@ -189,10 +189,10 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.user.fields.marketting_username') }}
+                            {{ trans('cruds.user.fields.marketing_username') }}
                         </th>
                         <td>
-                            {{ $user->marketting_username }}
+                            {{ $user->marketing_username }}
                         </td>
                     </tr>
                     <tr>

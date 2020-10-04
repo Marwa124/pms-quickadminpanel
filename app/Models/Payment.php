@@ -67,7 +67,7 @@ class Payment extends Model implements HasMedia
 
     public function account()
     {
-        return $this->belongsTo(Acount::class, 'account_id');
+        return $this->belongsTo(Account::class, 'account_id');
     }
 
     public function transaction()

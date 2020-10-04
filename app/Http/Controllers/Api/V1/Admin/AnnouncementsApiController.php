@@ -27,8 +27,8 @@ class AnnouncementsApiController extends Controller
     {
         $announcement = Announcement::create($request->all());
 
-        if ($request->input('attachements', false)) {
-            $announcement->addMedia(storage_path('tmp/uploads/' . $request->input('attachements')))->toMediaCollection('attachements');
+        if ($request->input('attachments', false)) {
+            $announcement->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
         }
 
         return (new AnnouncementResource($announcement))
@@ -47,16 +47,16 @@ class AnnouncementsApiController extends Controller
     {
         $announcement->update($request->all());
 
-        if ($request->input('attachements', false)) {
-            if (!$announcement->attachements || $request->input('attachements') !== $announcement->attachements->file_name) {
-                if ($announcement->attachements) {
-                    $announcement->attachements->delete();
+        if ($request->input('attachments', false)) {
+            if (!$announcement->attachments || $request->input('attachments') !== $announcement->attachments->file_name) {
+                if ($announcement->attachments) {
+                    $announcement->attachments->delete();
                 }
 
-                $announcement->addMedia(storage_path('tmp/uploads/' . $request->input('attachements')))->toMediaCollection('attachements');
+                $announcement->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
             }
-        } elseif ($announcement->attachements) {
-            $announcement->attachements->delete();
+        } elseif ($announcement->attachments) {
+            $announcement->attachments->delete();
         }
 
         return (new AnnouncementResource($announcement))

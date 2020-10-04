@@ -27,7 +27,7 @@ class GlobalSearchController extends Controller
         'Client'         => 'cruds.client.title',
         'ClientMenu'     => 'cruds.clientMenu.title',
         'Project'        => 'cruds.project.title',
-        'Acount'         => 'cruds.acount.title',
+        'Account'         => 'cruds.account.title',
         'Bug'            => 'cruds.bug.title',
         'Announcement'   => 'cruds.announcement.title',
         'EmployeeBank'   => 'cruds.employeeBank.title',

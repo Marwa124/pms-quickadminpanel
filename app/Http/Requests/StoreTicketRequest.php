@@ -43,10 +43,10 @@ class StoreTicketRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'premissions.*' => [
+            'permissions.*' => [
                 'integer',
             ],
-            'premissions'   => [
+            'permissions'   => [
                 'array',
             ],
         ];

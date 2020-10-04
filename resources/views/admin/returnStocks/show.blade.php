@@ -153,11 +153,11 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.returnStock.fields.premissions') }}
+                            {{ trans('cruds.returnStock.fields.permissions') }}
                         </th>
                         <td>
-                            @foreach($returnStock->premissions as $key => $premissions)
-                                <span class="label label-info">{{ $premissions->title }}</span>
+                            @foreach($returnStock->permissions as $key => $permissions)
+                                <span class="label label-info">{{ $permissions->title }}</span>
                             @endforeach
                         </td>
                     </tr>

@@ -89,11 +89,11 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.announcement.fields.attachements') }}
+                            {{ trans('cruds.announcement.fields.attachments') }}
                         </th>
                         <td>
-                            @if($announcement->attachements)
-                                <a href="{{ $announcement->attachements->getUrl() }}" target="_blank">
+                            @if($announcement->attachments)
+                                <a href="{{ $announcement->attachments->getUrl() }}" target="_blank">
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endif

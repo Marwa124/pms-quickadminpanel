@@ -306,7 +306,7 @@
                                 @endcan
                                 @can('account_detail_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
+                                        <a href="{{ route("admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
                                             </i>
@@ -349,13 +349,23 @@
                             </ul>
                         </li>
                     @endcan
-                    @can('acount_access')
+                    @can('account_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.acounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/acounts") || request()->is("admin/acounts/*") ? "active" : "" }}">
+                            <a href="{{ route("admin.accounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/accounts") || request()->is("admin/accounts/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-money-check-alt c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.acount.title') }}
+                                {{ trans('cruds.account.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('set_time_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("hr.admin.set-times.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/set-times") || request()->is("admin/set-times/*") ? "active" : "" }}">
+                                <i class="fa-fw far fa-clock c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.setTime.title') }}
                             </a>
                         </li>
                     @endcan

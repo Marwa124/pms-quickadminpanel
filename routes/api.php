@@ -146,8 +146,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Work Trackings
     Route::apiResource('work-trackings', 'WorkTrackingApiController');
 
-    // Acounts
-    Route::apiResource('acounts', 'AcountsApiController');
+    // Accounts
+    Route::apiResource('accounts', 'AccountsApiController');
 
     // Milestones
     Route::apiResource('milestones', 'MilestonesApiController');

@@ -165,10 +165,10 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.accountDetail.fields.marital_status') }}
+                            {{ trans('cruds.accountDetail.fields.martial_status') }}
                         </th>
                         <td>
-                            {{ App\Models\AccountDetail::MARITAL_STATUS_SELECT[$accountDetail->marital_status] ?? '' }}
+                            {{ App\Models\AccountDetail::martial_status_SELECT[$accountDetail->martial_status] ?? '' }}
                         </td>
                     </tr>
                     <tr>
