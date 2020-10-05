@@ -9,7 +9,7 @@
     <section class="content">
         <!-- Default box -->
         <div class="box">
-            <div class="box-header with-border">
+            <div class="box-header with-border d-flex justify-content-center">
                 <h3 class="box-title">{{ __('Manage Attendance') }} </h3>
 
             </div>
@@ -18,10 +18,10 @@
                 <div class="col-md-12">
                     <form action="{{ route('hr.admin.daily-attendances.index') }}" method="get">
                         @csrf
-                        <div class="form-group">
+                        <div class="form-group m-auto d-flex justify-content-center">
                             <div class="col-sm-offset-3 col-sm-6">
                                 <div class="input-group margin">
-                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    <div class="nav-link"><i class="fa fa-calendar"></i></div>
                                     <input class="form-control date" type="text" name="date" id="datepicker" value="{{ $date }}" required>
                                     <span class="input-group-btn">
                                       <button id="submit-date" type="submit" class="btn btn-info btn-flat"
