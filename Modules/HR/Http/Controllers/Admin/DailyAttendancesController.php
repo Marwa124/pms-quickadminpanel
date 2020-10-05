@@ -24,28 +24,29 @@ class DailyAttendancesController extends Controller
     public function index(Request $request)
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        if ($request['day'] != '') {
-            $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get();
-            // return redirect()->route('hr.admin.daily-attendances.index')->with('fingerprintAttendances', $fingerprintAttendances);
-            return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
+        $date = $request->date;
+        if ($request['date'] != '') {
+            $fingerprintAttendances = FingerprintAttendance::where('date', $request['date'])->get();
+            return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date'));
         }
-        $fingerprintAttendances = [];
-        return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
+        $fingerprintAttendances = FingerprintAttendance::all();
+
+        return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date'));
     }
 
-    public function set_attendance(Request $request)
+    public function set_attendance($date)
     {
-		$attendance_day = date("D", strtotime($request->date));
+		$attendance_day = date("D", strtotime($date));
 
 		$weekly_holidays = WorkingDay::where('working_status', 0)
 			->get(['day'])
 			->toArray();
 
-		$monthly_holidays = Holiday::whereDate('start_date', '<=', $request->date)
-            ->whereDate('end_date', '>=', $request->date)
+		$monthly_holidays = Holiday::whereDate('start_date', '<=', $date)
+            ->whereDate('end_date', '>=', $date)
             ->first(['start_date', 'end_date']);
 
-		if ($monthly_holidays['date'] == $request->date) {
+		if ($monthly_holidays['date'] == $date) {
 			return redirect()->back()->with('exception', 'You select a holiday !');
 		}
 
@@ -73,19 +74,16 @@ class DailyAttendancesController extends Controller
 		$leave_categories = LeaveCategory::get()
 			->where('deleted_at', null)
 			->toArray();
-		$date = $request->date;
+		$date = $date;
 
 		$attendances = FingerprintAttendance::where('date', $date)
 			->get()
 			->toArray();
 
 		if (empty($attendances)) {
-			return view('hr::admin.dailyAttendances.set_attendance', compact('employees', 'leave_categories', 'date'));
+			return [$employees, $leave_categories, $date];
         }
-        // var_dump("pppp");
-        return view('hr::admin.dailyAttendances.set_attendance', compact('employees', 'leave_categories', 'date'));
-
-		// return view('hr::admin.dailyAttendances.edit_attendance', compact('employees', 'leave_categories', 'date', 'attendances'));
+        return [$employees, $leave_categories, $date];
     }
 
     public function timeSet(Request $request) {

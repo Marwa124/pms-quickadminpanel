@@ -29,10 +29,6 @@ class StoreVacationRequest extends FormRequest
                 'required',
                 'date_format:' . config('panel.date_format'),
             ],
-            'location'   => [
-                'string',
-                'nullable',
-            ],
             'color'      => [
                 'string',
                 'nullable',

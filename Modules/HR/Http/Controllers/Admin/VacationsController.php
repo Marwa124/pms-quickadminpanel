@@ -39,6 +39,10 @@ class VacationsController extends Controller
     public function store(StoreVacationRequest $request)
     {
         $vacation = Vacation::create($request->all());
+        
+        if ($request->input('attachments', false)) {
+            $vacation->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
+        }
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $vacation->id]);

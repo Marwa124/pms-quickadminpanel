@@ -15,6 +15,8 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 
+// use App\Models\AccountDetail;
+
 class User extends Authenticatable implements HasMedia
 {
     use SoftDeletes, Notifiable, HasApiTokens, HasMediaTrait;
@@ -86,9 +88,10 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
-    public function userAccountDetails()
+    public function userAccountDetail()
     {
-        return $this->hasMany(AccountDetail::class, 'user_id', 'id');
+        // return $this->hasMany(AccountDetail::class, 'user_id', 'id');
+        return $this->hasOne(AccountDetail::class);
     }
 
     public function userTrainings()
