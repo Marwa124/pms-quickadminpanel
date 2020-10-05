@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use \DateTimeInterface;

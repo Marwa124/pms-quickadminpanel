@@ -24,13 +24,30 @@ class DailyAttendancesController extends Controller
     public function index(Request $request)
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        if ($request['day'] != '') {
-            $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get();
-            // return redirect()->route('hr.admin.daily-attendances.index')->with('fingerprintAttendances', $fingerprintAttendances);
-            return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
+        $date = $request->date;
+        if ($request['date'] != '') {
+            $fingerprintAttendances = [];
+            $data_value = FingerprintAttendance::where('date', $request['date'])->get();
+
+            $users = User::select('id')->get();
+            foreach ($users as $key => $user) {
+                $result = [];
+                if ($data_value->where('user_id', $user->id)->first() != null) {
+                    $result['id'] = $data_value->where('user_id', $user->id)->first()->user->userAccountDetail->employment_id;
+                    $result['name'] = $data_value->where('user_id', $user->id)->first()->user->userAccountDetail->fullname;
+                    $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time');
+                    $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time');
+                    $result['absent'] = '';
+                    $result['vacation'] = '';
+                    $result['holiday'] = '';
+                }
+                $fingerprintAttendances[] = $result;
+            }
+
+            return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date', 'x'));
         }
-        $fingerprintAttendances = [];
-        return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
+        $fingerprintAttendances = []; $x =[];
+        return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date', 'x'));
     }
 
     public function set_attendance(Request $request)

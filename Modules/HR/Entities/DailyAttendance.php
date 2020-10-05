@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
+use App\Models\User;
+
 class DailyAttendance extends Model
 {
     use SoftDeletes;
