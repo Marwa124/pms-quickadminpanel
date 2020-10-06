@@ -18,6 +18,7 @@ class HRDatabaseSeeder extends Seeder
 
         $this->call([
             FingerprintAttendancesTableSeeder::class,
+            WorkingDaysTableSeeder::class,
         ]);
     }
 }

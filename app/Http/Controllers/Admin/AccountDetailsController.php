@@ -44,6 +44,7 @@ class AccountDetailsController extends Controller
 
     public function store(StoreAccountDetailRequest $request)
     {
+        $request->employment_id = rand(1, 199);
         $accountDetail = AccountDetail::create($request->all());
 
         if ($request->input('avatar', false)) {

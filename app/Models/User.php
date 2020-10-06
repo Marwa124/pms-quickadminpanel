@@ -14,6 +14,9 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Modules\HR\Entities\Absence;
+use Modules\HR\Entities\Holiday;
+use Modules\HR\Entities\Vacation;
 
 // use App\Models\AccountDetail;
 
@@ -78,6 +81,7 @@ class User extends Authenticatable implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
+    /* !!!: Relations */
     public function departmentHeadDepartments()
     {
         return $this->hasMany(Department::class, 'department_head_id', 'id');
@@ -88,11 +92,25 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
-    public function userAccountDetail()
+    public function accountDetail()
     {
-        // return $this->hasMany(AccountDetail::class, 'user_id', 'id');
-        return $this->hasOne(AccountDetail::class);
+        return $this->hasOne(AccountDetail::class, 'user_id', 'id');
     }
+
+    // public function absences()
+    // {
+    //     return $this->hasMany(Absence::class, 'user_id', 'id');
+    // }
+
+    // public function holidays()
+    // {
+    //     return $this->hasMany(Holiday::class, 'user_id', 'id');
+    // }
+
+    // public function vacations()
+    // {
+    //     return $this->hasMany(Vacation::class, 'user_id', 'id');
+    // }
 
     public function userTrainings()
     {

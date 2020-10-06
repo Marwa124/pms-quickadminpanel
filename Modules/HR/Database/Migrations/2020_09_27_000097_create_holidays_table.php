@@ -18,4 +18,9 @@ class CreateHolidaysTable extends Migration
             $table->softDeletes();
         });
     }
+
+    public function down()
+    {
+        Schema::dropIfExists('holidays');
+    }
 }

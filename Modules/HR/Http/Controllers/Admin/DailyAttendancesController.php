@@ -25,65 +25,28 @@ class DailyAttendancesController extends Controller
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $date = $request->date;
-        if ($request['date'] != '') {
-            $fingerprintAttendances = FingerprintAttendance::where('date', $request['date'])->get();
+        if ($request['date'] == '') {
+            $date = date('Y-m-d');
+        }
+
+            $fingerprintAttendances = [];
+            $data_value = FingerprintAttendance::where('date', $date)->get();
+
+            $users = User::where('banned', 0)->select('id')->get();
+            foreach ($users as $key => $user) {
+                $result = [];
+                $result['user_account_id'] = $user->accountDetail->id;
+                $result['id'] = $user->accountDetail->employment_id;
+                $result['name'] = $user->accountDetail->fullname;
+                $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time') ?? '-';
+                $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time') ?? '-';
+                $result['absent'] = getAbsentUsers($date, $user->id);
+                $result['vacation'] = getVacations($date, $user->id);
+                $result['holiday'] = getHolidays($date);
+                $fingerprintAttendances[] = $result;
+            }
+
             return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date'));
-        }
-        $fingerprintAttendances = FingerprintAttendance::all();
-
-        return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date'));
-    }
-
-    public function set_attendance($date)
-    {
-		$attendance_day = date("D", strtotime($date));
-
-		$weekly_holidays = WorkingDay::where('working_status', 0)
-			->get(['day'])
-			->toArray();
-
-		$monthly_holidays = Holiday::whereDate('start_date', '<=', $date)
-            ->whereDate('end_date', '>=', $date)
-            ->first(['start_date', 'end_date']);
-
-		if ($monthly_holidays['date'] == $date) {
-			return redirect()->back()->with('exception', 'You select a holiday !');
-		}
-
-		foreach ($weekly_holidays as $weekly_holiday) {
-			if ($attendance_day == $weekly_holiday['day']) {
-				return redirect()->back()->with('exception', 'You select a holiday !');
-			}
-		}
-
-		// $employees = AccountDetail::query()
-		// 	->leftjoin('designations as designations', 'account_details.designation_id', '=', 'designations.id')
-		// 	->orderBy('account_details.fullname', 'ASC')
-		// 	// ->where('account_details.access_label', '>=', 2)
-		// 	// ->where('account_details.access_label', '<=', 3)
-		// 	->get(['designations.designation_name', 'account_details.fullname', 'account_details.id'])
-        //     ->toArray();
-
-            $employees = AccountDetail::with('designation')
-            // ->get(['account_details.fullname', 'account_details.id'])
-            // ->select('designation.designation_name', 'account_details.fullname', 'account_details.id')
-            ->get()
-            ->toArray();
-            // dd($employees);
-
-		$leave_categories = LeaveCategory::get()
-			->where('deleted_at', null)
-			->toArray();
-		$date = $date;
-
-		$attendances = FingerprintAttendance::where('date', $date)
-			->get()
-			->toArray();
-
-		if (empty($attendances)) {
-			return [$employees, $leave_categories, $date];
-        }
-        return [$employees, $leave_categories, $date];
     }
 
     public function timeSet(Request $request) {

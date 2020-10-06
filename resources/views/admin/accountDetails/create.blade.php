@@ -9,6 +9,8 @@
     <div class="card-body">
         <form method="POST" action="{{ route("admin.account-details.store") }}" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="employment_id">
+
             <div class="form-group">
                 <label class="required" for="user_id">{{ trans('cruds.accountDetail.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>

@@ -9,6 +9,6 @@
         "Modules\\HR\\Providers\\RouteServiceProvider"
     ],
     "aliases": {},
-    "files": [],
+    "files": ["Http/helper.php"],
     "requires": []
 }

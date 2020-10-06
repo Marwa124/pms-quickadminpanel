@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\SetTime;
 
 class AccountDetail extends Model implements HasMedia
 {
@@ -76,13 +77,9 @@ class AccountDetail extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
+        'employment_id'
     ];
-
-    public function setTime()
-    {
-        return $this->belongsTo(SetTime::class, 'set_time_id');
-    }
-
+   
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -102,6 +99,11 @@ class AccountDetail extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function setTime()
+    {
+        return $this->belongsTo(SetTime::class, 'set_time_id');
     }
 
     public function designation()
