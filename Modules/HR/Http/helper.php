@@ -12,7 +12,7 @@ function getAbsentUsers($date, $user_id)
 {
     $data_value = FingerprintAttendance::where('date', $date)->where('user_id', $user_id)->first();
     $userAbsent = Absence::where('user_id', $user_id)->where('date', $date)->first();
-        
+
 
     if(!$data_value && $date < date('Y-m-d')){
         if(!$userAbsent && !weekEnds($date))
@@ -34,13 +34,13 @@ function getHolidays($date)
 {
     // return weekEnds($date) ? 0 : Holiday::where('start_date','<=' , $date)->where('end_date', '>=', $date)->get();
     $result = Holiday::where('start_date','<=' , $date)->where('end_date', '>=', $date)->first();
-    return ($result) ? 1 : 0; 
+    return ($result) ? 1 : 0;
 }
 
 function getVacations($date, $user_id)
 {
     $result = Vacation::where('user_id', $user_id)->where('start_date', '<=', $date)->where('end_date', '>=', $date)->first();
-    return ($result) ? 1 : 0; 
+    return ($result) ? 1 : 0;
 
     // weekEnds($date) ?? $result;
     // return $result;
@@ -54,19 +54,16 @@ function weekEnds($day)
 
 function getDateRange($date)
 {
-    $currentMonth = date("Y-m-d", strtotime($date . '-25')) ;
+    $currentMonth = date("Y-m-d", strtotime($date . '-24')) ;
     $carbonDate =  Carbon::createFromFormat('Y-m-d', $currentMonth)->subMonth()->format('Y-m');
     $previousMonth = date("Y-m-d", strtotime($carbonDate . '-25')) ;
-
     $period = CarbonPeriod::create($previousMonth, $currentMonth);
-    dd($period);
     // Iterate over the period
+    $val = [];
     foreach ($period as $date) {
-        echo $date->format('Y-m-d');
+        $val[] = $date->format('Y-m-d');
     }
-    
-    // Convert the period to an array of dates
-    $dates = $period->toArray();
+    return $val;
 }
 
 // function getDatesFromRange($start, $end, $format = 'Y-m-d') {

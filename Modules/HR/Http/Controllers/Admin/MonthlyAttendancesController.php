@@ -20,26 +20,31 @@ class MonthlyAttendancesController extends Controller
         if ($request['date'] == '') {
             $date = date('Y-m');
         }
+        $userRequest = $request->user_id ?? '';
 
-            $monthlyAttendances = [];
-            $data_value = FingerprintAttendance::where('date', 'like', '%' . $date . '%')->get();
-            dd($data_value);
+        // dd(getDateRange('2020-08'));
+        $monthlyAttendances = [];
+        foreach (getDateRange($date) as $key => $value) {
+            $result = [];
+            $data_value = FingerprintAttendance::where('date', $value)->where('user_id', $request->user_id)->get();
+                    // echo "<pre>";
+                    // var_dump($data_value->max('time'));
+            $result['fingerDate'] = $value;
+            $result['clock_in'] = $data_value->min('time');
+            $result['clock_out'] = $data_value->max('time');
+            $result['absent'] = getAbsentUsers($value, $request->user_id);
+            $result['vacation'] = getVacations($value, $request->user_id);
+            $result['holiday'] = getHolidays($value);
+            $monthlyAttendances[] = $result;
+        }
+        // die();
 
-            $users = User::where('banned', 0)->select('id')->get();
-            foreach ($users as $key => $user) {
-                // $result = [];
-                // $result['user_account_id'] = $user->accountDetail->id;
-                // $result['id'] = $user->accountDetail->employment_id;
-                // $result['name'] = $user->accountDetail->fullname;
-                // $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time') ?? '-';
-                // $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time') ?? '-';
-                // $result['absent'] = getAbsentUsers($date, $user->id);
-                // $result['vacation'] = getVacations($date, $user->id);
-                // $result['holiday'] = getHolidays($date);
-                // $fingerprintAttendances[] = $result;
-            }
-
-            return view('hr::admin.monthlyAttendances.index', compact('monthlyAttendances', 'date'));
+        $users = User::where('banned', 0)->select('id')->get();
+        $userAccounts = [];
+        foreach ($users as $key => $user) {
+            $userAccounts[] = $user->accountDetail;
+        }
+        return view('hr::admin.monthlyAttendances.index', compact('monthlyAttendances', 'date', 'userAccounts', 'userRequest'));
     }
 
     public function show(MonthlyAttendance $monthlyAttendance)

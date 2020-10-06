@@ -2,6 +2,11 @@
 
 @section('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+<style>
+    .bg-red{
+        background-color: red;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -28,9 +33,27 @@
                             <div class="col-sm-offset-3 col-sm-6">
                                 <div class="input-group margin">
                                     <div class="nav-link"><i class="fa fa-calendar"></i></div>
-                                    {{-- <input class="form-control date" type="text" name="date" id="datepicker" value="{{$date}}" required> --}}
-                                    
-                                    <input type="text" class="form-control" name="date" id="datepicker" />
+                                    <input type="text" class="form-control" name="date" id="datepicker" value="{{$date}}"/>
+
+
+                                    <div class="nav-link"><i class="fa fa-user"></i></div>
+                                    <?php
+                                    $selected_user = App\Models\User::where('id', $userRequest)->first()->accountDetail->fullname;
+                                    ?>
+                                        <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                                        <option selected disabled >{{ $userRequest ? $selected_user : trans('cruds.monthlyAttendance.fields.select_user') }}</option>
+                                            @foreach($userAccounts as $user)
+                                                <option value="{{ $user->id }}">{{ $user->fullname }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($errors->has('user'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('user') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.clientMeeting.fields.user_helper') }}</span>
+
+
 
                                     <span class="input-group-btn">
                                       <button id="submit-date" type="submit" class="btn btn-info btn-flat"
@@ -53,34 +76,41 @@
   </section>
   <!-- /.content -->
 
+<?php
+// echo "<pre>";
+// var_dump($userNames::all()->userAccountDetail-);
+// die();
+?>
+
     <div class="card-body">
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-MonthlyAttendance">
                 <thead>
                     <tr>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.id') }}
+                            {{ trans('cruds.monthlyAttendance.fields.date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.user') }}
+                            {{ trans('cruds.monthlyAttendance.fields.clock_in') }}
                         </th>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.total_attendance_days') }}
+                            {{ trans('cruds.monthlyAttendance.fields.clock_out') }}
+                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_attendance_days') }} --}}
                         </th>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.total_hours') }}
+                            {{ trans('cruds.monthlyAttendance.fields.absence') }}
+                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_hours') }} --}}
                         </th>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.total_absence') }}
+                            {{ trans('cruds.monthlyAttendance.fields.vacation') }}
+                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_absence') }} --}}
                         </th>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.total_vacation') }}
+                            {{ trans('cruds.monthlyAttendance.fields.holiday') }}
+                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_vacation') }} --}}
                         </th>
                         <th>
-                            {{ trans('cruds.monthlyAttendance.fields.holidays') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.monthlyAttendance.fields.created_month') }}
+                            {{ trans('cruds.monthlyAttendance.fields.leave_request') }}
                         </th>
                     </tr>
                 </thead>
@@ -88,34 +118,31 @@
                     @foreach($monthlyAttendances as $key => $monthlyAttendance)
                     <?php
         // echo "<pre>";
-        //     var_dump($dailyAttendance);
-        //     die();
-        //     var_dump($dailyAttendance->user->userAccountDetail->fullname);
+        //     var_dump($monthlyAttendance[]);
+            // die();
+            // var_dump($dailyAttendance->user->userAccountDetail->fullname);
                     ?>
-                        <tr data-entry-id="{{ $monthlyAttendance->id }}">
+                        <tr>
                             <td>
-                                {{ $monthlyAttendance->id ?? '' }}
+                                {{ $monthlyAttendance['fingerDate'] ?? '' }}
                             </td>
                             <td>
-                                {{ $monthlyAttendance->user->name ?? '' }}
+                                {{ $monthlyAttendance['clock_in'] ?? '' }}
                             </td>
                             <td>
-                                {{ $monthlyAttendance->total_attendance_days ?? '' }}
+                                {{ $monthlyAttendance['clock_out'] ?? '' }}
+                            </td>
+                            <td class="{{ $monthlyAttendance['absent'] ? 'bg-red' : ''  }}">
+                                {{ $monthlyAttendance['absent'] ?? '' }}
                             </td>
                             <td>
-                                {{ $monthlyAttendance->total_hours ?? '' }}
+                                {{ $monthlyAttendance['vacation'] ?? '' }}
                             </td>
                             <td>
-                                {{ $monthlyAttendance->total_absence ?? '' }}
+                                {{ $monthlyAttendance['holiday'] ?? '' }}
                             </td>
                             <td>
-                                {{ $monthlyAttendance->total_vacation ?? '' }}
-                            </td>
-                            <td>
-                                {{ $monthlyAttendance->holidays ?? '' }}
-                            </td>
-                            <td>
-                                {{ $monthlyAttendance->created_month ?? '' }}
+                                {{-- {{ $monthlyAttendance->leave_request ?? '' }} --}}
                             </td>
                         </tr>
                     @endforeach
@@ -140,18 +167,18 @@
     $(function () {
         $("#datepicker").datepicker( {
             format: "yyyy-mm",
-            startView: "months", 
+            startView: "months",
             minViewMode: "months"
         });
-        
+
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-  
+
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,
   });
-  let table = $('.datatable-MonthlyAttendance:not(.ajaxTable)').DataTable({ 
+  let table = $('.datatable-MonthlyAttendance:not(.ajaxTable)').DataTable({
     "buttons": [
        { "extend": 'pdf', "text":'PDF',"className": 'btn btn-default' },
        { "extend": 'csv', "text":'CSV',"className": 'btn btn-default' },
@@ -172,7 +199,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>
