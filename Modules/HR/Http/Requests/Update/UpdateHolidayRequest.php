@@ -29,10 +29,6 @@ class UpdateHolidayRequest extends FormRequest
                 'required',
                 'date_format:' . config('panel.date_format'),
             ],
-            'user_id'    => [
-                'required',
-                'integer',
-            ],
         ];
     }
 }

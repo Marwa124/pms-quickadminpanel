@@ -272,4 +272,11 @@ return [
     'team-members'                         => 'Team members',
     'calendar'                             => 'Calendar',
     'messenger'                            => 'Messenger',
+    'Thursday'                             => 'Thursday',
+    'Wednesday'                            => 'Wednesday',
+    'Sunday'                               => 'Sunday',
+    'Tuesday'                              => 'Tuesday',
+    'Monday'                               => 'Monday',
+    'Friday'                               => 'Friday',
+    'Saturday'                             => 'Saturday',
 ];

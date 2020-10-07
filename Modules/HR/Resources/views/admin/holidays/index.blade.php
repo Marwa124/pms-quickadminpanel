@@ -3,7 +3,7 @@
 @can('holiday_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.holidays.create') }}">
+            <a class="btn btn-success" href="{{ route('hr.admin.holidays.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.holiday.title_singular') }}
             </a>
         </div>
@@ -37,9 +37,6 @@
                         {{ trans('cruds.holiday.fields.end_date') }}
                     </th>
                     <th>
-                        {{ trans('cruds.holiday.fields.user') }}
-                    </th>
-                    <th>
                         &nbsp;
                     </th>
                 </tr>
@@ -60,7 +57,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.holidays.massDestroy') }}",
+    url: "{{ route('hr.admin.holidays.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
@@ -92,7 +89,7 @@
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    ajax: "{{ route('admin.holidays.index') }}",
+    ajax: "{{ route('hr.admin.holidays.index') }}",
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
@@ -100,7 +97,6 @@
 { data: 'description', name: 'description' },
 { data: 'start_date', name: 'start_date' },
 { data: 'end_date', name: 'end_date' },
-{ data: 'user_name', name: 'user.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,

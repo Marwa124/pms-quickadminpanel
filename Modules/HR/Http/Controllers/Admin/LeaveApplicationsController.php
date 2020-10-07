@@ -55,8 +55,16 @@ class LeaveApplicationsController extends Controller
             $table->addColumn('leave_category_name', function ($row) {
                 return $row->leave_category ? $row->leave_category->name : '';
             });
+            $table->editColumn('hours', function ($row) {
+                return $row->hours ? $row->hours : "";
+            });
+            $table->editColumn('leave_start_date', function ($row) {
+                return $row->leave_start_date ? $row->leave_start_date : "";
+            });
+            $table->editColumn('leave_end_date', function ($row) {
+                return $row->leave_end_date ? $row->leave_end_date : "";
+            });
 
-            // return $table->make(true);
             $table->editColumn('leave_type', function ($row) {
                 return $row->leave_type ? LeaveApplication::LEAVE_TYPE_SELECT[$row->leave_type] : '';
             });
@@ -64,7 +72,12 @@ class LeaveApplicationsController extends Controller
                 return $row->hours ? $row->hours : "";
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'leave_category']);
+            $table->addColumn('user_name', function ($row) {
+                // dd($row->user->accountDetail->fullname);
+                return $row->user->accountDetail->fullname ?? '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'leave_category', 'user']);
 
             return $table->make(true);
         }
@@ -102,10 +115,9 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::where('banned', 0)->get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $leaveApplication->load('user', 'leave_category');
 
         return view('hr::admin.leaveApplications.edit', compact('users', 'leave_categories', 'leaveApplication'));

@@ -7,6 +7,7 @@ use App\Models\User;
 use Modules\HR\Entities\MonthlyAttendance;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use Modules\HR\Entities\FingerprintAttendance;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,22 +23,25 @@ class MonthlyAttendancesController extends Controller
         }
         $userRequest = $request->user_id ?? '';
 
-        // dd(getDateRange('2020-08'));
         $monthlyAttendances = [];
-        foreach (getDateRange($date) as $key => $value) {
-            $result = [];
-            $data_value = FingerprintAttendance::where('date', $value)->where('user_id', $request->user_id)->get();
-                    // echo "<pre>";
-                    // var_dump($data_value->max('time'));
-            $result['fingerDate'] = $value;
-            $result['clock_in'] = $data_value->min('time');
-            $result['clock_out'] = $data_value->max('time');
-            $result['absent'] = getAbsentUsers($value, $request->user_id);
-            $result['vacation'] = getVacations($value, $request->user_id);
-            $result['holiday'] = getHolidays($value);
-            $monthlyAttendances[] = $result;
+        if ($request->user_id != '') {
+            foreach (getDateRange($date) as $key => $value) {
+                $result = [];
+                $data_value = FingerprintAttendance::where('date', $value)->where('user_id', $request->user_id)->get();
+                $result['fingerDate'] = $value;
+                // $result['dateName'] = trans('global.' . date('l', strtotime($value)));
+                $result['dateName'] = (Lang::getLocale() == 'en') ? date('l', strtotime($value)) : getArabicDayName($value);
+                $result['clock_in'] = $data_value->min('time');
+                $result['clock_out'] = $data_value->max('time');
+                $result['absent'] = getAbsentUsers($value, $request->user_id);
+                $result['vacation'] = getVacations($value, $request->user_id);
+                $result['holiday'] = getHolidays($value);
+                $result['leave_request'] = getHolidays($value) ? 0 : getUserLeaves($value, $request->user_id);
+                $result['weekEnd'] = weekEnds($value);
+                
+                $monthlyAttendances[] = $result;
+            }
         }
-        // die();
 
         $users = User::where('banned', 0)->select('id')->get();
         $userAccounts = [];

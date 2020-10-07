@@ -111,16 +111,6 @@
                 <span class="help-block">{{ trans('cruds.leaveApplication.fields.application_status_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="view_status">{{ trans('cruds.leaveApplication.fields.view_status') }}</label>
-                <input class="form-control {{ $errors->has('view_status') ? 'is-invalid' : '' }}" type="number" name="view_status" id="view_status" value="{{ old('view_status', $leaveApplication->view_status) }}" step="1">
-                @if($errors->has('view_status'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('view_status') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.leaveApplication.fields.view_status_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <label for="attachments">{{ trans('cruds.leaveApplication.fields.attachments') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('attachments') ? 'is-invalid' : '' }}" id="attachments-dropzone">
                 </div>
@@ -140,16 +130,6 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.leaveApplication.fields.comments_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="approved_by">{{ trans('cruds.leaveApplication.fields.approved_by') }}</label>
-                <input class="form-control {{ $errors->has('approved_by') ? 'is-invalid' : '' }}" type="text" name="approved_by" id="approved_by" value="{{ old('approved_by', $leaveApplication->approved_by) }}">
-                @if($errors->has('approved_by'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('approved_by') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.leaveApplication.fields.approved_by_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

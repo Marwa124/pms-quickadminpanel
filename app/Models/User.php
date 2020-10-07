@@ -15,7 +15,6 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\Absence;
-use Modules\HR\Entities\Holiday;
 use Modules\HR\Entities\Vacation;
 
 // use App\Models\AccountDetail;
@@ -100,11 +99,6 @@ class User extends Authenticatable implements HasMedia
     // public function absences()
     // {
     //     return $this->hasMany(Absence::class, 'user_id', 'id');
-    // }
-
-    // public function holidays()
-    // {
-    //     return $this->hasMany(Holiday::class, 'user_id', 'id');
     // }
 
     // public function vacations()

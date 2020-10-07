@@ -38,12 +38,14 @@
 
                                     <div class="nav-link"><i class="fa fa-user"></i></div>
                                     <?php
-                                    $selected_user = App\Models\User::where('id', $userRequest)->first()->accountDetail->fullname;
+                                    if ($userRequest != '') {
+                                        $selected_user = App\Models\User::where('id', $userRequest)->first()->accountDetail->fullname;
+                                        }
                                     ?>
                                         <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                                         <option selected disabled >{{ $userRequest ? $selected_user : trans('cruds.monthlyAttendance.fields.select_user') }}</option>
                                             @foreach($userAccounts as $user)
-                                                <option value="{{ $user->id }}">{{ $user->fullname }}</option>
+                                                <option value="{{ $user->id }}" {{ (old('user_id') ? old('user_id') : $user->id ?? '') ? 'selected' : '' }}>{{ $user->fullname }}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('user'))
@@ -122,9 +124,10 @@
             // die();
             // var_dump($dailyAttendance->user->userAccountDetail->fullname);
                     ?>
-                        <tr>
+                        <tr style="{{ $monthlyAttendance['weekEnd'] ? 'background-color:#f9b11599;' : '' }}">
                             <td>
-                                {{ $monthlyAttendance['fingerDate'] ?? '' }}
+                                {{ $monthlyAttendance['fingerDate'] ?? '' }} <br>
+                                {{ $monthlyAttendance['dateName'] ?? '' }}
                             </td>
                             <td>
                                 {{ $monthlyAttendance['clock_in'] ?? '' }}
@@ -142,7 +145,7 @@
                                 {{ $monthlyAttendance['holiday'] ?? '' }}
                             </td>
                             <td>
-                                {{-- {{ $monthlyAttendance->leave_request ?? '' }} --}}
+                                {{ $monthlyAttendance['leave_request'] ?? '' }}
                             </td>
                         </tr>
                     @endforeach

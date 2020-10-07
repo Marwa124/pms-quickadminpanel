@@ -5,6 +5,7 @@ use Carbon\CarbonPeriod;
 use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\Holiday;
+use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\Vacation;
 use Modules\HR\Entities\WorkingDay;
 
@@ -13,9 +14,8 @@ function getAbsentUsers($date, $user_id)
     $data_value = FingerprintAttendance::where('date', $date)->where('user_id', $user_id)->first();
     $userAbsent = Absence::where('user_id', $user_id)->where('date', $date)->first();
 
-
-    if(!$data_value && $date < date('Y-m-d')){
-        if(!$userAbsent && !weekEnds($date))
+    if(!$data_value && $date < date('Y-m-d') && !weekEnds($date)){
+        if(!$userAbsent)
         {
             $result = new Absence();
             $result->date = $date;
@@ -30,9 +30,14 @@ function getAbsentUsers($date, $user_id)
     }
 }
 
+function getUserLeaves($date, $user_id)
+{
+    $leavesApp = LeaveApplication::where('user_id', $user_id)->where('leave_start_date', '<=', $date)->where('leave_end_date', '>=', $date)->first();
+    return ($leavesApp) ? 1 : 0;
+}
+
 function getHolidays($date)
 {
-    // return weekEnds($date) ? 0 : Holiday::where('start_date','<=' , $date)->where('end_date', '>=', $date)->get();
     $result = Holiday::where('start_date','<=' , $date)->where('end_date', '>=', $date)->first();
     return ($result) ? 1 : 0;
 }
@@ -41,9 +46,6 @@ function getVacations($date, $user_id)
 {
     $result = Vacation::where('user_id', $user_id)->where('start_date', '<=', $date)->where('end_date', '>=', $date)->first();
     return ($result) ? 1 : 0;
-
-    // weekEnds($date) ?? $result;
-    // return $result;
 }
 
 function weekEnds($day)
@@ -66,20 +68,30 @@ function getDateRange($date)
     return $val;
 }
 
-// function getDatesFromRange($start, $end, $format = 'Y-m-d') {
-//     $array = array();
-//     $interval = new DateInterval('P1D');
-
-//     $realEnd = new DateTime($end);
-//     $realEnd->add($interval);
-
-//     $period = new DatePeriod(new DateTime($start), $interval, $realEnd);
-
-//     foreach($period as $date) {
-//         $array[] = $date->format($format);
-//     }
-
-//     return $array;
-// }
-
-
+function getArabicDayName($day)
+{
+    $dayName = date('l', strtotime($day));
+    switch ($dayName) {
+        case 'Saturday':
+            return 'السبت';
+            break;
+        case 'Monday':
+            return 'الأثنين';
+            break;
+        case 'Tuesday':
+            return 'الثلاثاء';
+            break;
+        case 'Wednesday':
+            return 'الاربعاء';
+            break;
+        case 'Thursday':
+            return 'الخميس';
+            break;
+        case 'Friday':
+            return 'الجمعة';
+            break;
+        case 'Sunday':
+            return 'الأحد';
+            break;
+    }
+}

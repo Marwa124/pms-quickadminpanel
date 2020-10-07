@@ -271,4 +271,11 @@ return [
     'team-members'                         => 'اعضاء الفريق',
     'calendar'                             => 'الرزنامة',
     'messenger'                            => 'مراسل',
+    'Thursday'                             => 'الخميس',
+    'Wednesday'                            => 'الاربعاء',
+    'Sunday'                               => 'الأحد',
+    'Tuesday'                              => 'الثلاثاء',
+    'Monday'                               => 'الأثنين',
+    'Friday'                               => 'الجمعة',
+    'Saturday'                             => 'السبت',
 ];

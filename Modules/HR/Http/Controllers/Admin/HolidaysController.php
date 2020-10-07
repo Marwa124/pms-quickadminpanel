@@ -20,7 +20,7 @@ class HolidaysController extends Controller
         abort_if(Gate::denies('holiday_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = Holiday::with(['user'])->select(sprintf('%s.*', (new Holiday)->table));
+            $query = Holiday::select(sprintf('%s.*', (new Holiday)->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -30,12 +30,14 @@ class HolidaysController extends Controller
                 $viewGate      = 'holiday_show';
                 $editGate      = 'holiday_edit';
                 $deleteGate    = 'holiday_delete';
+                $modalId       = 'hr.';
                 $crudRoutePart = 'holidays';
 
                 return view('partials.datatablesActions', compact(
                     'viewGate',
                     'editGate',
                     'deleteGate',
+                    'modalId',
                     'crudRoutePart',
                     'row'
                 ));
@@ -51,59 +53,47 @@ class HolidaysController extends Controller
                 return $row->description ? $row->description : "";
             });
 
-            $table->addColumn('user_name', function ($row) {
-                return $row->user ? $row->user->name : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder', 'user']);
+            $table->rawColumns(['actions', 'placeholder']);
 
             return $table->make(true);
         }
 
-        return view('admin.holidays.index');
+        return view('hr::admin.holidays.index');
     }
 
     public function create()
     {
         abort_if(Gate::denies('holiday_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('admin.holidays.create', compact('users'));
+        return view('hr::admin.holidays.create');
     }
 
     public function store(StoreHolidayRequest $request)
     {
         $holiday = Holiday::create($request->all());
 
-        return redirect()->route('admin.holidays.index');
+        return redirect()->route('hr.admin.holidays.index');
     }
 
     public function edit(Holiday $holiday)
     {
         abort_if(Gate::denies('holiday_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $holiday->load('user');
-
-        return view('admin.holidays.edit', compact('users', 'holiday'));
+        return view('hr::admin.holidays.edit', compact('users', 'holiday'));
     }
 
     public function update(UpdateHolidayRequest $request, Holiday $holiday)
     {
         $holiday->update($request->all());
 
-        return redirect()->route('admin.holidays.index');
+        return redirect()->route('hr.admin.holidays.index');
     }
 
     public function show(Holiday $holiday)
     {
         abort_if(Gate::denies('holiday_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $holiday->load('user');
-
-        return view('admin.holidays.show', compact('holiday'));
+        return view('hr::admin.holidays.show', compact('holiday'));
     }
 
     public function destroy(Holiday $holiday)

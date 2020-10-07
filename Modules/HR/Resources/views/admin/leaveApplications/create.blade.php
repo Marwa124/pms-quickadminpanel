@@ -94,16 +94,6 @@
                 <span class="help-block">{{ trans('cruds.leaveApplication.fields.leave_end_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="view_status">{{ trans('cruds.leaveApplication.fields.view_status') }}</label>
-                <input class="form-control {{ $errors->has('view_status') ? 'is-invalid' : '' }}" type="number" name="view_status" id="view_status" value="{{ old('view_status', '') }}" step="1">
-                @if($errors->has('view_status'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('view_status') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.leaveApplication.fields.view_status_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <label for="attachments">{{ trans('cruds.leaveApplication.fields.attachments') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('attachments') ? 'is-invalid' : '' }}" id="attachments-dropzone">
                 </div>

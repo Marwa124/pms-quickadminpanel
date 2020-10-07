@@ -25,6 +25,9 @@
                         {{ trans('cruds.leaveApplication.fields.id') }}
                     </th>
                     <th>
+                        {{ trans('cruds.leaveApplication.fields.user_name') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.leaveApplication.fields.leave_category') }}
                     </th>
                     <th>
@@ -96,6 +99,7 @@
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
+{ data: 'user_name', name: 'user_name' },
 { data: 'leave_category_name', name: 'leave_category.name' },
 { data: 'leave_type', name: 'leave_type' },
 { data: 'hours', name: 'hours' },
