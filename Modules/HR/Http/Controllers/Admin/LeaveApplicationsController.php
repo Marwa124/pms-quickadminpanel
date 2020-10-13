@@ -12,6 +12,8 @@ use Modules\HR\Entities\LeaveCategory;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Modules\HR\Emails\LeaveRequest;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -106,6 +108,11 @@ class LeaveApplicationsController extends Controller
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
+        }
+
+        foreach (['marwa120640@gmail.com'] as $recipient) {
+            Mail::to($recipient)->cc("marwa120640@gmail.com")
+                ->send(new LeaveRequest($leaveApplication));
         }
 
         return redirect()->route('hr.admin.leave-applications.index');

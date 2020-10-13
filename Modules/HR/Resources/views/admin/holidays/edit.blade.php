@@ -51,6 +51,16 @@
                 <span class="help-block">{{ trans('cruds.holiday.fields.end_date_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="color">{{ trans('cruds.vacation.fields.color') }}</label>
+                <input class="form-control {{ $errors->has('color') ? 'is-invalid' : '' }}" type="text" name="color" id="color" value="{{ old('color', $vacation->color) }}">
+                @if($errors->has('color'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('color') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.vacation.fields.color_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

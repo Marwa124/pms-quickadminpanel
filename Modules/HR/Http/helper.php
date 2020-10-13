@@ -14,9 +14,10 @@ function getAbsentUsers($date, $user_id)
     $data_value = FingerprintAttendance::where('date', $date)->where('user_id', $user_id)->first();
     $userAbsent = Absence::where('user_id', $user_id)->where('date', $date)->first();
 
-    if(!$data_value && $date < date('Y-m-d') && !weekEnds($date)){
+    if(!$data_value && $date < date('Y-m-d') && !weekEnds($date) && !getVacations($date, $user_id) && !getHolidays($date)){
         if(!$userAbsent)
         {
+            // dd('ppppmmm');
             $result = new Absence();
             $result->date = $date;
             $result->user_id = $user_id;
@@ -45,7 +46,7 @@ function getHolidays($date)
 function getVacations($date, $user_id)
 {
     $result = Vacation::where('user_id', $user_id)->where('start_date', '<=', $date)->where('end_date', '>=', $date)->first();
-    return ($result) ? 1 : 0;
+    return ($result && !getHolidays($date)) ? 1 : 0;
 }
 
 function weekEnds($day)
