@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-<h1>{{$details['leave_type']}}</h1>
-<h1>{{$details['leave_category_id ']}}</h1>
+<h1>{{$details[0]['leave_type']}}</h1>
+<h1>{{$details[0]['leave_category_id ']}}</h1>
 </body>
 </html>

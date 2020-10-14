@@ -109,11 +109,16 @@ class LeaveApplicationsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
         }
-
-        foreach (['marwa120640@gmail.com'] as $recipient) {
-            Mail::to($recipient)->cc("marwa120640@gmail.com")
+        // User::find($request->user_id)
+        $leaveApplication['email'] = User::find($request->user_id)->email;
+        // dd(new LeaveRequest($leaveApplication));
+        Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
                 ->send(new LeaveRequest($leaveApplication));
-        }
+
+        // foreach (['marwa120640@gmail.com'] as $recipient) {
+        //     Mail::to($recipient)->cc("marwa120640@gmail.com")
+        //         ->send(new LeaveRequest($leaveApplication));
+        // }
 
         return redirect()->route('hr.admin.leave-applications.index');
     }
