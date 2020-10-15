@@ -7,7 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-<h1>{{$details[0]['leave_type']}}</h1>
-<h1>{{$details[0]['leave_category_id ']}}</h1>
+    <?php 
+    // dd($details . "gfjgfh");
+    
+    ?>
+<h4>Leave Type: <span>{{$details['leave_type']}}</span></h4>
+<h4>Leave start date: <span>{{$details['leave_start_date']}}</span></h4>
+@if ($details['leave_end_date'] != null)
+    <h4>Leave end date: <span>{{$details['leave_end_date']}}</span></h4>
+@endif
+@if ($details['hours'] != null)
+    <h4>Leave hours: <span>{{$details['hours']}}</span></h4>
+@endif
+@if ($details['reason'] != null)
+    <h4>Reason: <span>{{$details['reason']}}</span></h4>
+@endif
+<a href="{{route('hr.admin.leave-applications.edit', $details['id'])}}" target="_blank" rel="noopener noreferrer">Edit Leave Request</a>
 </body>
 </html>

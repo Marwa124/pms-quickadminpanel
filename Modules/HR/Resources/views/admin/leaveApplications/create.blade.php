@@ -65,7 +65,7 @@
             </div>
             <div class="form-group">
                 <label for="hours">{{ trans('cruds.leaveApplication.fields.hours') }}</label>
-                <input class="form-control {{ $errors->has('hours') ? 'is-invalid' : '' }}" type="text" name="hours" id="hours" value="{{ old('hours', '') }}">
+                <input class="form-control {{ $errors->has('hours') ? 'is-invalid' : '' }}" type="number" name="hours" id="hours" value="{{ old('hours', '') }}">
                 @if($errors->has('hours'))
                     <div class="invalid-feedback">
                         {{ $errors->first('hours') }}

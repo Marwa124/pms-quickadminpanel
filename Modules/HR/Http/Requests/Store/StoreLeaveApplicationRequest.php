@@ -29,7 +29,7 @@ class StoreLeaveApplicationRequest extends FormRequest
                 'required',
             ],
             'hours'             => [
-                'string',
+                'integer',
                 'nullable',
             ],
             'leave_start_date'  => [

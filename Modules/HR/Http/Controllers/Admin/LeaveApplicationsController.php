@@ -4,6 +4,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\AccountDetail;
 use Modules\HR\Http\Requests\Destroy\MassDestroyLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Store\StoreLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Update\UpdateLeaveApplicationRequest;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Modules\HR\Emails\LeaveRequest;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,7 +93,8 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -100,26 +103,37 @@ class LeaveApplicationsController extends Controller
 
     public function store(StoreLeaveApplicationRequest $request)
     {
-        $leaveApplication = LeaveApplication::create($request->all());
-
-        if ($request->input('attachments', false)) {
-            $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
+        $leaveApplication = new LeaveApplication();
+        if ($request->leave_type == 'single_day') {
+            $leaveApplication->leave_end_date = $request->leave_start_date;
         }
+        if ($request->leave_type == 'multi_days') {
+            $this->validate($request, ['leave_end_date' => 'required'], ['leave_end_date.required' => trans('cruds.leaveApplication.fields.required_end_date')]);
+        }
+        if ($request->leave_type == 'hours') {
+            $this->validate($request, ['hours' => 'required']);
+        }
+        $leaveApplication = LeaveApplication::create($request->all());
+        
+        if ($request->input('attachments', false)) {
+            // Upload::query()->where('uuid', $request->input('attachments'))->first();
+            $leaveApplication->addMedia(storage_path('tmp/uploads/'))->preservingOriginal()->toMediaCollection('attachments');
+        }
+        // $leaveApplication->save();
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
         }
-        // User::find($request->user_id)
-        $leaveApplication['email'] = User::find($request->user_id)->email;
-        // dd(new LeaveRequest($leaveApplication));
+    //     $attachment = \Spatie\MediaLibrary\Models\Media::where('model_type', 'Modules\HR\Entities\LeaveApplication')->where('model_id', $leaveApplication['id'])->first();
+    // dd($attachment);
+        $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
         Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
-                ->send(new LeaveRequest($leaveApplication));
-
+                ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
+        // dd(new LeaveRequest($leaveApplication));
         // foreach (['marwa120640@gmail.com'] as $recipient) {
         //     Mail::to($recipient)->cc("marwa120640@gmail.com")
         //         ->send(new LeaveRequest($leaveApplication));
         // }
-
         return redirect()->route('hr.admin.leave-applications.index');
     }
 
