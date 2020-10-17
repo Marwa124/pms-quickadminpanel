@@ -11,6 +11,9 @@ class CreateMeetingMinutesTable extends Migration
         Schema::create('meeting_minutes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->string('attendees')->nullable();
             $table->string('location')->nullable();
             $table->longText('description')->nullable();

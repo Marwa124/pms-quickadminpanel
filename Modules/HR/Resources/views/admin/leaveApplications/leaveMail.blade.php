@@ -18,6 +18,6 @@
     @if ($details['reason'] != null)
         <h4>Reason: <span>{{$details['reason']}}</span></h4>
     @endif
-    <a href="{{route('hr.admin.leave-applications.edit', $details['id'])}}" target="_blank" rel="noopener noreferrer">Edit Leave Request</a>
+    <a href="{{route('hr.admin.leave-applications.edit', $details['id'])}}" target="_blank" rel="noopener noreferrer">Approve Request</a>
 </body>
 </html>

@@ -11,6 +11,7 @@ trait MediaUploadingTrait
 // Validates file size
         if (request()->has('size')) {
             $this->validate(request(), [
+                // 'file' => 'max:16296',
                 'file' => 'max:' . request()->input('size') * 1024,
             ]);
         }

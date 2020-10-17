@@ -1,7 +1,20 @@
 @extends('layouts.admin')
 @section('content')
 
-@inject('leaveAppModel', 'Modules\HR\Entities\LeaveApplication');
+@inject('leaveAppModel', 'Modules\HR\Entities\LeaveApplication')
+<?php
+    try {
+        $department_head_employee = App\Models\AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->department_head_id;
+        $board_members = Modules\HR\Entities\Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('department_head_id')->get();
+        $arr = [];
+        foreach ($board_members as $member) {
+            $arr[] = $member->department_head_id;
+        }
+        // auth()->user()->id = 11;
+    } catch (\Throwable $th) {
+        dd($th->getMessage());
+    }
+?>
 
 <div class="card">
     <div class="card-header">
@@ -95,15 +108,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.leaveApplication.fields.leave_end_date_helper') }}</span>
             </div>
-            <?php
-                $department_head_employee = App\Models\AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->department_head_id;
-                $board_members = Modules\HR\Entities\Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('department_head_id')->get();
-                $arr = [];
-                foreach ($board_members as $member) {
-                    $arr[] = $member->department_head_id;
-                }
-                auth()->user()->id = 11;
-            ?>
+
             @if (auth()->user()->id != $leaveApplication->user_id)
                 @if ($department_head_employee == auth()->user()->id || in_array(auth()->user()->id, $arr))
                     <div class="form-group">

@@ -111,12 +111,12 @@
 { data: 'leave_end_date', name: 'leave_end_date' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
-    createdRow: (row, data, dataIndex, cells) => {
-        $(cells[6]).css('background-color', data.status_color)
-    },
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,
+    createdRow: (row, data, dataIndex, cells) => {
+        $(cells[6]).css('background-color', data.status_color)
+    },
   };
   let table = $('.datatable-LeaveApplication').DataTable(dtOverrideGlobals);
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){

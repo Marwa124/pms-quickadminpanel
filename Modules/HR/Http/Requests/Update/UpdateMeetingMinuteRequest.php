@@ -25,6 +25,14 @@ class UpdateMeetingMinuteRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'start_date'  => [
+                'required',
+                'date_format:' . config('panel.date_time_format'),
+            ],
+            'end_date'    => [
+                'date_format:' . config('panel.date_time_format'),
+                'required',
+            ],
             'location' => [
                 'string',
                 'nullable',

@@ -4,6 +4,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 
 use Modules\HR\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\AccountDetail;
 use Modules\HR\Http\Requests\Destroy\MassDestroyMeetingMinuteRequest;
 use Modules\HR\Http\Requests\Store\StoreMeetingMinuteRequest;
 use Modules\HR\Http\Requests\Update\UpdateMeetingMinuteRequest;
@@ -24,45 +25,49 @@ class MeetingMinutesController extends Controller
 
         $meetingMinutes = MeetingMinute::all();
 
-        return view('admin.meetingMinutes.index', compact('meetingMinutes'));
+        return view('hr::admin.meetingMinutes.index', compact('meetingMinutes'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('meeting_minute_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.meetingMinutes.create', compact('users'));
+        return view('hr::admin.meetingMinutes.create', compact('users'));
     }
 
     public function store(StoreMeetingMinuteRequest $request)
     {
+        // $request->attendees = serialize($request->attendees);
+        // $v = serialize($request->attendees);
+        // unserialize($v);
+        // dd(implode(',', $request->attendees));
         $meetingMinute = MeetingMinute::create($request->all());
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $meetingMinute->id]);
         }
 
-        return redirect()->route('admin.meeting-minutes.index');
+        return redirect()->route('hr.admin.meeting-minutes.index');
     }
 
     public function edit(MeetingMinute $meetingMinute)
     {
         abort_if(Gate::denies('meeting_minute_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $meetingMinute->load('user');
 
-        return view('admin.meetingMinutes.edit', compact('users', 'meetingMinute'));
+        return view('hr::admin.meetingMinutes.edit', compact('users', 'meetingMinute'));
     }
 
     public function update(UpdateMeetingMinuteRequest $request, MeetingMinute $meetingMinute)
     {
         $meetingMinute->update($request->all());
 
-        return redirect()->route('admin.meeting-minutes.index');
+        return redirect()->route('hr.admin.meeting-minutes.index');
     }
 
     public function show(MeetingMinute $meetingMinute)
@@ -71,7 +76,7 @@ class MeetingMinutesController extends Controller
 
         $meetingMinute->load('user');
 
-        return view('admin.meetingMinutes.show', compact('meetingMinute'));
+        return view('hr::admin.meetingMinutes.show', compact('meetingMinute'));
     }
 
     public function destroy(MeetingMinute $meetingMinute)

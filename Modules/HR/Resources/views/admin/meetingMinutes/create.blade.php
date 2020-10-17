@@ -1,16 +1,18 @@
 @extends('layouts.admin')
 @section('content')
 
+@inject('meetingMinuteModel', 'Modules\HR\Entities\MeetingMinute')
+
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.meetingMinute.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.meeting-minutes.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.meeting-minutes.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.meetingMinute.fields.user') }}</label>
+                <label class="required" for="user_id">{{ trans('cruds.meetingMinute.fields.responsible') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                     @foreach($users as $id => $user)
                         <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
@@ -35,10 +37,9 @@
             </div>
             <div class="form-group">
                 <label>{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
-                <select class="form-control {{ $errors->has('attendees') ? 'is-invalid' : '' }}" name="attendees" id="attendees">
-                    <option value disabled {{ old('attendees', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\MeetingMinute::ATTENDEES_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('attendees', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                <select class="form-control" name="attendees[]" id="attendees" multiple="multiple">
+                    @foreach($users as $key => $label)
+                        <option value="{{ $key }}" {{ old('attendees') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('attendees'))
@@ -47,6 +48,26 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.meetingMinute.fields.attendees_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="start_date">{{ trans('cruds.meetingMinute.fields.start_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('start_date') ? 'is-invalid' : '' }}" type="text" name="start_date" id="start_date" value="{{ old('start_date') }}" required>
+                @if($errors->has('start_date'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('start_date') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.meetingMinute.fields.start_date_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="end_date">{{ trans('cruds.meetingMinute.fields.end_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('end_date') ? 'is-invalid' : '' }}" type="text" name="end_date" id="end_date" value="{{ old('end_date') }}" required>
+                @if($errors->has('end_date'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('end_date') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.meetingMinute.fields.end_date_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="location">{{ trans('cruds.meetingMinute.fields.location') }}</label>
@@ -84,6 +105,8 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
+        $('#attendees').select2();
+
   function SimpleUploadAdapter(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
       return {

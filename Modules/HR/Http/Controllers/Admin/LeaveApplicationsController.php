@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Modules\HR\Emails\LeaveRequest;
+use Modules\HR\Entities\Department;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -36,6 +37,7 @@ class LeaveApplicationsController extends Controller
             // dd(LeaveApplication::with(['user', 'leave_category']));
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
+            $table->addColumn('status_color', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
                 $viewGate      = 'leave_application_show';
@@ -69,11 +71,14 @@ class LeaveApplicationsController extends Controller
             $table->editColumn('leave_end_date', function ($row) {
                 return $row->leave_end_date ? $row->leave_end_date : "";
             });
-            $table->editColumn('application_status', function ($row) {
-                // STATUS_COLOR
-                // return $row->application_status ? LeaveApplication::APPLICATION_STATUS_SELECT[$row->application_status] : '';
-                return $row->application_status ? LeaveApplication::STATUS_COLOR[$row->application_status] : '';
+
+            $table->editColumn('status_color', function ($row) {
+                return $row->application_status && LeaveApplication::STATUS_COLOR[$row->application_status] ? LeaveApplication::STATUS_COLOR[$row->application_status] : 'none';
             });
+            $table->editColumn('application_status', function ($row) {
+                return $row->application_status ? LeaveApplication::APPLICATION_STATUS_SELECT[$row->application_status] : '';
+            });
+
             $table->editColumn('leave_type', function ($row) {
                 return $row->leave_type ? LeaveApplication::LEAVE_TYPE_SELECT[$row->leave_type] : '';
             });
@@ -120,6 +125,12 @@ class LeaveApplicationsController extends Controller
 
         if ($request->input('attachments', false)) {
             $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
+
+            // try {
+            //     $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
+            // } catch (\Throwable $th) {
+            //     dd(str_replace('Spatie\MediaLibrary\\', '', get_class($th)));
+            // }
         }
 
         if ($media = $request->input('ck-media', false)) {
@@ -130,6 +141,9 @@ class LeaveApplicationsController extends Controller
         Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
                 ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
         // dd(new LeaveRequest($leaveApplication));
+        // $department_head_employee = AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->email;
+        // $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();
+
         // foreach (['marwa120640@gmail.com'] as $recipient) {
         //     Mail::to($recipient)->cc("marwa120640@gmail.com")
         //         ->send(new LeaveRequest($leaveApplication));
@@ -159,13 +173,7 @@ class LeaveApplicationsController extends Controller
                 if ($leaveApplication->attachments) {
                     $leaveApplication->attachments->delete();
                 }
-                // $mediaItem = $leaveApplication->getMedia('leaveRequest')->first();
-                // $mediaItem->copy($leaveApplication, 'attachments');
                 $leaveApplication->addMedia(storage_path('tmp\uploads\\' . $request->input('attachments')))->toMediaCollection('attachments');
-                // $leaveApplication->addMedia($request->input('attachments'))->toMediaCollection('attachments');
-
-                // $leaveApplication->copy($leaveApplication, 'attachments');
-                // dd($leaveApplication);
             }
         } elseif ($leaveApplication->attachments) {
             $leaveApplication->attachments->delete();

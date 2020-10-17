@@ -26,6 +26,17 @@ class StoreMeetingMinuteRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'attendees'     => [
+                'required',
+            ],
+            'start_date'  => [
+                'required',
+                'date_format:' . config('panel.date_time_format'),
+            ],
+            'end_date'    => [
+                'date_format:' . config('panel.date_time_format'),
+                'required',
+            ],
             'location' => [
                 'string',
                 'nullable',

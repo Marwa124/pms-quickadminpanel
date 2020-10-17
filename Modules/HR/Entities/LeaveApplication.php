@@ -76,6 +76,13 @@ class LeaveApplication extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
+    public function registerMediaCollections()
+    {
+        $this
+            ->addMediaCollection('attachments')
+            ->acceptsMimeTypes(['image/jpg', 'image/png', 'image/jpeg', 'application/msword']);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
