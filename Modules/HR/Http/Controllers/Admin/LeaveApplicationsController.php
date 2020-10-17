@@ -31,6 +31,7 @@ class LeaveApplicationsController extends Controller
         if ($request->ajax()) {
             $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
             $table = Datatables::of($query);
+            // dd($table);
 
             // dd(LeaveApplication::with(['user', 'leave_category']));
             $table->addColumn('placeholder', '&nbsp;');
@@ -68,7 +69,11 @@ class LeaveApplicationsController extends Controller
             $table->editColumn('leave_end_date', function ($row) {
                 return $row->leave_end_date ? $row->leave_end_date : "";
             });
-
+            $table->editColumn('application_status', function ($row) {
+                // STATUS_COLOR
+                // return $row->application_status ? LeaveApplication::APPLICATION_STATUS_SELECT[$row->application_status] : '';
+                return $row->application_status ? LeaveApplication::STATUS_COLOR[$row->application_status] : '';
+            });
             $table->editColumn('leave_type', function ($row) {
                 return $row->leave_type ? LeaveApplication::LEAVE_TYPE_SELECT[$row->leave_type] : '';
             });
@@ -77,7 +82,6 @@ class LeaveApplicationsController extends Controller
             });
 
             $table->addColumn('user_name', function ($row) {
-                // dd($row->user->accountDetail->fullname);
                 return $row->user->accountDetail->fullname ?? '';
             });
 
@@ -93,7 +97,6 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
@@ -114,18 +117,15 @@ class LeaveApplicationsController extends Controller
             $this->validate($request, ['hours' => 'required']);
         }
         $leaveApplication = LeaveApplication::create($request->all());
-        
+
         if ($request->input('attachments', false)) {
-            // Upload::query()->where('uuid', $request->input('attachments'))->first();
-            $leaveApplication->addMedia(storage_path('tmp/uploads/'))->preservingOriginal()->toMediaCollection('attachments');
+            $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
         }
-        // $leaveApplication->save();
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
         }
-    //     $attachment = \Spatie\MediaLibrary\Models\Media::where('model_type', 'Modules\HR\Entities\LeaveApplication')->where('model_id', $leaveApplication['id'])->first();
-    // dd($attachment);
+
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
         Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
                 ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
@@ -141,7 +141,8 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::where('banned', 0)->get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = User::where('banned', 0)->get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::where('employment_id', '!=', null)->get()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $leaveApplication->load('user', 'leave_category');
@@ -158,8 +159,13 @@ class LeaveApplicationsController extends Controller
                 if ($leaveApplication->attachments) {
                     $leaveApplication->attachments->delete();
                 }
+                // $mediaItem = $leaveApplication->getMedia('leaveRequest')->first();
+                // $mediaItem->copy($leaveApplication, 'attachments');
+                $leaveApplication->addMedia(storage_path('tmp\uploads\\' . $request->input('attachments')))->toMediaCollection('attachments');
+                // $leaveApplication->addMedia($request->input('attachments'))->toMediaCollection('attachments');
 
-                $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
+                // $leaveApplication->copy($leaveApplication, 'attachments');
+                // dd($leaveApplication);
             }
         } elseif ($leaveApplication->attachments) {
             $leaveApplication->attachments->delete();
@@ -171,10 +177,19 @@ class LeaveApplicationsController extends Controller
     public function show(LeaveApplication $leaveApplication)
     {
         abort_if(Gate::denies('leave_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // $array = explode('.', $leaveApplication->attachments->getUrl());
+        // $extension = strtolower(end($array));
+        // dd($extension);
+        $attachment = str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl());
+
+        // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
+        // dd($v);
+        // dd($leaveApplication->attachments->getUrl());
+        // dd(env('APP_URL'));
 
         $leaveApplication->load('user', 'leave_category');
 
-        return view('hr::admin.leaveApplications.show', compact('leaveApplication'));
+        return view('hr::admin.leaveApplications.show', compact('leaveApplication', 'attachment'));
     }
 
     public function destroy(LeaveApplication $leaveApplication)

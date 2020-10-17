@@ -95,21 +95,34 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.leaveApplication.fields.leave_end_date_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label>{{ trans('cruds.leaveApplication.fields.application_status') }}</label>
-                <select class="form-control {{ $errors->has('application_status') ? 'is-invalid' : '' }}" name="application_status" id="application_status">
-                    <option value disabled {{ old('application_status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach($leaveAppModel::APPLICATION_STATUS_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('application_status', $leaveApplication->application_status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('application_status'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('application_status') }}
+            <?php
+                $department_head_employee = App\Models\AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->department_head_id;
+                $board_members = Modules\HR\Entities\Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('department_head_id')->get();
+                $arr = [];
+                foreach ($board_members as $member) {
+                    $arr[] = $member->department_head_id;
+                }
+                auth()->user()->id = 11;
+            ?>
+            @if (auth()->user()->id != $leaveApplication->user_id)
+                @if ($department_head_employee == auth()->user()->id || in_array(auth()->user()->id, $arr))
+                    <div class="form-group">
+                        <label>{{ trans('cruds.leaveApplication.fields.application_status') }}</label>
+                        <select class="form-control {{ $errors->has('application_status') ? 'is-invalid' : '' }}" name="application_status" id="application_status">
+                            <option value disabled {{ old('application_status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                            @foreach($leaveAppModel::APPLICATION_STATUS_SELECT as $key => $label)
+                                <option value="{{ $key }}" {{ old('application_status', $leaveApplication->application_status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->has('application_status'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('application_status') }}
+                            </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.leaveApplication.fields.application_status_helper') }}</span>
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.leaveApplication.fields.application_status_helper') }}</span>
-            </div>
+            @endif
             <div class="form-group">
                 <label for="attachments">{{ trans('cruds.leaveApplication.fields.attachments') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('attachments') ? 'is-invalid' : '' }}" id="attachments-dropzone">

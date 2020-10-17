@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Spatie\MediaLibrary\File;
 
 class LeaveApplication extends Model implements HasMedia
 {
@@ -33,6 +34,12 @@ class LeaveApplication extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    const STATUS_COLOR = [
+        'pending'   => 'yellow',
+        'accepted'   => '#90EE90',
+        'rejected'   => 'red',
     ];
 
     const APPLICATION_STATUS_SELECT = [

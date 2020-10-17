@@ -15,7 +15,7 @@ class CreateLeaveApplicationsTable extends Migration
             $table->string('hours')->nullable();
             $table->date('leave_start_date');
             $table->date('leave_end_date')->nullable();
-            $table->string('application_status')->nullable();
+            $table->string('application_status')->default('pending');
             $table->integer('view_status')->nullable();
             $table->longText('comments')->nullable();
             $table->string('approved_by')->nullable();

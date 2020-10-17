@@ -37,6 +37,9 @@
                         {{ trans('cruds.leaveApplication.fields.hours') }}
                     </th>
                     <th>
+                        {{ trans('cruds.leaveApplication.fields.application_status') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.leaveApplication.fields.leave_start_date') }}
                     </th>
                     <th>
@@ -103,10 +106,14 @@
 { data: 'leave_category_name', name: 'leave_category.name' },
 { data: 'leave_type', name: 'leave_type' },
 { data: 'hours', name: 'hours' },
+{ data: 'application_status', name: 'application_status' },
 { data: 'leave_start_date', name: 'leave_start_date' },
 { data: 'leave_end_date', name: 'leave_end_date' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
+    createdRow: (row, data, dataIndex, cells) => {
+        $(cells[6]).css('background-color', data.status_color)
+    },
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,

@@ -101,7 +101,8 @@
                         </th>
                         <td>
                             @if($leaveApplication->attachments)
-                                <a href="{{ $leaveApplication->attachments->getUrl() }}" target="_blank">
+                                {{-- <a href="{{ $leaveApplication->attachments->getUrl() }}" target="_blank"> --}}
+                                <a href="{{ $attachment }}" target="_blank">
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endif

@@ -86,8 +86,13 @@ class AnnouncementsController extends Controller
         abort_if(Gate::denies('announcement_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $announcement->load('user');
+        $attachment = str_replace('storage', 'storage/app/public', $announcement->attachments->getUrl());
+        // dd($announcement->attachments->getUrl());
+        // dd($attachment);
+        // dd(dirname(storage_path('storage')));
+        // dd(env('APP_URL'));
 
-        return view('admin.announcements.show', compact('announcement'));
+        return view('admin.announcements.show', compact('announcement', 'attachment'));
     }
 
     public function destroy(Announcement $announcement)

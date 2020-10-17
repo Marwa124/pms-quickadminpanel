@@ -93,7 +93,8 @@
                         </th>
                         <td>
                             @if($announcement->attachments)
-                                <a href="{{ $announcement->attachments->getUrl() }}" target="_blank">
+                                {{-- <a href="{{ $announcement->attachments->getUrl() }}" target="_blank"> --}}
+                                <a href="{{ $attachment }}" target="_blank">
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endif

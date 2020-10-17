@@ -39,19 +39,19 @@ class LeaveRequest extends Mailable
     public function build()
     {
         $account = AccountDetail::where('user_id', $this->user_id)->select('user_id', 'fullname')->first();
-        // $account = LeaveCategory::where('user_id', $this->user_id)->first();
         $email = User::where('id', $account->user_id)->first()->email;
-        $attachment = Media::where('model_type', 'Modules\HR\Entities\LeaveApplication')->where('model_id', $this->details->id)->first();
-        // dd($attachment);
-        dd(storage_path('app/public/'. $attachment->id . '/' . $attachment->file_name));
-        // dd($this->details  );
+
+        $attachment = str_replace('storage', 'storage/app/public', $this->details->attachments->getUrl());
+        $array = explode('.', $this->details->attachments->getUrl());
+        $extension = strtolower(end($array));
+
         $name = $account->fullname;
         return $this->from($email, $name)
             ->subject('Pending Leave Request ')
             ->view('hr::admin.leaveApplications.leaveMail')
-            ->attach(public_path('pdf/sample.pdf'), [
-                'as' => 'sample.pdf',
-                'mime' => 'application/pdf',
+            ->attach($attachment, [
+                'as' => 'leaveRequest.'.$extension,
+                'mime' => 'application/'.$extension,
             ])
             ->with(['details' => $this->details, 'leave_category' => $this->leave_category]);
     }
