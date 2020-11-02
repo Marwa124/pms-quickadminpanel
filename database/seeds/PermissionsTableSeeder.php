@@ -540,10 +540,10 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 133,
                 'title' => 'employee_award_access',
             ],
-            [
-                'id'    => 134,
-                'title' => 'attendances_access',
-            ],
+            // [
+            //     'id'    => 134,
+            //     'title' => 'attendances_access',
+            // ],
             [
                 'id'    => 135,
                 'title' => 'attendances_create',

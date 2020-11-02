@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Http\Requests\Destroy\MassDestroyTrainingRequest;
 use Modules\HR\Http\Requests\Store\StoreTrainingRequest;
 use Modules\HR\Http\Requests\Update\UpdateTrainingRequest;
-use Modules\HR\Entities\Permission;
+use App\Models\Permission;
 use Modules\HR\Entities\Training;
 use App\Models\User;
 use Gate;
@@ -25,7 +25,7 @@ class TrainingsController extends Controller
 
         $trainings = Training::all();
 
-        return view('admin.trainings.index', compact('trainings'));
+        return view('hr::admin.trainings.index', compact('trainings'));
     }
 
     public function create()
@@ -36,7 +36,7 @@ class TrainingsController extends Controller
 
         $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.trainings.create', compact('users', 'permissions'));
+        return view('hr::admin.trainings.create', compact('users', 'permissions'));
     }
 
     public function store(StoreTrainingRequest $request)
@@ -52,7 +52,7 @@ class TrainingsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $training->id]);
         }
 
-        return redirect()->route('admin.trainings.index');
+        return redirect()->route('hr.admin.trainings.index');
     }
 
     public function edit(Training $training)
@@ -65,7 +65,7 @@ class TrainingsController extends Controller
 
         $training->load('user', 'permissions');
 
-        return view('admin.trainings.edit', compact('users', 'permissions', 'training'));
+        return view('hr::admin.trainings.edit', compact('users', 'permissions', 'training'));
     }
 
     public function update(UpdateTrainingRequest $request, Training $training)
@@ -85,7 +85,7 @@ class TrainingsController extends Controller
             $training->uploaded_file->delete();
         }
 
-        return redirect()->route('admin.trainings.index');
+        return redirect()->route('hr.admin.trainings.index');
     }
 
     public function show(Training $training)

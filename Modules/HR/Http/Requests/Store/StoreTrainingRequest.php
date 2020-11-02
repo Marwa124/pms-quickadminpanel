@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\HR\Http\Requests\Store;
 
-use App\Models\Training;
+use Modules\HR\Entities\Training;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;

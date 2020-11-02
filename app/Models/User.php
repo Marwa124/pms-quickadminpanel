@@ -15,6 +15,8 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\Absence;
+use Modules\HR\Entities\Department;
+use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\Vacation;
 
 // use App\Models\AccountDetail;
@@ -81,9 +83,16 @@ class User extends Authenticatable implements HasMedia
     }
 
     /* !!!: Relations */
-    public function departmentHeadDepartments()
+    // public function departmentHeadDepartments()
+    public function department()
     {
-        return $this->hasMany(Department::class, 'department_head_id', 'id');
+        // return $this->hasMany(Department::class, 'department_head_id', 'id');
+        return $this->hasOne(Department::class, 'department_head_id', 'id');
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class, 'designation_id', 'id');
     }
 
     public function role()

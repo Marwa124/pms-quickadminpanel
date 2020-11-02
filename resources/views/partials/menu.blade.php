@@ -213,14 +213,15 @@
                             </a>
                         </li>
                     @endcan
+                    {{-- {{auth()->user()->can('attendances_access')}} --}}
                     @can('attendances_access')
                         <li class="c-sidebar-nav-dropdown">
-                            {{-- <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
                                 <i class="fa-fw far fa-edit c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.attendance.title') }}
-                            </a> --}}
+                            </a>
                             <ul class="c-sidebar-nav-dropdown-items">
                                 @can('attendances_access')
                                     <li class="c-sidebar-nav-item">

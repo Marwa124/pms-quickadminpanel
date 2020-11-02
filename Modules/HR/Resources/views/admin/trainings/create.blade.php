@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('content')
-
+@inject('trainingModel', 'Modules\HR\Entities\Training')
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.training.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.trainings.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.trainings.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="user_id">{{ trans('cruds.training.fields.user') }}</label>
@@ -24,19 +24,19 @@
                 <span class="help-block">{{ trans('cruds.training.fields.user_helper') }}</span>
             </div>
             <div class="form-group">
-                <label>{{ trans('cruds.training.fields.assigned_by') }}</label>
-                <select class="form-control {{ $errors->has('assigned_by') ? 'is-invalid' : '' }}" name="assigned_by" id="assigned_by">
-                    <option value disabled {{ old('assigned_by', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Training::ASSIGNED_BY_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('assigned_by', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                <label>{{ trans('cruds.training.fields.performance') }}</label>
+                <select class="form-control {{ $errors->has('performance') ? 'is-invalid' : '' }}" name="performance" id="performance">
+                    <option value disabled {{ old('performance', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach($trainingModel::Performance_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('performance', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('assigned_by'))
+                @if($errors->has('performance'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('assigned_by') }}
+                        {{ $errors->first('performance') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.training.fields.assigned_by_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.training.fields.performance_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="training_name">{{ trans('cruds.training.fields.training_name') }}</label>
@@ -69,7 +69,7 @@
                 <span class="help-block">{{ trans('cruds.training.fields.start_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="finish_date">{{ trans('cruds.training.fields.finish_date') }}</label>
+                <label class="required" for="finish_date">{{ trans('cruds.training.fields.finish_date') }}</label>
                 <input class="form-control date {{ $errors->has('finish_date') ? 'is-invalid' : '' }}" type="text" name="finish_date" id="finish_date" value="{{ old('finish_date') }}">
                 @if($errors->has('finish_date'))
                     <div class="invalid-feedback">
@@ -133,7 +133,7 @@
 @section('scripts')
 <script>
     Dropzone.options.uploadedFileDropzone = {
-    url: '{{ route('admin.trainings.storeMedia') }}',
+    url: '{{ route('hr.admin.trainings.storeMedia') }}',
     maxFilesize: 2, // MB
     maxFiles: 1,
     addRemoveLinks: true,

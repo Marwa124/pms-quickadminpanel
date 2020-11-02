@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+@inject('trainingModel', 'Modules\HR\Entities\Training')
 
 <div class="card">
     <div class="card-header">
@@ -7,7 +8,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.trainings.update", [$training->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.trainings.update", [$training->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
@@ -28,7 +29,7 @@
                 <label>{{ trans('cruds.training.fields.assigned_by') }}</label>
                 <select class="form-control {{ $errors->has('assigned_by') ? 'is-invalid' : '' }}" name="assigned_by" id="assigned_by">
                     <option value disabled {{ old('assigned_by', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Training::ASSIGNED_BY_SELECT as $key => $label)
+                    @foreach($trainingModel::ASSIGNED_BY_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('assigned_by', $training->assigned_by) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
@@ -174,7 +175,7 @@
 @section('scripts')
 <script>
     Dropzone.options.uploadedFileDropzone = {
-    url: '{{ route('admin.trainings.storeMedia') }}',
+    url: '{{ route('hr.admin.trainings.storeMedia') }}',
     maxFilesize: 2, // MB
     maxFiles: 1,
     addRemoveLinks: true,
