@@ -25,7 +25,7 @@ class EmployeesController extends Controller
 
         $permissions = Permission::get();
 
-        return view('admin.employees.index', compact('employees', 'roles', 'permissions'));
+        return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
     }
 
     public function create()
@@ -36,7 +36,7 @@ class EmployeesController extends Controller
 
         $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.employees.create', compact('roles', 'permissions'));
+        return view('hr::admin.employees.create', compact('roles', 'permissions'));
     }
 
     public function store(StoreEmployeeRequest $request)
@@ -44,7 +44,7 @@ class EmployeesController extends Controller
         $employee = Employee::create($request->all());
         $employee->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.employees.index');
+        return redirect()->route('hr.admin.employees.index');
     }
 
     public function edit(Employee $employee)
@@ -57,7 +57,7 @@ class EmployeesController extends Controller
 
         $employee->load('role', 'permissions');
 
-        return view('admin.employees.edit', compact('roles', 'permissions', 'employee'));
+        return view('hr::admin.employees.edit', compact('roles', 'permissions', 'employee'));
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
@@ -65,7 +65,7 @@ class EmployeesController extends Controller
         $employee->update($request->all());
         $employee->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.employees.index');
+        return redirect()->route('hr.admin.employees.index');
     }
 
     public function show(Employee $employee)
@@ -74,7 +74,7 @@ class EmployeesController extends Controller
 
         $employee->load('role', 'permissions');
 
-        return view('admin.employees.show', compact('employee'));
+        return view('hr::admin.employees.show', compact('employee'));
     }
 
     public function destroy(Employee $employee)

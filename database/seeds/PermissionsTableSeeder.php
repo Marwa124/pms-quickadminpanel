@@ -1861,6 +1861,12 @@ class PermissionsTableSeeder extends Seeder
                 'title' => 'set_time_access',
             ],
             /////////Set Times////////////////
+            /////////Settings////////////////
+            // [
+            //     'id'    => 463,
+            //     'title' => 'setting_access',
+            // ],
+            /////////Settings////////////////
         ];
 
         Permission::insert($permissions);

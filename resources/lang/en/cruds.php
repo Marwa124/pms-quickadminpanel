@@ -3028,4 +3028,32 @@ return [
             'profit'            => 'Profit',
         ],
     ],
+    'config' => [
+        'fields' => [
+            'config_company_name' => 'Company Name',
+            'config_company_namehelper' => '',
+            'config_company_address' => 'Company Address',
+            'config_company_addresshelper' => '',
+            'config_company_city' => 'City',
+            'config_company_cityhelper' => '',
+            'config_company_country' => 'Country',
+            'config_company_countryhelper' => '',
+            'config_company_domain' => 'Domain',
+            'config_company_domainhelper' => '',
+            'config_company_email' => 'Email',
+            'config_company_emailhelper' => '',
+            'config_company_legal_name' => 'Legal Name',
+            'config_company_legal_namehelper' => '',
+            'config_company_logo' => 'Logo',
+            'config_company_logohelper' => '',
+            'config_company_phone_2' => 'Phone 2',
+            'config_company_phone_2helper' => '',
+            'config_company_phone' => 'Phone',
+            'config_company_phonehelper' => '',
+            'config_company_vat' => 'Vat',
+            'config_company_vathelper' => '',
+            'config_company_zip_code' => 'Zip Code',
+            'config_company_zip_codehelper' => '',
+        ]
+    ]
 ];

@@ -1058,6 +1058,15 @@
                     {{ trans('cruds.setting.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
+
+                    <li class="c-sidebar-nav-item">
+                        <a href="{{ route("setting.config.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/company-details") || request()->is("admin/company-details/*") ? "active" : "" }}">
+                            <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
+
+                            </i>
+                            {{ trans('cruds.companyDetail.title') }}
+                        </a>
+                    </li>
                     @can('client_menu_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.client-menus.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/client-menus") || request()->is("admin/client-menus/*") ? "active" : "" }}">
