@@ -2,6 +2,9 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\AccountDetail;
+use App\Models\SalaryTemplate;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
@@ -35,6 +38,11 @@ class Designation extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function salaryTemplate()
+    {
+        return $this->belongsTo(SalaryTemplate::class);
+    }
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');
@@ -43,5 +51,10 @@ class Designation extends Model
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function accountDetails()
+    {
+        return $this->hasMany(AccountDetail::class);
     }
 }

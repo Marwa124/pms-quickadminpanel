@@ -13,6 +13,7 @@ use Modules\HR\Entities\SetTime;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\Department;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,7 +45,11 @@ class AccountDetailsController extends Controller
 
     public function store(StoreAccountDetailRequest $request)
     {
-        $request->employment_id = rand(1, 199);
+        $departmentId = Designation::find($request->designation_id)->department()->first()->id;
+        $incrementId = Designation::find($request->designation_id)->accountDetails()->get()->count()+1;
+
+        $request['employment_id'] = $departmentId . sprintf('%02d', $incrementId+1);
+
         $accountDetail = AccountDetail::create($request->all());
 
         if ($request->input('avatar', false)) {

@@ -3,13 +3,13 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Modules\HR\Http\Requests\MassDestroyDepartmentRequest;
-use Modules\HR\Http\Requests\StoreDepartmentRequest;
-use Modules\HR\Http\Requests\UpdateDepartmentRequest;
 use Modules\HR\Entities\Department;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Http\Request\Destroy\MassDestroyDepartmentRequest;
+use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
+use Modules\HR\Http\Requests\Update\UpdateDepartmentRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class DepartmentsController extends Controller

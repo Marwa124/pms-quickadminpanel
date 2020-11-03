@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+@inject('salaryTemplateModel', 'App\Models\SalaryTemplate')
 @can('account_detail_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
@@ -23,8 +24,11 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.accountDetail.fields.id') }}
+                            {{ trans('cruds.accountDetail.fields.avatar') }}
                         </th>
+                        {{-- <th>
+                            {{ trans('cruds.accountDetail.fields.id') }}
+                        </th> --}}
                         <th>
                             {{ trans('cruds.accountDetail.fields.user') }}
                         </th>
@@ -32,14 +36,26 @@
                             {{ trans('cruds.accountDetail.fields.fullname') }}
                         </th>
                         <th>
+                            {{ trans('cruds.accountDetail.fields.email') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.accountDetail.fields.joining_date') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.accountDetail.fields.designation') }}
                         </th>
                         <th>
-                            {{ trans('cruds.accountDetail.fields.avatar') }}
+                            {{ trans('cruds.accountDetail.fields.department') }}
                         </th>
                         <th>
-                            {{ trans('cruds.accountDetail.fields.gender') }}
+                            {{ trans('cruds.accountDetail.fields.salary') }}
                         </th>
+                        {{-- <th>
+                            {{ trans('cruds.accountDetail.fields.designation') }}
+                        </th> --}}
+                        {{-- <th>
+                            {{ trans('cruds.accountDetail.fields.gender') }}
+                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
@@ -52,8 +68,15 @@
 
                             </td>
                             <td>
-                                {{ $accountDetail->id ?? '' }}
+                                @if($accountDetail->avatar)
+                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank" style="display: inline-block">
+                                        <img src="{{ $accountDetail->avatar->getUrl('thumb') }}">
+                                    </a>
+                                @endif
                             </td>
+                            {{-- <td>
+                                {{ $accountDetail->id ?? '' }}
+                            </td> --}}
                             <td>
                                 {{ $accountDetail->user->name ?? '' }}
                             </td>
@@ -61,18 +84,32 @@
                                 {{ $accountDetail->fullname ?? '' }}
                             </td>
                             <td>
+                                {{ $accountDetail->user->email ?? '' }}
+                            </td>
+                            <td>
+                                {{ $accountDetail->joining_date ?? '' }}
+                            </td>
+                            <td>
                                 {{ $accountDetail->designation->designation_name ?? '' }}
                             </td>
                             <td>
-                                @if($accountDetail->avatar)
-                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $accountDetail->avatar->getUrl('thumb') }}">
-                                    </a>
-                                @endif
+                                {{-- {{dd($accountDetail->designation->department->department_name )}} --}}
+                                {{ $accountDetail->designation->department->department_name ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\AccountDetail::GENDER_RADIO[$accountDetail->gender] ?? '' }}
+                                <?php
+                                    $designatonName = $accountDetail->designation;
+                                    $salary = $designatonName ? $salaryTemplateModel::where('salary_grade', $designatonName->designation_name)->select('basic_salary')->first() : '';
+                                ?>
+                                {{-- {{dd($salaryTemplateModel::where('salary_grade', $designatonName)->select('basic_salary')->first()->basic_salary)}} --}}
+                                {{ $salary ? $salary->basic_salary : '' }}
                             </td>
+                            {{-- <td>
+                                {{ $accountDetail->designation->designation_name ?? '' }}
+                            </td> --}}
+                            {{-- <td>
+                                {{ App\Models\AccountDetail::GENDER_RADIO[$accountDetail->gender] ?? '' }}
+                            </td> --}}
                             <td>
                                 @can('account_detail_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.account-details.show', $accountDetail->id) }}">
@@ -152,7 +189,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>

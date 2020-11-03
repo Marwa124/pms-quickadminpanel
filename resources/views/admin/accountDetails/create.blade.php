@@ -295,8 +295,8 @@
     },
     params: {
       size: 1,
-      width: 35,
-      height: 35
+    //   width: 35,
+    //   height: 35
     },
     success: function (file, response) {
       $('form').find('input[name="avatar"]').remove()
