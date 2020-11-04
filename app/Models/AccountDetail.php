@@ -120,7 +120,6 @@ class AccountDetail extends Model implements HasMedia
             $file->thumbnail = $file->getUrl('thumb');
             $file->preview   = $file->getUrl('preview');
         }
-
         return $file;
     }
 

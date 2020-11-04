@@ -30,6 +30,17 @@ class AccountDetailsController extends Controller
         return view('admin.accountDetails.index', compact('accountDetails'));
     }
 
+    public function filterSelect(Request $request)
+    {
+        $banned = $request->selectFilter == 'active' ? 0 : 1;
+        $users = User::where('banned', $banned)->get();
+        foreach ($users as $key => $value) {
+            $accountDetails[] = $value->accountDetail()->first();
+        }
+
+        return view('admin.accountDetails.filter', compact('accountDetails'));
+    }
+
     public function create()
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');

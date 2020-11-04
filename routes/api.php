@@ -55,6 +55,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
 
     // Account Details
     Route::post('account-details/media', 'AccountDetailsApiController@storeMedia')->name('account-details.storeMedia');
+    Route::get('/row-details', 'APIController@getRowDetailsData')->name('row_details');
     Route::apiResource('account-details', 'AccountDetailsApiController');
 
     // Overtimes

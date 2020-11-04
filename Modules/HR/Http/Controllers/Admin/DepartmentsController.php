@@ -14,15 +14,34 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DepartmentsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all();
 
-        $users = User::get();
+        // if ($request->department_id) {
+        //     $result = Department::where('id', $request->department_id)->first();
+        //     $department_head = $result->department_head->accountDetail()->select('fullname')->first()->fullname;
+        //     return response()->json($department_head);
+        // }
 
-        return view('admin.departments.index', compact('departments', 'users'));
+        if ($request->department_id) {
+            $result = Department::where('id', $request->department_id)->first();
+            $department_head = $result->department_head->accountDetail()->select('fullname')->first()->fullname;
+
+            // $designations = $result->departmentDesignations()->whereHas('accountDetails', function($q) {
+            //     return $q;
+            // })->get();
+
+            $designations = $result->departmentDesignations()->with('accountDetails')->get();
+
+            
+            // dd($designations);
+            return view('hr::admin.departments.filter', compact('department_head', 'designations'));
+        }
+
+        return view('hr::admin.departments.index', compact('departments'));
     }
 
     public function create()
@@ -31,14 +50,14 @@ class DepartmentsController extends Controller
 
         $department_heads = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.departments.create', compact('department_heads'));
+        return view('hr::admin.departments.create', compact('department_heads'));
     }
 
     public function store(StoreDepartmentRequest $request)
     {
         $department = Department::create($request->all());
 
-        return redirect()->route('admin.departments.index');
+        return redirect()->route('hr.admin.departments.index');
     }
 
     public function edit(Department $department)
@@ -49,14 +68,14 @@ class DepartmentsController extends Controller
 
         $department->load('department_head');
 
-        return view('admin.departments.edit', compact('department_heads', 'department'));
+        return view('hr::admin.departments.edit', compact('department_heads', 'department'));
     }
 
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
         $department->update($request->all());
 
-        return redirect()->route('admin.departments.index');
+        return redirect()->route('hr.admin.departments.index');
     }
 
     public function show(Department $department)
@@ -65,7 +84,7 @@ class DepartmentsController extends Controller
 
         $department->load('department_head', 'departmentDesignations');
 
-        return view('admin.departments.show', compact('department'));
+        return view('hr::admin.departments.show', compact('department'));
     }
 
     public function destroy(Department $department)

@@ -123,6 +123,38 @@
                     {{ trans('cruds.hr.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
+                    @can('employees_access')
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw fas fa-users-cog c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.employees.title') }}
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('employee_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.employees.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employees") || request()->is("admin/employees/*") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-users c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.employee.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('account_detail_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.accountDetail.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
                     @can('department_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("hr.admin.departments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/departments") || request()->is("admin/departments/*") ? "active" : "" }}">
@@ -131,6 +163,79 @@
                                 </i>
                                 {{ trans('cruds.department.title') }}
                             </a>
+                        </li>
+                    @endcan
+                    {{-- {{auth()->user()->can('attendances_access')}} --}}
+                    @can('attendances_access')
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw far fa-edit c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.attendance.title') }}
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('attendances_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/attendances") || request()->is("admin/attendances/*") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.attendances.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('daily_attendance_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
+                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.dailyAttendance.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('monthly_attendance_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.monthly-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/monthly-attendances") || request()->is("admin/monthly-attendances/*") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-folder c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.monthlyAttendance.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('employee_request_access')
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw far fa-edit c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.requests.title') }}
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('employee_request_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.client-meetings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/client-meetings") || request()->is("admin/client-meetings/*") ? "active" : "" }}">
+                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.clientMeeting.title') }}
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
+                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
+
+                                            </i>
+                                            {{ trans('cruds.survey.title') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
                         </li>
                     @endcan
                     @can('designation_access')
@@ -211,111 +316,6 @@
                                 </i>
                                 {{ trans('cruds.employeeAward.title') }}
                             </a>
-                        </li>
-                    @endcan
-                    {{-- {{auth()->user()->can('attendances_access')}} --}}
-                    @can('attendances_access')
-                        <li class="c-sidebar-nav-dropdown">
-                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
-                                <i class="fa-fw far fa-edit c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.attendance.title') }}
-                            </a>
-                            <ul class="c-sidebar-nav-dropdown-items">
-                                @can('attendances_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/attendances") || request()->is("admin/attendances/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.attendances.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('daily_attendance_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
-                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.dailyAttendance.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('monthly_attendance_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.monthly-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/monthly-attendances") || request()->is("admin/monthly-attendances/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-folder c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.monthlyAttendance.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcan
-                    @can('employee_request_access')
-                        <li class="c-sidebar-nav-dropdown">
-                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
-                                <i class="fa-fw far fa-edit c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.requests.title') }}
-                            </a>
-                            <ul class="c-sidebar-nav-dropdown-items">
-                                @can('employee_request_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.client-meetings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/client-meetings") || request()->is("admin/client-meetings/*") ? "active" : "" }}">
-                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.clientMeeting.title') }}
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.daily-attendances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/daily-attendances") || request()->is("admin/daily-attendances/*") ? "active" : "" }}">
-                                            <i class="fa-fw far fa-list-alt c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.survey.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcan
-                    @can('employees_access')
-                        <li class="c-sidebar-nav-dropdown">
-                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
-                                <i class="fa-fw fas fa-users-cog c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.employees.title') }}
-                            </a>
-                            <ul class="c-sidebar-nav-dropdown-items">
-                                @can('employee_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.employees.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employees") || request()->is("admin/employees/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-users c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.employee.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('account_detail_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.accountDetail.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                            </ul>
                         </li>
                     @endcan
                     @can('recruitment_access')

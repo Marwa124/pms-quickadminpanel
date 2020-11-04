@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
@@ -57,4 +58,5 @@ class Department extends Model
     {
         return $this->belongsTo(User::class, 'department_head_id');
     }
+
 }

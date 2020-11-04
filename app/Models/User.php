@@ -87,7 +87,7 @@ class User extends Authenticatable implements HasMedia
     public function department()
     {
         // return $this->hasMany(Department::class, 'department_head_id', 'id');
-        return $this->hasOne(Department::class, 'department_head_id', 'id');
+        return $this->belongsTo(Department::class, 'department_head_id', 'id');
     }
 
     public function designation()

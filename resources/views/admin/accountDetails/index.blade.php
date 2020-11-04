@@ -102,7 +102,9 @@
                                     $salary = $designatonName ? $salaryTemplateModel::where('salary_grade', $designatonName->designation_name)->select('basic_salary')->first() : '';
                                 ?>
                                 {{-- {{dd($salaryTemplateModel::where('salary_grade', $designatonName)->select('basic_salary')->first()->basic_salary)}} --}}
-                                {{ $salary ? $salary->basic_salary : '' }}
+                           
+                                {{  $salary ? 'EGY ' .number_format($salary->basic_salary, 0, ',', '.') : ''}}
+                                {{-- {{ $salary ? $salary->basic_salary : '' }} --}}
                             </td>
                             {{-- <td>
                                 {{ $accountDetail->designation->designation_name ?? '' }}
@@ -136,6 +138,16 @@
                         </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <select data-column="0" class="form-control filter-select" name="" id="">
+                                <option value="active">Active Users</option>
+                                <option value="unactive">Unactive Users</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -185,10 +197,37 @@
     pageLength: 25,
   });
   let table = $('.datatable-AccountDetail:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
+
+  $(".filter-select").change(function(){
+
+    $.ajax({
+        headers: {'x-csrf-token': _token},
+        type: 'GET',
+        url: "{{route('admin.filter-select')}}",
+        dataType: 'html',
+        data: {
+            selectFilter: $(this).val(),
+        },
+        success: function(data){
+            // table.column( data )
+            $('tbody').html(data)
+            // console.log($('tbody').html(data));
+        }
+    })
+
+
+    //   table.column( $(this).data('column') )
+    //   .search($(this).val())
+    //   .draw();
+    //   console.log($(this).val());
+    //   console.log($(this).data('column'));
+
+  })
 
 })
 
