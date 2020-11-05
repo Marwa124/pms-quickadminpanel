@@ -14,10 +14,13 @@
     <div class="card-header">
         {{ trans('cruds.accountDetail.title_singular') }} {{ trans('global.list') }}
     </div>
-
+    {{-- <select data-column="0" class="form-control filter-select" name="filter-select" id="">
+        <option value="active">Active Users</option>
+        <option value="unactive">Unactive Users</option>
+    </select> --}}
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-AccountDetail">
+            <table class="display responsive nowrap table table-bordered table-striped table-hover datatable datatable-AccountDetail" style="width:100%">
                 <thead>
                     <tr>
                         <th width="10">
@@ -37,6 +40,9 @@
                         </th>
                         <th>
                             {{ trans('cruds.accountDetail.fields.email') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.accountDetail.fields.banned') }}
                         </th>
                         <th>
                             {{ trans('cruds.accountDetail.fields.joining_date') }}
@@ -60,9 +66,48 @@
                             &nbsp;
                         </th>
                     </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            @inject('usersModel', 'App\Models\User')
+                            <select class="search">
+                                <option value="active">Active</option>
+                                <option value="banned">Banned</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach($accountDetails as $key => $accountDetail)
+                    @if ($accountDetail)
+
                         <tr data-entry-id="{{ $accountDetail->id }}">
                             <td>
 
@@ -87,6 +132,9 @@
                                 {{ $accountDetail->user->email ?? '' }}
                             </td>
                             <td>
+                                {{ ($accountDetail->user->banned == 0) ? 'Active' : 'Banned' }}
+                            </td>
+                            <td>
                                 {{ $accountDetail->joining_date ?? '' }}
                             </td>
                             <td>
@@ -102,7 +150,7 @@
                                     $salary = $designatonName ? $salaryTemplateModel::where('salary_grade', $designatonName->designation_name)->select('basic_salary')->first() : '';
                                 ?>
                                 {{-- {{dd($salaryTemplateModel::where('salary_grade', $designatonName)->select('basic_salary')->first()->basic_salary)}} --}}
-                           
+
                                 {{  $salary ? 'EGY ' .number_format($salary->basic_salary, 0, ',', '.') : ''}}
                                 {{-- {{ $salary ? $salary->basic_salary : '' }} --}}
                             </td>
@@ -136,9 +184,11 @@
                             </td>
 
                         </tr>
+                    @endif
+
                     @endforeach
                 </tbody>
-                <tfoot>
+                {{-- <tfoot>
                     <tr>
                         <td>
                             <select data-column="0" class="form-control filter-select" name="" id="">
@@ -147,7 +197,7 @@
                             </select>
                         </td>
                     </tr>
-                </tfoot>
+                </tfoot> --}}
             </table>
         </div>
     </div>
@@ -161,61 +211,72 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('account_detail_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('admin.account-details.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
+// @can('account_detail_delete')
+//   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+//   let deleteButton = {
+//     text: deleteButtonTrans,
+//     url: "{{ route('admin.account-details.massDestroy') }}",
+//     className: 'btn-danger',
+//     action: function (e, dt, node, config) {
+//       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+//           return $(entry).data('entry-id')
+//       });
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
+//       if (ids.length === 0) {
+//         alert('{{ trans('global.datatables.zero_selected') }}')
 
-        return
-      }
+//         return
+//       }
 
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
+//       if (confirm('{{ trans('global.areYouSure') }}')) {
+//         $.ajax({
+//           headers: {'x-csrf-token': _token},
+//           method: 'POST',
+//           url: config.url,
+//           data: { ids: ids, _method: 'DELETE' }})
+//           .done(function () { location.reload() })
+//       }
+//     }
+//   }
+//   dtButtons.push(deleteButton)
+// @endcan
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,
   });
-  let table = $('.datatable-AccountDetail:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-  
+  let table = $('.datatable-AccountDetail:not(.ajaxTable)').DataTable({
+        buttons: [dtButtons, 'colvis'],
+    })
+
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
 
-  $(".filter-select").change(function(){
+  $('.datatable thead').on('input', '.search', function () {
+      let strict = $(this).attr('strict') || false
+      let value = strict && this.value ? "^" + this.value + "$" : this.value
+      table
+        .column($(this).parent().index())
+        .search(value, strict)
+        .draw()
+  });
 
+  $(".filter-select").change(function(){
+console.log($(this).val());
     $.ajax({
         headers: {'x-csrf-token': _token},
         type: 'GET',
-        url: "{{route('admin.filter-select')}}",
+        url: "{{route('admin.account-details.index')}}",
         dataType: 'html',
         data: {
             selectFilter: $(this).val(),
         },
         success: function(data){
             // table.column( data )
-            $('tbody').html(data)
+            $('body').html(data)
             // console.log($('tbody').html(data));
         }
     })

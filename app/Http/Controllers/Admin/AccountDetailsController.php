@@ -25,7 +25,19 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $accountDetails = AccountDetail::all();
+        // $accountDetails = AccountDetail::all();
+        $accountDetails = [];
+        // $users = User::where('banned', 0)->get();
+        $users = User::all();
+
+        // if (request()->selectFilter) {
+        //     $users = User::where('banned', 1)->get();
+        // }
+
+        foreach ($users as $key => $value) {
+            $accountDetails[] = $value->accountDetail()->first();
+        }
+        // dump($accountDetails);
 
         return view('admin.accountDetails.index', compact('accountDetails'));
     }
