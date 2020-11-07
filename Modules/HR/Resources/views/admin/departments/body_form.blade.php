@@ -102,9 +102,10 @@
 
 @foreach($accountDetails::all() as $key => $account)
     <?php $userDepart = $account->designation()->whereIn('id', $designationId)->first(); ?>
+    <?php $acountUser = $account->user()->first(); ?>
     @if ($userDepart)
 
-    <tr data-entry-id="{{ $account->id }}">
+    <tr data-entry-id="{{ $acountUser->id }}">
         <td>
 
         </td>
@@ -116,19 +117,19 @@
         </td>
         <td>
             @can('department_show')
-                <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.departments.show', $account->id) }}">
+                <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.employees.show', $acountUser->id) }}">
                     {{ trans('global.view') }}
                 </a>
             @endcan
 
             @can('department_edit')
-                <a class="btn btn-xs btn-info" href="{{ route('hr.admin.departments.edit', $account->id) }}">
+                <a class="btn btn-xs btn-info" href="{{ route('hr.admin.employees.edit', $acountUser->id) }}">
                     {{ trans('global.edit') }}
                 </a>
             @endcan
 
             @can('department_delete')
-                <form action="{{ route('hr.admin.departments.destroy', $account->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                <form action="{{ route('hr.admin.employees.destroy', $acountUser->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

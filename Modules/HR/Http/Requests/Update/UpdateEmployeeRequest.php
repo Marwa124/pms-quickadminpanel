@@ -19,8 +19,8 @@ class UpdateEmployeeRequest extends FormRequest
         return [
             'username'               => [
                 'string',
-                'required',
-                'unique:employees,username,' . request()->route('employee')->id,
+                // 'required',
+                // 'unique:employees,username,' . request()->route('employee')->id,
             ],
             'role_id'                => [
                 'required',

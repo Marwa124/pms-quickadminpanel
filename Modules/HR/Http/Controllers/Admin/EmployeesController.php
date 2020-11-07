@@ -9,45 +9,46 @@ use Modules\HR\Http\Requests\Update\UpdateEmployeeRequest;
 use Modules\HR\Entities\Employee;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EmployeesController extends Controller
 {
-    public function index()
-    {
-        abort_if(Gate::denies('employee_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function index()
+    // {
+    //     abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $employees = Employee::all();
+    //     $employees = User::all();
 
-        $roles = Role::get();
+    //     $roles = Role::get();
 
-        $permissions = Permission::get();
+    //     $permissions = Permission::get();
 
-        return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
-    }
+    //     return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
+    // }
 
-    public function create()
-    {
-        abort_if(Gate::denies('employee_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function create()
+    // {
+    //     abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
+    //     $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+    //     $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('hr::admin.employees.create', compact('roles', 'permissions'));
-    }
+    //     return view('hr::admin.employees.create', compact('roles', 'permissions'));
+    // }
 
-    public function store(StoreEmployeeRequest $request)
-    {
-        $employee = Employee::create($request->all());
-        $employee->permissions()->sync($request->input('permissions', []));
+    // public function store(StoreEmployeeRequest $request)
+    // {
+    //     $employee = User::create($request->all());
+    //     $employee->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('hr.admin.employees.index');
-    }
+    //     return redirect()->route('hr.admin.employees.index');
+    // }
 
-    public function edit(Employee $employee)
+    public function edit(User $employee)
     {
         abort_if(Gate::denies('employee_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
@@ -60,12 +61,13 @@ class EmployeesController extends Controller
         return view('hr::admin.employees.edit', compact('roles', 'permissions', 'employee'));
     }
 
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(User $employee)
     {
-        $employee->update($request->all());
-        $employee->permissions()->sync($request->input('permissions', []));
+        // $employee->update($request->all());
+        $employee->roles()->sync(request()->input('role_id'));
+        $employee->permissions()->sync(request()->input('permissions', []));
 
-        return redirect()->route('hr.admin.employees.index');
+        return redirect()->route('hr.admin.departments.index');
     }
 
     public function show(Employee $employee)

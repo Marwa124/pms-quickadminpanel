@@ -19,7 +19,7 @@
         <option value="unactive">Unactive Users</option>
     </select> --}}
     <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-x: hidden !important;">
             <table class="display responsive nowrap table table-bordered table-striped table-hover datatable datatable-AccountDetail" style="width:100%">
                 <thead>
                     <tr>
@@ -84,6 +84,7 @@
                         <td>
                             @inject('usersModel', 'App\Models\User')
                             <select class="search">
+                                <option value="All" disabled selected>All</option>
                                 <option value="active">Active</option>
                                 <option value="banned">Banned</option>
                             </select>
@@ -114,8 +115,18 @@
                             </td>
                             <td>
                                 @if($accountDetail->avatar)
-                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $accountDetail->avatar->getUrl('thumb') }}">
+                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
+                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
+                                        src="{{ $accountDetail->avatar->getUrl('thumb') }}">
+                                    </a>
+                                @else
+                                    <a href="javascript:void(0)" style="display: inline-block">
+                                        <img class="rounded-circle img-thumbnail"
+                                        style="display: block;
+                                            margin-left: auto;
+                                            margin-right: auto;
+                                            width: 30%;"
+                                        src="{{ asset('images/default.png') }}">
                                     </a>
                                 @endif
                             </td>
@@ -245,6 +256,7 @@
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,
+    scrollX : false,
   });
   let table = $('.datatable-AccountDetail:not(.ajaxTable)').DataTable({
         buttons: [dtButtons, 'colvis'],

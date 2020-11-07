@@ -35,6 +35,16 @@
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.fullname_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="employment_id">{{ trans('cruds.accountDetail.fields.employment_id') }}</label>
+                <input disabled class="form-control {{ $errors->has('employment_id') ? 'is-invalid' : '' }}" type="text" name="employment_id" id="employment_id" value="{{ old('employment_id', $accountDetail->employment_id) }}">
+                @if($errors->has('employment_id'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('employment_id') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.accountDetail.fields.company_helper') }}</span>
+            </div>
+            {{-- <div class="form-group">
                 <label for="company">{{ trans('cruds.accountDetail.fields.company') }}</label>
                 <input class="form-control {{ $errors->has('company') ? 'is-invalid' : '' }}" type="text" name="company" id="company" value="{{ old('company', $accountDetail->company) }}">
                 @if($errors->has('company'))
@@ -43,7 +53,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.company_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="city">{{ trans('cruds.accountDetail.fields.city') }}</label>
                 <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', $accountDetail->city) }}">
@@ -335,5 +345,23 @@
         return _results
     }
 }
+
+
+
+
+// $(document).ready(function () {
+//     $("#add_more_comments_attachement").click(function () {
+//         var new_comments_attachement = $('<div class="form-group" style="margin-bottom: 0px">\n\
+//         <div class="col-sm-8">\n\
+//         <div class="fileinput fileinput-new" data-provides="fileinput">\n\
+// <span class="btn btn-default btn-file"><span class="fileinput-new" >Select file</span><span class="fileinput-exists" >Change</span><input type="file" name="comments_attachment[]" ></span> <span class="fileinput-filename"></span><a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none;">&times;</a></div></div>\n\<div class="col-sm-4">\n\<strong>\n\
+// <a href="javascript:void(0);" class="c_remCF"><i class="fa fa-times"></i>&nbsp;Remove</a></strong></div>');
+//         $("#new_comments_attachement").append(new_comments_attachement);
+//     });
+
+//     $("#new_comments_attachement").on('click', '.c_remCF', function () {
+//         $(this).parent().parent().parent().remove();
+//     });
+// });
 </script>
 @endsection

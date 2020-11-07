@@ -582,6 +582,8 @@ return [
             'fullname_helper'        => ' ',
             'email'                => 'email',
             'email_helper'         => ' ',
+            'employment_id'                => 'Employment id',
+            'employment_id_helper'         => ' ',
             'department'                => 'department',
             'department_helper'         => ' ',
             'designation'                => 'designation',
