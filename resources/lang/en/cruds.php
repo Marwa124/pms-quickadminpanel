@@ -522,6 +522,8 @@ return [
             'department_name_helper'           => ' ',
             'department_head'                  => 'Department Head',
             'department_head_helper'           => ' ',
+            'designation_name'                 => 'Designation Name',
+            'user_name'                        => 'Employee Name',
             'email'                            => 'Email',
             'email_helper'                     => ' ',
             'encryption'                       => 'Encryption',

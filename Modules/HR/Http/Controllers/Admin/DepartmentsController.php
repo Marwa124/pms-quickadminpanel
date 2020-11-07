@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use Modules\HR\Http\Request\Destroy\MassDestroyDepartmentRequest;
 use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
 use Modules\HR\Http\Requests\Update\UpdateDepartmentRequest;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class DepartmentsController extends Controller
 {
@@ -18,7 +20,7 @@ class DepartmentsController extends Controller
     {
         abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $departments = Department::all();
+        // $departments = Department::all();
 
         // if ($request->department_id) {
         //     $result = Department::where('id', $request->department_id)->first();
@@ -26,22 +28,46 @@ class DepartmentsController extends Controller
         //     return response()->json($department_head);
         // }
 
+        $department_head = '';
+        // $designationId = [];
+        // $designationName = [];
+        $users = [];
+        $department = '';
+        $result = '';
+
         if ($request->department_id) {
+
+            $department = $request->department_id;
             $result = Department::where('id', $request->department_id)->first();
-            $department_head = $result->department_head->accountDetail()->select('fullname')->first()->fullname;
+            // dd($result->department_head()->get());
+            // dd("fkdbv");
 
-            // $designations = $result->departmentDesignations()->whereHas('accountDetails', function($q) {
-            //     return $q;
-            // })->get();
+            if ($result->department_head()->first()) {
+                $department_head = $result->department_head->accountDetail()->select('fullname')->first()->fullname;
+            }else{
+                $department_head = '';
+            }
 
-            $designations = $result->departmentDesignations()->with('accountDetails')->get();
 
-            
-            // dd($designations);
-            return view('hr::admin.departments.filter', compact('department_head', 'designations'));
+            if ($department_head) {
+                $designations = $result->departmentDesignations()->get();
+                foreach ($designations as $key => $value) {
+                    $users[] = $value->accountDetails()->get();
+                }
+            }
+
+
+            // foreach ($departments as $key => $department) {
+            //     $designationId[] = $department->departmentDesignations()->first()->id;
+            //     $designationName[] = $department->departmentDesignations()->first()->designation_name;
+            // } // Designations array
+
+
+
+            return view('hr::admin.departments.body_form', compact('result', 'department', 'department_head', 'designationId', 'designationName'));
         }
 
-        return view('hr::admin.departments.index', compact('departments'));
+        return view('hr::admin.departments.index', compact('result', 'department', 'department_head', 'designationId', 'designationName'));
     }
 
     public function create()
