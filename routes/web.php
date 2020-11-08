@@ -154,16 +154,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::resource('monthly-attendances', 'MonthlyAttendancesController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
     // Job Circulars
-    Route::delete('job-circulars/destroy', 'JobCircularsController@massDestroy')->name('job-circulars.massDestroy');
-    Route::post('job-circulars/media', 'JobCircularsController@storeMedia')->name('job-circulars.storeMedia');
-    Route::post('job-circulars/ckmedia', 'JobCircularsController@storeCKEditorImages')->name('job-circulars.storeCKEditorImages');
-    Route::resource('job-circulars', 'JobCircularsController');
+    // Route::delete('job-circulars/destroy', 'JobCircularsController@massDestroy')->name('job-circulars.massDestroy');
+    // Route::post('job-circulars/media', 'JobCircularsController@storeMedia')->name('job-circulars.storeMedia');
+    // Route::post('job-circulars/ckmedia', 'JobCircularsController@storeCKEditorImages')->name('job-circulars.storeCKEditorImages');
+    // Route::resource('job-circulars', 'JobCircularsController');
 
     // Job Applications
-    Route::delete('job-applications/destroy', 'JobApplicationController@massDestroy')->name('job-applications.massDestroy');
-    Route::post('job-applications/media', 'JobApplicationController@storeMedia')->name('job-applications.storeMedia');
-    Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
-    Route::resource('job-applications', 'JobApplicationController');
+    // Route::delete('job-applications/destroy', 'JobApplicationController@massDestroy')->name('job-applications.massDestroy');
+    // Route::post('job-applications/media', 'JobApplicationController@storeMedia')->name('job-applications.storeMedia');
+    // Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
+    // Route::resource('job-applications', 'JobApplicationController');
 
     // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');

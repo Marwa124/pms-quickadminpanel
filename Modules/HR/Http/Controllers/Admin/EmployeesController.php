@@ -9,6 +9,7 @@ use Modules\HR\Http\Requests\Update\UpdateEmployeeRequest;
 use Modules\HR\Entities\Employee;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +18,9 @@ class EmployeesController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('employee_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $employees = Employee::all();
+        $employees = User::all();
 
         $roles = Role::get();
 
@@ -30,7 +31,7 @@ class EmployeesController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('employee_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -41,13 +42,13 @@ class EmployeesController extends Controller
 
     public function store(StoreEmployeeRequest $request)
     {
-        $employee = Employee::create($request->all());
+        $employee = User::create($request->all());
         $employee->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('hr.admin.employees.index');
     }
 
-    public function edit(Employee $employee)
+    public function edit(User $employee)
     {
         abort_if(Gate::denies('employee_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 

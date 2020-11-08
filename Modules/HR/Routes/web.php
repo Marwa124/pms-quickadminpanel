@@ -15,6 +15,12 @@ Route::prefix('hr')->group(function() {
     Route::get('/', 'HRController@index');
 });
 
+Route::get('circular_details/{id}', 'HRController@circularDetails')->name('front.circular_details');
+Route::post('front/job-applications/media', 'HRController@storeMedia')->name('front.job-applications.storeMedia');
+Route::post('front/job-applications/ckmedia', 'HRController@storeCKEditorImages')->name('front.job-applications.storeCKEditorImages');
+Route::get('front/job-applications/create/{id}', 'HRController@jobApplicationCreate')->name('front.job-applications.create');
+Route::post('front/job-applications/{id}', 'HRController@jobApplicationStore')->name('front.job-applications.store');
+
 
 Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
 
@@ -109,5 +115,17 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::post('vacations/ckmedia', 'VacationsController@storeCKEditorImages')->name('vacations.storeCKEditorImages');
      Route::resource('vacations', 'VacationsController');
 
+     // Job Circulars
+    Route::delete('job-circulars/destroy', 'JobCircularsController@massDestroy')->name('job-circulars.massDestroy');
+    Route::post('job-circulars/media', 'JobCircularsController@storeMedia')->name('job-circulars.storeMedia');
+    Route::post('job-circulars/ckmedia', 'JobCircularsController@storeCKEditorImages')->name('job-circulars.storeCKEditorImages');
+    Route::get('job-circulars/job-applications/{id}', 'JobCircularsController@listJobApplications')->name('job-circulars.all-job-applications');
+    Route::resource('job-circulars', 'JobCircularsController');
+
+    // Job Applications
+    Route::delete('job-applications/destroy', 'JobApplicationController@massDestroy')->name('job-applications.massDestroy');
+    // Route::post('job-applications/media', 'JobApplicationController@storeMedia')->name('job-applications.storeMedia');
+    // Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
+    Route::resource('job-applications', 'JobApplicationController', ['except' => ['store', 'create']]);
 
 });

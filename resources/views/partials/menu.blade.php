@@ -329,7 +329,7 @@
                             <ul class="c-sidebar-nav-dropdown-items">
                                 @can('job_circular_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.job-circulars.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/job-circulars") || request()->is("admin/job-circulars/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.job-circulars.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/job-circulars") || request()->is("admin/job-circulars/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-ticket-alt c-sidebar-nav-icon">
 
                                             </i>
@@ -339,7 +339,7 @@
                                 @endcan
                                 @can('job_application_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.job-applications.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/job-applications") || request()->is("admin/job-applications/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.job-applications.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/job-applications") || request()->is("admin/job-applications/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-compass c-sidebar-nav-icon">
 
                                             </i>

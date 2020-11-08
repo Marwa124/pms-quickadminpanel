@@ -120,7 +120,7 @@
 
 </script>
 <script>
-    $(".card").css('visibility', 'hidden');
+    // $(".card").css('visibility', 'hidden');
 
     $("#department").change(function() {
         var departmentId = $('#department').val();
@@ -133,9 +133,9 @@
                 department_id: departmentId,
             },
             success: function(e){
-                $(".card").css('visibility', 'visible');
+                // $(".card").css('visibility', 'visible');
                 $('.allResult').html(e);
-                console.log(e);
+                // console.log(e);
                 // $('.form_body').append(e)
                 // $('.form_body_result').html(e)
 

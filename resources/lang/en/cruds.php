@@ -582,6 +582,8 @@ return [
             'fullname_helper'        => ' ',
             'email'                => 'email',
             'email_helper'         => ' ',
+            'employment_id'                => 'Employment id',
+            'employment_id_helper'         => ' ',
             'department'                => 'department',
             'department_helper'         => ' ',
             'designation'                => 'designation',
@@ -1010,6 +1012,8 @@ return [
             'id_helper'              => ' ',
             'name'                   => 'Name',
             'name_helper'            => ' ',
+            'vacancy_no'             => 'Vacancy',
+            'all_job_applications'   => 'Job Applications',
             'designation'            => 'Designation',
             'designation_helper'     => ' ',
             'vacancy_no'             => 'Vacancy No',
@@ -1042,6 +1046,7 @@ return [
     ],
     'jobApplication'         => [
         'title'          => 'Job Application',
+        'all_job_applications' => 'All Job Applications',
         'title_singular' => 'Job Application',
         'fields'         => [
             'id'                        => 'ID',
