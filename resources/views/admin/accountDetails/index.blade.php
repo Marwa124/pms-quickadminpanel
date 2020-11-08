@@ -115,9 +115,15 @@
                             </td>
                             <td>
                                 @if($accountDetail->avatar)
+<<<<<<< HEAD
                                     <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
                                         src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
+=======
+                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
+                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
+                                        src="{{ $accountDetail->avatar->getUrl('thumb') }}">
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
                                     </a>
                                 @else
                                     <a href="javascript:void(0)" style="display: inline-block">

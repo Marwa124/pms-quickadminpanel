@@ -14,11 +14,15 @@
                 <label for="username">{{ trans('cruds.employee.fields.username') }}</label>
                 <input disabled class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}"
                 type="text" name="username" id="username"
+<<<<<<< HEAD
                 value="{{ old('username', $employee->accountDetail()->first()->fullname) }}" required>
+=======
+                value="{{ old('username', $employee->accountDetail()->first()->fullname) }}">
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
             </div>
             <div class="form-group">
                 <label class="required" for="role_id">{{ trans('cruds.employee.fields.role') }}</label>
-                <select class="form-control select2 {{ $errors->has('role') ? 'is-invalid' : '' }}" name="role_id" id="role_id" required>
+                <select class="form-control select2 {{ $errors->has('role') ? 'is-invalid' : '' }}" name="role_id" id="role_id" >
                     @foreach($roles as $id => $role)
                         <option value="{{ $id }}" {{ (old('role_id') ? old('role_id') : $employee->role->id ?? '') == $id ? 'selected' : '' }}>{{ $role }}</option>
                     @endforeach

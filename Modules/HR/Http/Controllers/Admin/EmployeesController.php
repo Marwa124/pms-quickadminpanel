@@ -16,37 +16,58 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EmployeesController extends Controller
 {
+<<<<<<< HEAD
     public function index()
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $employees = User::all();
+=======
+    // public function index()
+    // {
+    //     abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::get();
+    //     $employees = User::all();
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
 
-        $permissions = Permission::get();
+    //     $roles = Role::get();
 
-        return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
-    }
+    //     $permissions = Permission::get();
 
+    //     return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
+    // }
+
+<<<<<<< HEAD
     public function create()
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+=======
+    // public function create()
+    // {
+    //     abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
 
-        $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
+    //     $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+    //     $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('hr::admin.employees.create', compact('roles', 'permissions'));
-    }
+    //     return view('hr::admin.employees.create', compact('roles', 'permissions'));
+    // }
 
+<<<<<<< HEAD
     public function store(StoreEmployeeRequest $request)
     {
         $employee = User::create($request->all());
         $employee->permissions()->sync($request->input('permissions', []));
+=======
+    // public function store(StoreEmployeeRequest $request)
+    // {
+    //     $employee = User::create($request->all());
+    //     $employee->permissions()->sync($request->input('permissions', []));
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
 
-        return redirect()->route('hr.admin.employees.index');
-    }
+    //     return redirect()->route('hr.admin.employees.index');
+    // }
 
     public function edit(User $employee)
     {
@@ -61,12 +82,13 @@ class EmployeesController extends Controller
         return view('hr::admin.employees.edit', compact('roles', 'permissions', 'employee'));
     }
 
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(User $employee)
     {
-        $employee->update($request->all());
-        $employee->permissions()->sync($request->input('permissions', []));
+        // $employee->update($request->all());
+        $employee->roles()->sync(request()->input('role_id'));
+        $employee->permissions()->sync(request()->input('permissions', []));
 
-        return redirect()->route('hr.admin.employees.index');
+        return redirect()->route('hr.admin.departments.index');
     }
 
     public function show(Employee $employee)

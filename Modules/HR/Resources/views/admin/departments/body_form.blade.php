@@ -102,9 +102,10 @@
 
 @foreach($accountDetails::all() as $key => $account)
     <?php $userDepart = $account->designation()->whereIn('id', $designationId)->first(); ?>
+    <?php $acountUser = $account->user()->first(); ?>
     @if ($userDepart)
 
-    <tr data-entry-id="{{ $account->id }}">
+    <tr data-entry-id="{{ $acountUser->id }}">
         <td>
 
         </td>
@@ -116,19 +117,31 @@
         </td>
         <td>
             @can('department_show')
+<<<<<<< HEAD
                 <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.employees.show', $account->id) }}">
+=======
+                <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.employees.show', $acountUser->id) }}">
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
                     {{ trans('global.view') }}
                 </a>
             @endcan
 
             @can('department_edit')
+<<<<<<< HEAD
                 <a class="btn btn-xs btn-info" href="{{ route('hr.admin.employees.edit', $account->id) }}">
+=======
+                <a class="btn btn-xs btn-info" href="{{ route('hr.admin.employees.edit', $acountUser->id) }}">
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
                     {{ trans('global.edit') }}
                 </a>
             @endcan
 
             @can('department_delete')
+<<<<<<< HEAD
                 <form action="{{ route('hr.admin.employees.destroy', $account->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+=======
+                <form action="{{ route('hr.admin.employees.destroy', $acountUser->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+>>>>>>> aaee768b5391726781f68147c58efa439678af21
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
