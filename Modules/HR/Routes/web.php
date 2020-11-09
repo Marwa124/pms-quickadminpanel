@@ -50,6 +50,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Departments
      Route::delete('departments/destroy', 'DepartmentsController@massDestroy')->name('departments.massDestroy');
+     Route::get('departments/designations', 'DepartmentsController@designationsDepartment')->name('departments.designations');
      Route::resource('departments', 'DepartmentsController');
 
      // Designations

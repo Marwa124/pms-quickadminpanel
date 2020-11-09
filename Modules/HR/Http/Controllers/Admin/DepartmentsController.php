@@ -3,10 +3,12 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccountDetail;
 use Modules\HR\Entities\Department;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\Designation;
 use Modules\HR\Http\Request\Destroy\MassDestroyDepartmentRequest;
 use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
 use Modules\HR\Http\Requests\Update\UpdateDepartmentRequest;
@@ -20,54 +22,25 @@ class DepartmentsController extends Controller
     {
         abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $departments = Department::all();
+        if ($request->designation_id) {
+            $department_id = Designation::find($request->designation_id)->department()->first();
+            $userAccounts = AccountDetail::where('designation_id', $request->designation_id)->get();
+            $department_head_id = Designation::find($request->designation_id)
+                ->department->department_head()->select('id')->first();
 
-        // if ($request->department_id) {
-        //     $result = Department::where('id', $request->department_id)->first();
-        //     $department_head = $result->department_head->accountDetail()->select('fullname')->first()->fullname;
-        //     return response()->json($department_head);
-        // }
+            $department_head = AccountDetail::where('user_id', $department_head_id->id)->get() ? AccountDetail::where('user_id', $department_head_id->id)->select('fullname')->first() : '';
+            return view('hr::admin.departments.body_form', compact('result', 'department_id', 'department_head', 'userAccounts'));
 
-        $department_head = '';
-        // $designationId = [];
-        // $designationName = [];
-        $users = [];
-        $department = '';
-        $result = '';
-
-        if ($request->department_id) {
-
-            $department = $request->department_id;
-            $result = Department::where('id', $request->department_id)->first();
-            // dd($result->department_head()->get());
-            // dd("fkdbv");
-
-            if ($result->department_head()->first()) {
-                $department_head = $result->department_head->accountDetail()->select('fullname')->first()->fullname;
-            }else{
-                $department_head = '';
-            }
-
-
-            if ($department_head) {
-                $designations = $result->departmentDesignations()->get();
-                foreach ($designations as $key => $value) {
-                    $users[] = $value->accountDetails()->get();
-                }
-            }
-
-
-            // foreach ($departments as $key => $department) {
-            //     $designationId[] = $department->departmentDesignations()->first()->id;
-            //     $designationName[] = $department->departmentDesignations()->first()->designation_name;
-            // } // Designations array
-
-
-
-            return view('hr::admin.departments.body_form', compact('result', 'department', 'department_head', 'designationId', 'designationName'));
         }
 
         return view('hr::admin.departments.index', compact('result', 'department', 'department_head', 'designationId', 'designationName'));
+    }
+
+    public function designationsDepartment(Request $request)
+    {
+        $designations =  Designation::where('department_id', $request->department_id)->pluck('designation_name', 'id');
+
+        return response()->json(json_decode($designations));
     }
 
     public function create()

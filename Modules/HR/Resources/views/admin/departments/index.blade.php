@@ -9,8 +9,8 @@
     </div>
     <div class="box-body" bis_skin_checked="1">
         <div class="col-md-12" bis_skin_checked="1">
-            <form action="http://127.0.0.1:8000/admin/hr/daily-attendances" method="get">
-                @csrf
+            {{-- <form action="http://127.0.0.1:8000/admin/hr/daily-attendances" method="get">
+                @csrf --}}
                 <div class="form-group m-auto d-flex justify-content-center" bis_skin_checked="1">
                     <div class="col-sm-offset-3 col-sm-6" bis_skin_checked="1">
                         <div class="input-group margin" bis_skin_checked="1">
@@ -22,10 +22,19 @@
                                     <option value="{{ $id }}" {{ old('department') == $id ? 'selected' : '' }}>{{ $value }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="input-group margin designationSelect mt-2" bis_skin_checked="1">
+                            <label class="required" for="designation_name">{{ trans('cruds.designation.fields.designation_name') }}</label>
+                            <select class="form-control select2 designationOptions" name="designation" id="designation">
+                                <option selected disabled>Choose a Designation</option>
+                                {{-- @foreach($departmentModel::pluck('department_name', 'id') as $id => $value)
+                                    <option value="{{ $id }}" {{ old('department') == $id ? 'selected' : '' }}>{{ $value }}</option>
+                                @endforeach --}}
+                            </select>
                       </div>
                     </div>
                 </div>
-          </form>
+          {{-- </form> --}}
       </div>
       <!-- /. end col -->
   </div>
@@ -58,6 +67,8 @@
 @parent
 <script>
     $(function () {
+
+        $('.designationSelect').css('display', 'none');
 //   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 // @can('department_delete')
 //   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
@@ -120,29 +131,58 @@
 
 </script>
 <script>
-    // $(".card").css('visibility', 'hidden');
 
     $("#department").change(function() {
         var departmentId = $('#department').val();
-        // console.log($('#department').val());
         $.ajax({
-            url: '{{route('hr.admin.departments.index')}}',
+            url: '{{route('hr.admin.departments.designations')}}',
             type: 'get',
             dataType:'html',
             data: {
                 department_id: departmentId,
             },
             success: function(e){
-                // $(".card").css('visibility', 'visible');
-                $('.allResult').html(e);
-                // console.log(e);
-                // $('.form_body').append(e)
-                // $('.form_body_result').html(e)
-
-                // $(".department_head").html(e.department_head);
-                // console.log(e.department_head);
+                // console.log(JSON.parse(e));
+                var response = JSON.parse(e)
+                if (e != '') {
+                    $('.designationSelect').css('display', 'block');
+                    $.each(response, function(index, value){
+                        // console.log(index);
+                        // console.log(value);
+                        $('.designationOptions').append(`<option value="`+index+`" {{ old('department') == `+index+` ? 'selected' : '' }}>`+value+`</option>`)
+                        $(".designationOptions").change(function() {
+                            var designation = $('.designationOptions').val();
+                            console.log(designation);
+                            $.ajax({
+                                url: '{{route('hr.admin.departments.index')}}',
+                                type: 'get',
+                                dataType:'html',
+                                data: {
+                                    designation_id: designation,
+                                },
+                                success: function(e){
+                                    $('.allResult').html(e);
+                                }
+                            });
+                        })
+                    });
+                }
             }
         });
     })
+    // $("#department").change(function() {
+    //     var departmentId = $('#department').val();
+    //     $.ajax({
+    //         url: '{{route('hr.admin.departments.index')}}',
+    //         type: 'get',
+    //         dataType:'html',
+    //         data: {
+    //             department_id: departmentId,
+    //         },
+    //         success: function(e){
+    //             $('.allResult').html(e);
+    //         }
+    //     });
+    // })
 </script>
 @endsection
