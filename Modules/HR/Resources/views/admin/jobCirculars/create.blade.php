@@ -2,13 +2,18 @@
 @section('content')
 @inject('jobCircularModel', 'Modules\HR\Entities\JobCircular')
 
+@section('styles')
+<style>
+    .spinner{display: none;}
+</style>
+@endsection
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.jobCircular.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("hr.admin.job-circulars.store") }}" enctype="multipart/form-data">
+        <form class="preventMultiSubmits" method="POST" action="{{ route("hr.admin.job-circulars.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.jobCircular.fields.name') }}</label>
@@ -153,7 +158,8 @@
                 <span class="help-block">{{ trans('cruds.jobCircular.fields.permissions_helper') }}</span>
             </div> --}}
             <div class="form-group">
-                <button class="btn btn-danger" type="submit">
+                <button class="btn btn-danger preventMultiSubmitsBtn" type="submit">
+                    <i class="spinner fa fa-spinner fa-spin"></i>
                     {{ trans('global.save') }}
                 </button>
             </div>
@@ -166,6 +172,7 @@
 @endsection
 
 @section('scripts')
+<script src="{{ asset('js/share.js') }}"></script>
 <script>
     $(document).ready(function () {
   function SimpleUploadAdapter(editor) {
@@ -227,7 +234,14 @@
       }
     );
   }
+
+  $(".preventMultiSubmits").on('submit', function() {
+    $('.preventMultiSubmitsBtn').attr('disable', true);
+    $('.spinner').show();
+  })
+
 });
 </script>
-
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script src="{{ asset('js/share.js') }}"></script>
 @endsection

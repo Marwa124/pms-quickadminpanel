@@ -16,6 +16,9 @@ use Modules\HR\Entities\JobApplication;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
+// use Jorenvh\Share\Share;
+use Jorenvh\Share\ShareFacade;
+
 class JobCircularsController extends Controller
 {
     use MediaUploadingTrait;
@@ -26,13 +29,19 @@ class JobCircularsController extends Controller
 
         $jobCirculars = JobCircular::all();
 
-        return view('hr::admin.jobCirculars.index', compact('jobCirculars'));
+        $sharingLinks = '';
+
+        if (request()->session()->exists('sharingLinks')) {
+            $sharingLinks = request()->session()->get('sharingLinks');
+        }
+
+        return view('hr::admin.jobCirculars.index', compact('jobCirculars', 'sharingLinks'));
     }
 
     public function listJobApplications(Request $request)
     {
         abort_if(Gate::denies('job_application_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
+
         $jobApplications = JobApplication::all();
 
         return view('hr::admin.jobApplications.index', compact('jobApplications'));
@@ -56,6 +65,18 @@ class JobCircularsController extends Controller
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $jobCircular->id]);
+        }
+
+        if ($jobCircular->status == 'published') {
+            $sharingLinks = ShareFacade::page('http://01-pms-adminquickpanel.test/circular_details/'. $jobCircular->id, 'A New Job Vacancy')
+                ->facebook()
+                ->twitter()
+                ->linkedin()
+                ->whatsapp();
+
+            request()->session()->put('sharingLinks', $sharingLinks);
+            // dd($sharingLinks->getHtml());
+            // dd(ShareFacade::page('http://jorenvanhocht.be', 'A New Job Vacancy')->twitter());
         }
 
         return redirect()->route('hr.admin.job-circulars.index');

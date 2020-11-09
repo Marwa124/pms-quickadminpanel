@@ -14,7 +14,7 @@ class CreateJobApplicationsTable extends Migration
             $table->string('email')->nullable();
             $table->string('mobile')->nullable();
             $table->longText('cover_letter')->nullable();
-            $table->string('application_status')->nullable();
+            $table->string('application_status')->nullable()->default('unread');
             $table->date('apply_date')->nullable();
             $table->string('send_email')->nullable();
             $table->date('interview_date')->nullable();

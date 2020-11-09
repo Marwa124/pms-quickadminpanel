@@ -39,13 +39,14 @@ class JobApplicationRequest extends Mailable
         // $account = JobApplication::where('user_id', $this->user_id)->select('user_id', 'fullname')->first();
         $jobApplicationDetail = $this->details;
 
-        $attachment = str_replace('storage', 'storage/app/public', $this->details->resume->getUrl());
+        $attachment = str_replace('public/storage', 'storage/app/public', $this->details->resume->getUrl());
         $array = explode('.', $this->details->resume->getUrl());
         $extension = strtolower(end($array));
 
         $name  = $jobApplicationDetail->name;
         $email = $jobApplicationDetail->email;
         return $this->from($email, $name)
+            ->subject('Job Application ')
             ->subject('Job Application ')
             ->view('hr::jobApplicationMail')
             ->attach($attachment, [

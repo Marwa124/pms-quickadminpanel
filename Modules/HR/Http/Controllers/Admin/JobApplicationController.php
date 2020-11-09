@@ -27,68 +27,68 @@ class JobApplicationController extends Controller
         return view('hr::admin.jobApplications.index', compact('jobApplications'));
     }
 
-    public function create()
-    {
-        abort_if(Gate::denies('job_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function create()
+    // {
+    //     abort_if(Gate::denies('job_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-    
-        return view('hr::admin.jobApplications.create', compact('job_circulars'));
-    }
+    //     $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-    public function store(StoreJobApplicationRequest $request)
-    {
-        $jobApplication = JobApplication::create($request->all());
+    //     return view('hr::admin.jobApplications.create', compact('job_circulars'));
+    // }
 
-        if ($request->input('resume', false)) {
-            $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
-        }
+    // public function store(StoreJobApplicationRequest $request)
+    // {
+    //     $jobApplication = JobApplication::create($request->all());
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $jobApplication->id]);
-        }
+    //     if ($request->input('resume', false)) {
+    //         $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
+    //     }
 
-        return redirect()->route('hr.admin.job-applications.index');
-    }
+    //     if ($media = $request->input('ck-media', false)) {
+    //         Media::whereIn('id', $media)->update(['model_id' => $jobApplication->id]);
+    //     }
 
-    public function edit(JobApplication $jobApplication)
-    {
-        abort_if(Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    //     return redirect()->route('hr.admin.job-applications.index');
+    // }
 
-        $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+    // public function edit(JobApplication $jobApplication)
+    // {
+    //     abort_if(Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $jobApplication->load('job_circular');
+    //     $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('hr::admin.jobApplications.edit', compact('job_circulars', 'jobApplication'));
-    }
+    //     $jobApplication->load('job_circular');
 
-    public function update(UpdateJobApplicationRequest $request, JobApplication $jobApplication)
-    {
-        $jobApplication->update($request->all());
+    //     return view('hr::admin.jobApplications.edit', compact('job_circulars', 'jobApplication'));
+    // }
 
-        if ($request->input('resume', false)) {
-            if (!$jobApplication->resume || $request->input('resume') !== $jobApplication->resume->file_name) {
-                if ($jobApplication->resume) {
-                    $jobApplication->resume->delete();
-                }
+    // public function update(UpdateJobApplicationRequest $request, JobApplication $jobApplication)
+    // {
+    //     $jobApplication->update($request->all());
 
-                $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
-            }
-        } elseif ($jobApplication->resume) {
-            $jobApplication->resume->delete();
-        }
+    //     if ($request->input('resume', false)) {
+    //         if (!$jobApplication->resume || $request->input('resume') !== $jobApplication->resume->file_name) {
+    //             if ($jobApplication->resume) {
+    //                 $jobApplication->resume->delete();
+    //             }
 
-        return redirect()->route('hr.admin.job-applications.index');
-    }
+    //             $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
+    //         }
+    //     } elseif ($jobApplication->resume) {
+    //         $jobApplication->resume->delete();
+    //     }
 
-    public function show(JobApplication $jobApplication)
-    {
-        abort_if(Gate::denies('job_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    //     return redirect()->route('hr.admin.job-applications.index');
+    // }
 
-        $jobApplication->load('job_circular');
+    // public function show(JobApplication $jobApplication)
+    // {
+    //     abort_if(Gate::denies('job_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('hr::admin.jobApplications.show', compact('jobApplication'));
-    }
+    //     $jobApplication->load('job_circular');
+
+    //     return view('hr::admin.jobApplications.show', compact('jobApplication'));
+    // }
 
     public function destroy(JobApplication $jobApplication)
     {
@@ -106,15 +106,15 @@ class JobApplicationController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function storeCKEditorImages(Request $request)
-    {
-        abort_if(Gate::denies('job_application_create') && Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function storeCKEditorImages(Request $request)
+    // {
+    //     abort_if(Gate::denies('job_application_create') && Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $model         = new JobApplication();
-        $model->id     = $request->input('crud_id', 0);
-        $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
+    //     $model         = new JobApplication();
+    //     $model->id     = $request->input('crud_id', 0);
+    //     $model->exists = true;
+    //     $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
-        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
-    }
+    //     return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    // }
 }

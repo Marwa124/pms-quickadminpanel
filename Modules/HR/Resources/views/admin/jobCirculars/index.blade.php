@@ -14,6 +14,8 @@
     <div class="card-header">
         {{ trans('cruds.jobCircular.title_singular') }} {{ trans('global.list') }}
     </div>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
 
     <div class="card-body">
         <div class="table-responsive">
@@ -89,8 +91,46 @@
                                 {{ $jobCircularModel::STATUS_SELECT[$jobCircular->status] ?? '' }}
                             </td>
                             <td>
+
+                                @can('job_circular_edit')
+
+                                    <button type="button" class="social-links btn-info btn-xs"
+                                        data-shares="{{$sharingLinks->getHtml()}}" data-toggle="modal" data-target="#shareLinksHtml">
+                                        Publish
+                                        {{-- <div id="social-links" class="inputShares row">
+                                            <ul class="p-3" style="list-style:none"></ul>
+                                        </div> --}}
+                                    </button>
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade"
+                                        style="z-index: 9999; position: absolute; top: 4%;"
+                                    id="shareLinksHtml" tabindex="-1" role="dialog" aria-labelledby="shareLinksHtmlLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Share with</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="social-links">
+                                                    <ul style="list-style:none" class="p-3 inputShares d-flex justify-content-between fa-2x"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+
+
+                                @endCan
+
+
+
                                 @can('job_application_access')
-                                    <a href="{{ route("hr.admin.job-circulars.all-job-applications", $jobCircular->id) }}" class="btn btn-xs btn-warning text-white">
+                                    <a href="{{ route("hr.admin.job-applications.index", $jobCircular->id) }}" class="btn btn-xs btn-warning text-white">
                                         {{ trans('cruds.jobApplication.all_job_applications') }}
                                     </a>
                                 @endcan
@@ -114,8 +154,8 @@
                                     </form>
                                 @endcan
                                 {{-- @can('job_circular_delete') --}}
-                                    <a class="btn btn-xs btn-info" href="{{ route('front.circular_details', $jobCircular->id) }}">
-                                        {{ trans('cruds.jobCircular.fields.all_job_applications') }}
+                                    <a class="btn btn-xs btn-dark" href="{{ route('front.circular_details', $jobCircular->id) }}">
+                                        Details & Apply
                                     </a>
                                 {{-- @endcan --}}
 
@@ -134,6 +174,7 @@
 @endsection
 @section('scripts')
 @parent
+
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
@@ -177,7 +218,14 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
+
+$('.social-links').on('click', function(){
+    var shareHtml = $(this).data('shares');
+    $('.inputShares').html(shareHtml);
+});
+
+
 })
 
 </script>

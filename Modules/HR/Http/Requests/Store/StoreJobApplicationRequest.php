@@ -29,7 +29,7 @@ class StoreJobApplicationRequest extends FormRequest
                 'required',
                 'regex:/(^\+(?:[0-9]?){6,14}[0-9]$)|(^01(1|2|0|5)[0-9]{8}$)/'
             ],
-            'send_email'      => [
+            'email'      => [
                 // 'email',
                 'required',
             ],

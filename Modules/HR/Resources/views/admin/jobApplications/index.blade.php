@@ -1,14 +1,15 @@
 @extends('layouts.admin')
 @section('content')
-@can('job_application_create')
+@inject('jobApplicationModel', 'Modules\HR\Entities\JobApplication')
+{{-- @can('job_application_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('hr.admin.job-applications.create') }}">
+            <a class="btn btn-success" href="{{ route('front.job-applications.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.jobApplication.title_singular') }}
             </a>
         </div>
     </div>
-@endcan
+@endcan --}}
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.jobApplication.title_singular') }} {{ trans('global.list') }}
@@ -66,20 +67,68 @@
                             <td>
                                 {{ $jobApplication->mobile ?? '' }}
                             </td>
-                            <td>
-                                {{ App\Models\JobApplication::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '' }}
+                            <td class="text-center" style="color:#fff; background-color: {{ $jobApplicationModel::STATUS_COLOR[$jobApplication->application_status] ?? 'none' }};">
+                                {{ $jobApplicationModel::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '' }}
                             </td>
                             <td>
                                 @can('job_application_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.job-applications.show', $jobApplication->id) }}">
+                                    @if ($jobApplication->resume)
+                                        <a target="_blank" class="btn btn-xs btn-primary download_resume" href="{{str_replace('public/storage', 'storage/app/public', $jobApplication->resume->getUrl())}}">
+                                            <i class="fas fa-cloud-download-alt"></i>
+                                        </a>
+                                    @endif
+                                    {{-- <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.job-applications.show', $jobApplication->id) }}">
                                         {{ trans('global.view') }}
-                                    </a>
+                                    </a> --}}
                                 @endcan
 
                                 @can('job_application_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-applications.edit', $jobApplication->id) }}">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn-sm btn-warning changeStatusBtn" data-toggle="modal" data-target="#changeStatus">
+                                        Change Status
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal-sm fade"
+                                        style="z-index: 9999; position: absolute; margin: auto;
+                                        width: 100%; left: calc(100% - 70%);"
+                                    id="changeStatus" tabindex="-1" role="dialog" aria-labelledby="changeStatusLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Change Status</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select class="form-control" name="application_status" id="application_status">
+                                                    <option value disabled {{ old('application_status', $jobApplicationModel::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '') === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                                                    @foreach($jobApplicationModel::APPLICATION_STATUS_SELECT as $key => $label)
+                                                        <option value="{{ $key }}" {{ old('application_status', 'pending') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                                            <button type="button" class="btn-sm btn-primary">Update</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+                                    {{-- <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-applications.edit', $jobApplication->id) }}">
                                         {{ trans('global.edit') }}
-                                    </a>
+                                    </a> --}}
                                 @endcan
 
                                 @can('job_application_delete')
@@ -107,6 +156,8 @@
 @parent
 <script>
     $(function () {
+      $('.modal-sm').css('display', 'none');
+
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('job_application_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
@@ -148,7 +199,11 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
+  $('#changeStatusBtn').click(function() {
+      $('.changeStatus').css('display', 'block');
+  })
+
 })
 
 </script>

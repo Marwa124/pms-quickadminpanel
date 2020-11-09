@@ -34,7 +34,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.jobApplication.fields.name_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label class="required" for="send_email">{{ trans('cruds.jobApplication.fields.send_email') }}</label>
                 <input class="form-control {{ $errors->has('send_email') ? 'is-invalid' : '' }}" type="text" name="send_email" id="send_email" value="{{ old('send_email', '') }}">
                 @if($errors->has('send_email'))
@@ -43,7 +43,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.jobApplication.fields.send_email_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label class="required" for="email">{{ trans('cruds.jobApplication.fields.email') }}</label>
                 <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email') }}">

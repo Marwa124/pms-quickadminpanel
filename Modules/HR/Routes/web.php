@@ -15,6 +15,7 @@ Route::prefix('hr')->group(function() {
     Route::get('/', 'HRController@index');
 });
 
+
 Route::get('circular_details/{id}', 'HRController@circularDetails')->name('front.circular_details');
 Route::post('front/job-applications/media', 'HRController@storeMedia')->name('front.job-applications.storeMedia');
 Route::post('front/job-applications/ckmedia', 'HRController@storeCKEditorImages')->name('front.job-applications.storeCKEditorImages');

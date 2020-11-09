@@ -32,9 +32,19 @@ class JobApplication extends Model implements HasMedia
         'deleted_at',
     ];
 
+    const STATUS_COLOR = [
+        'unread'   => 'orange',
+        'primary_selected'   => 'skyblue',
+        'call_for_interview'   => '#ccc',
+        'approved'   => 'green',
+        'rejected'   => 'red',
+    ];
+
     const APPLICATION_STATUS_SELECT = [
-        'pending'  => 'Pending',
-        'accepted' => 'Accepted',
+        'unread'  => 'Unread',
+        'primary_selected'  => 'Primary Selected',
+        'call_for_interview'  => 'Call For Interview',
+        'approved' => 'Approved',
         'rejected' => 'Rejected',
     ];
 
