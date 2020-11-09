@@ -29,13 +29,13 @@ class JobCircularsController extends Controller
 
         $jobCirculars = JobCircular::all();
 
-        $sharingLinks = '';
+        // $sharingLinks = '';
 
-        if (request()->session()->exists('sharingLinks')) {
-            $sharingLinks = request()->session()->get('sharingLinks');
-        }
+        // if (request()->session()->exists('sharingLinks')) {
+        //     $sharingLinks = request()->session()->get('sharingLinks');
+        // }
 
-        return view('hr::admin.jobCirculars.index', compact('jobCirculars', 'sharingLinks'));
+        return view('hr::admin.jobCirculars.index', compact('jobCirculars'));
     }
 
     public function listJobApplications(Request $request)
@@ -74,7 +74,7 @@ class JobCircularsController extends Controller
                 ->linkedin()
                 ->whatsapp();
 
-            request()->session()->put('sharingLinks', $sharingLinks);
+            request()->session()->put('sharingLinks'. $jobCircular->id, $sharingLinks);
             // dd($sharingLinks->getHtml());
             // dd(ShareFacade::page('http://jorenvanhocht.be', 'A New Job Vacancy')->twitter());
         }
@@ -99,6 +99,16 @@ class JobCircularsController extends Controller
     {
         $jobCircular->update($request->all());
         $jobCircular->permissions()->sync($request->input('permissions', []));
+
+        if ($request->status == 'published') {
+            $sharingLinks = ShareFacade::page('http://01-pms-adminquickpanel.test/circular_details/'. $jobCircular->id, 'A New Job Vacancy')
+                ->facebook()
+                ->twitter()
+                ->linkedin()
+                ->whatsapp();
+
+            request()->session()->put('sharingLinks'. $jobCircular->id, $sharingLinks);
+        }
 
         return redirect()->route('hr.admin.job-circulars.index');
     }

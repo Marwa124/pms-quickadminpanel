@@ -94,8 +94,16 @@
 
                                 @can('job_circular_edit')
 
+                                <?php
+                                    $sharingLinks = '';
+                                    if (request()->session()->exists('sharingLinks'.$jobCircular->id)) {
+                                        $sharingLinks = request()->session()->get('sharingLinks'.$jobCircular->id);
+                                    }
+                                ?>
+                                @if ($sharingLinks)
+
                                     <button type="button" class="social-links btn-info btn-xs"
-                                        data-shares="{{$sharingLinks->getHtml()}}" data-toggle="modal" data-target="#shareLinksHtml">
+                                        data-shares="{{$sharingLinks ? $sharingLinks->getHtml() : ''}}" data-toggle="modal" data-target="#shareLinksHtml{{$jobCircular->id}}">
                                         Publish
                                         {{-- <div id="social-links" class="inputShares row">
                                             <ul class="p-3" style="list-style:none"></ul>
@@ -106,7 +114,7 @@
                                     <!-- Modal -->
                                     <div class="modal fade"
                                         style="z-index: 9999; position: absolute; top: 4%;"
-                                    id="shareLinksHtml" tabindex="-1" role="dialog" aria-labelledby="shareLinksHtmlLabel" aria-hidden="true">
+                                    id="shareLinksHtml{{$jobCircular->id}}" tabindex="-1" role="dialog" aria-labelledby="shareLinksHtmlLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -124,6 +132,7 @@
                                         </div>
                                     </div>
 
+                                    @endif
 
                                 @endCan
 
@@ -140,6 +149,15 @@
                                     </a>
                                 @endcan --}}
 
+                                @if ($jobCircular->last_date < date('Y-m-d'))
+                                    <a class="btn btn-xs btn-dark disabled" href="javascript:void(0)">
+                                        Expired date
+                                    </a>
+                                @else
+                                    <a class="btn btn-xs btn-dark" href="{{ route('front.circular_details', $jobCircular->id) }}">
+                                        Details & Apply
+                                    </a>
+                                @endif
                                 @can('job_circular_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-circulars.edit', $jobCircular->id) }}">
                                         {{ trans('global.edit') }}
@@ -153,14 +171,7 @@
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                     </form>
                                 @endcan
-                                {{-- @can('job_circular_delete') --}}
-                                    <a class="btn btn-xs btn-dark" href="{{ route('front.circular_details', $jobCircular->id) }}">
-                                        Details & Apply
-                                    </a>
-                                {{-- @endcan --}}
-
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>

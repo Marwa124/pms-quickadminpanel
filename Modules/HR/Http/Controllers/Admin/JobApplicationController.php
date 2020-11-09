@@ -24,7 +24,15 @@ class JobApplicationController extends Controller
 
         $jobApplications = JobApplication::all();
 
-        return view('hr::admin.jobApplications.index', compact('jobApplications'));
+        $circularId = '';
+        if (count(request()->all()) > 0) {
+            foreach (request()->all() as $key => $value) {
+                $circularId = $key;
+            }
+            // $jobApplications = JobApplication::where('job_circular_id', $circularId)->get();
+        }
+
+        return view('hr::admin.jobApplications.index', compact('jobApplications', 'circularId'));
     }
 
     // public function create()

@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 @section('content')
 @inject('jobApplicationModel', 'Modules\HR\Entities\JobApplication')
+@inject('jobCircularModel', 'Modules\HR\Entities\JobCircular')
+
 {{-- @can('job_application_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
@@ -23,9 +25,9 @@
                         <th width="10">
 
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.jobApplication.fields.id') }}
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.jobApplication.fields.job_circular') }}
                         </th>
@@ -45,6 +47,34 @@
                             &nbsp;
                         </th>
                     </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($jobCircularModel::all() as $key => $item)
+                                    <option value="{{ $item->name }}" {{($circularId == $key) ? 'selected' : ''}}>{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($jobApplicationModel::APPLICATION_STATUS_SELECT as $key => $item)
+                                    <option value="{{ $key }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach($jobApplications as $key => $jobApplication)
@@ -52,9 +82,9 @@
                             <td>
 
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $jobApplication->id ?? '' }}
-                            </td>
+                            </td> --}}
                             <td>
                                 {{ $jobApplication->job_circular->name ?? '' }}
                             </td>
@@ -73,7 +103,7 @@
                             <td>
                                 @can('job_application_show')
                                     @if ($jobApplication->resume)
-                                        <a target="_blank" class="btn btn-xs btn-primary download_resume" href="{{str_replace('public/storage', 'storage/app/public', $jobApplication->resume->getUrl())}}">
+                                        <a target="_blank" class="btn btn-xs btn-secondary download_resume" href="{{str_replace('public/storage', 'storage/app/public', $jobApplication->resume->getUrl())}}">
                                             <i class="fas fa-cloud-download-alt"></i>
                                         </a>
                                     @endif
@@ -84,7 +114,7 @@
 
                                 @can('job_application_edit')
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn-sm btn-warning changeStatusBtn" data-toggle="modal" data-target="#changeStatus">
+                                    <button type="button" class="btn-xs btn-success changeStatusBtn" data-toggle="modal" data-target="#changeStatus">
                                         Change Status
                                     </button>
 
@@ -198,6 +228,15 @@
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
+  });
+
+  $('.datatable thead').on('input', '.search', function () {
+      let strict = $(this).attr('strict') || false
+      let value = strict && this.value ? "^" + this.value + "$" : this.value
+      table
+        .column($(this).parent().index())
+        .search(value, strict)
+        .draw()
   });
 
   $('#changeStatusBtn').click(function() {
