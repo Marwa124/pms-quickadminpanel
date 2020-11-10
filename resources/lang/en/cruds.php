@@ -1554,8 +1554,8 @@ return [
         ],
     ],
     'account'                 => [
-        'title'          => 'Accounts',
-        'title_singular' => 'Account',
+        'title'          => 'Bank Accounts',
+        'title_singular' => 'Bank Account',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => ' ',
@@ -2565,7 +2565,7 @@ return [
             'location_helper'    => ' ',
             'color'              => 'Color',
             'color_helper'       => ' ',
-            'user'               => 'User',
+            'user'               => 'Employee',
             'user_helper'        => ' ',
             'created_at'         => 'Created at',
             'created_at_helper'  => ' ',
@@ -2576,8 +2576,8 @@ return [
         ],
     ],
     'setTime'               => [
-        'title'          => 'Set Times',
-        'title_singular' => 'Set Time',
+        'title'          => 'Time Tables',
+        'title_singular' => 'Time Table',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => ' ',

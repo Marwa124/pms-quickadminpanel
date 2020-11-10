@@ -31,7 +31,7 @@ class VacationsController extends Controller
     {
         abort_if(Gate::denies('vacation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::where('banned', 0)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('hr::admin.vacations.create', compact('users'));
     }
@@ -55,7 +55,7 @@ class VacationsController extends Controller
     {
         abort_if(Gate::denies('vacation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::where('banned', 0)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $vacation->load('user');
 
@@ -65,6 +65,17 @@ class VacationsController extends Controller
     public function update(UpdateVacationRequest $request, Vacation $vacation)
     {
         $vacation->update($request->all());
+        
+        if ($request->input('attachments', false)) {
+            if (!$vacation->attachments || $request->input('attachments') !== $vacation->attachments->file_name) {
+                if ($vacation->attachments) {
+                    $vacation->attachments->delete();
+                }
+                $vacation->addMedia(storage_path('tmp\uploads\\' . $request->input('attachments')))->toMediaCollection('attachments');
+            }
+        } elseif ($vacation->attachments) {
+            $vacation->attachments->delete();
+        }
 
         return redirect()->route('hr.admin.vacations.index');
     }

@@ -87,6 +87,24 @@
 
             </ul>
         </header>
+        <?php 
+            $systemClockIn = false;
+            $allUserLeaves = auth()->user()->leaveApplications()->get();
+            foreach ($allUserLeaves as $key => $value) {
+                if ($value->leave_category()->first()->name == 'Working From Home') {
+                    if ($value->leave_start_date == date('Y-m-d')) {
+                        $systemClockIn = true;
+                    }
+                }
+            }
+        ?>
+        @if ($systemClockIn)
+            <div class="row">
+                <div class="" style="position: absolute; right:20px;">
+                    <button class="btn btn-danger">Clock In</button>
+                </div>
+            </div>
+        @endif
 
         <div class="c-body">
             <main class="c-main">

@@ -16,10 +16,6 @@ class UpdateVacationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => [
-                'string',
-                'required',
-            ],
             'start_date' => [
                 'required',
                 'date_format:' . config('panel.date_format'),
@@ -29,10 +25,6 @@ class UpdateVacationRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
             ],
             'location'   => [
-                'string',
-                'nullable',
-            ],
-            'color'      => [
                 'string',
                 'nullable',
             ],

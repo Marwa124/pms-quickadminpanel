@@ -10,7 +10,6 @@ class CreateVacationsTable extends Migration
     {
         Schema::create('vacations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
             $table->longText('description')->nullable();
             $table->date('start_date');
             $table->date('end_date');

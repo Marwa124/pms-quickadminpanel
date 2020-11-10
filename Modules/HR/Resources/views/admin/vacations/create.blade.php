@@ -10,24 +10,18 @@
         <form method="POST" action="{{ route("hr.admin.vacations.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="name">{{ trans('cruds.vacation.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
-                @if($errors->has('name'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('name') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.vacation.fields.name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="description">{{ trans('cruds.vacation.fields.description') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
-                @if($errors->has('description'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('description') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.vacation.fields.description_helper') }}</span>
+              <label class="required" for="user_id">{{ trans('cruds.vacation.fields.user') }}</label>
+              <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                  @foreach($users as $id => $user)
+                      <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                  @endforeach
+              </select>
+              @if($errors->has('user'))
+                  <div class="invalid-feedback">
+                      {{ $errors->first('user') }}
+                  </div>
+              @endif
+              <span class="help-block">{{ trans('cruds.vacation.fields.user_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required" for="start_date">{{ trans('cruds.vacation.fields.start_date') }}</label>
@@ -50,28 +44,14 @@
                 <span class="help-block">{{ trans('cruds.vacation.fields.end_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="color">{{ trans('cruds.vacation.fields.color') }}</label>
-                <input class="form-control {{ $errors->has('color') ? 'is-invalid' : '' }}" type="color" name="color" id="color" value="{{ old('color', '') }}">
-                @if($errors->has('color'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('color') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.vacation.fields.color_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.vacation.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('user'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.vacation.fields.user_helper') }}</span>
+              <label for="description">{{ trans('cruds.vacation.fields.description') }}</label>
+              <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
+              @if($errors->has('description'))
+                  <div class="invalid-feedback">
+                      {{ $errors->first('description') }}
+                  </div>
+              @endif
+              <span class="help-block">{{ trans('cruds.vacation.fields.description_helper') }}</span>
             </div>
             <div class="form-group">
               <label for="attachments">{{ trans('cruds.leaveApplication.fields.attachments') }}</label>
@@ -187,8 +167,8 @@
     }
   },
   init: function () {
-@if(isset($leaveApplication) && $leaveApplication->attachments)
-    var file = {!! json_encode($leaveApplication->attachments) !!}
+@if(isset($vacation) && $vacation->attachments)
+    var file = {!! json_encode($vacation->attachments) !!}
         this.options.addedfile.call(this, file)
     file.previewElement.classList.add('dz-complete')
     $('form').append('<input type="hidden" name="attachments" value="' + file.file_name + '">')

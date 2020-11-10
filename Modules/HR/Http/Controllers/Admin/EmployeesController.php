@@ -13,61 +13,41 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class EmployeesController extends Controller
 {
-<<<<<<< HEAD
     public function index()
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $employees = User::all();
-=======
-    // public function index()
-    // {
-    //     abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-    //     $employees = User::all();
->>>>>>> aaee768b5391726781f68147c58efa439678af21
+        $roles = Role::get();
 
-    //     $roles = Role::get();
+        $permissions = Permission::get();
 
-    //     $permissions = Permission::get();
+        return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
+    }
 
-    //     return view('hr::admin.employees.index', compact('employees', 'roles', 'permissions'));
-    // }
-
-<<<<<<< HEAD
     public function create()
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-=======
-    // public function create()
-    // {
-    //     abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
->>>>>>> aaee768b5391726781f68147c58efa439678af21
 
-    //     $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $roles = Role::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-    //     $permissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('title', 'id');
 
-    //     return view('hr::admin.employees.create', compact('roles', 'permissions'));
-    // }
+        return view('hr::admin.employees.create', compact('roles', 'permissions'));
+    }
 
-<<<<<<< HEAD
     public function store(StoreEmployeeRequest $request)
     {
         $employee = User::create($request->all());
         $employee->permissions()->sync($request->input('permissions', []));
-=======
-    // public function store(StoreEmployeeRequest $request)
-    // {
-    //     $employee = User::create($request->all());
-    //     $employee->permissions()->sync($request->input('permissions', []));
->>>>>>> aaee768b5391726781f68147c58efa439678af21
 
-    //     return redirect()->route('hr.admin.employees.index');
-    // }
+        return redirect()->route('hr.admin.employees.index');
+    }
 
     public function edit(User $employee)
     {
@@ -84,9 +64,24 @@ class EmployeesController extends Controller
 
     public function update(User $employee)
     {
+        // $permission = Permission::whereIn('id', request()->permissions)->pluck('title');
+        $role = Role::find(request()->role_id);
+        $roleHasPermission = $role->permissions()->whereIn('permission_id', request()->permissions)->pluck('id')->toArray();
+        // $assignPermissionToUser = $employee->permissions()->attach(array_diff(request()->permissions,$roleHasPermission));
+        // dd($assignPermissionToUser);
+        // dd(array_diff(request()->permissions,$roleHasPermission));
+
+        $userNewRole = '';
+        if (array_diff(request()->permissions,$roleHasPermission)) {
+            $userNewRole = Role::create(['title' => $employee->id.'_'.$employee->name.'_'.Str::random(4)]);
+
+            $userNewRole->permissions()->sync(array_diff(request()->permissions,$roleHasPermission));
+        }
+        request()->role_id ? $employee->update(['role_id' => $role->id]) : '';
+        $userNewRole ? $employee->roles()->sync([request()->input('role_id'), $userNewRole->id]) : $employee->roles()->sync(request()->input('role_id'));
+// dd($employee->roles()->get());
         // $employee->update($request->all());
-        $employee->roles()->sync(request()->input('role_id'));
-        $employee->permissions()->sync(request()->input('permissions', []));
+        // $employee->permissions()->sync(request()->input('permissions', []));
 
         return redirect()->route('hr.admin.departments.index');
     }

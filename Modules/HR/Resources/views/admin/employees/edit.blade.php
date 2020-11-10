@@ -14,11 +14,7 @@
                 <label for="username">{{ trans('cruds.employee.fields.username') }}</label>
                 <input disabled class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}"
                 type="text" name="username" id="username"
-<<<<<<< HEAD
                 value="{{ old('username', $employee->accountDetail()->first()->fullname) }}" required>
-=======
-                value="{{ old('username', $employee->accountDetail()->first()->fullname) }}">
->>>>>>> aaee768b5391726781f68147c58efa439678af21
             </div>
             <div class="form-group">
                 <label class="required" for="role_id">{{ trans('cruds.employee.fields.role') }}</label>
@@ -40,9 +36,18 @@
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
+                {{$employee->role()->get()}}
+                <?php 
+                    foreach ($employee->roles()->get() as $key => $value) {
+                        $arrPermission[] = $value->permissions()->get();
+                    }
+                    // dd($arrPermission);
+                ?>
                 <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
                     @foreach($permissions as $id => $permissions)
-                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $employee->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
+                    {{$employee->role->permissions->contains($id)}}
+                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $employee->role->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
+                        {{-- <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $employee->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option> --}}
                     @endforeach
                 </select>
                 @if($errors->has('permissions'))

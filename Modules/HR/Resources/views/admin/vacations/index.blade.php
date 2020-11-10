@@ -23,12 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.vacation.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.vacation.fields.name') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.vacation.fields.start_date') }}
                         </th>
                         <th>
@@ -49,19 +43,13 @@
 
                             </td>
                             <td>
-                                {{ $vacation->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $vacation->name ?? '' }}
-                            </td>
-                            <td>
                                 {{ $vacation->start_date ?? '' }}
                             </td>
                             <td>
                                 {{ $vacation->end_date ?? '' }}
                             </td>
                             <td>
-                                {{ $vacation->user->name ?? '' }}
+                                {{ $vacation->user->accountDetail->fullname ?? '' }}
                             </td>
                             <td>
                                 @can('vacation_show')

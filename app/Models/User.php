@@ -17,6 +17,7 @@ use \DateTimeInterface;
 use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\Vacation;
 
 // use App\Models\AccountDetail;
@@ -88,6 +89,11 @@ class User extends Authenticatable implements HasMedia
     {
         // return $this->hasMany(Department::class, 'department_head_id', 'id');
         return $this->belongsTo(Department::class, 'department_head_id', 'id');
+    }
+
+    public function leaveApplications()
+    {
+        return $this->hasMany(LeaveApplication::class, 'user_id', 'id');
     }
 
     public function designation()

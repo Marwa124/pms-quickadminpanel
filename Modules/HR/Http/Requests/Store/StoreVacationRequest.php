@@ -17,10 +17,6 @@ class StoreVacationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => [
-                'string',
-                'required',
-            ],
             'start_date' => [
                 'required',
                 'date_format:' . config('panel.date_format'),
@@ -28,10 +24,6 @@ class StoreVacationRequest extends FormRequest
             'end_date'   => [
                 'required',
                 'date_format:' . config('panel.date_format'),
-            ],
-            'color'      => [
-                'string',
-                'nullable',
             ],
             'user_id'    => [
                 'required',

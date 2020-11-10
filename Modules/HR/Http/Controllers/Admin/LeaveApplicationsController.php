@@ -156,7 +156,7 @@ class LeaveApplicationsController extends Controller
         abort_if(Gate::denies('leave_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // $users = User::where('banned', 0)->get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $users = AccountDetail::where('employment_id', '!=', null)->get()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::where('employment_id', '!=', null)->get()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $leaveApplication->load('user', 'leave_category');

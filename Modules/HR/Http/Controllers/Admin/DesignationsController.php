@@ -37,8 +37,12 @@ class DesignationsController extends Controller
 
     public function store(StoreDesignationRequest $request)
     {
+        // dd($request->all());
         $designation = Designation::create($request->all());
-        $designation->permissions()->sync($request->input('permissions', []));
+        return response()->json($designation);
+     
+        // $designation = Designation::create($request->all());
+        // $designation->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.designations.index');
     }
