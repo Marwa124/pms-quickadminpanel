@@ -26,7 +26,7 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.clientMeeting.fields.id') }}
+                            {{ trans('cruds.meetingMinute.fields.user') }}
                         </th>
                         <th>
                             {{ trans('cruds.clientMeeting.fields.day') }}
@@ -56,7 +56,12 @@
 
                             </td>
                             <td>
-                                {{ $meeting->id ?? '' }}
+                                {{-- @foreach ($meetingMinute->attendees as $item)
+                                @php
+                                $userName = App\Models\AccountDetail::where('user_id', $item)->pluck('fullname')->first();
+                                @endphp
+                                {{ $userName ?? '' }} <?php echo "</br>"; ?>
+                                @endforeach --}}
                             </td>
                             <td>
                                 {{ $meeting->day ?? '' }}

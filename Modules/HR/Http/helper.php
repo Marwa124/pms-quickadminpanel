@@ -39,7 +39,7 @@ if (!function_exists('getUserLeaves'))
     function getUserLeaves($date, $user_id)
     {
         $leavesApp = LeaveApplication::where('user_id', $user_id)->where('leave_start_date', '<=', $date)->where('leave_end_date', '>=', $date)->first();
-        return ($leavesApp) ? 1 : 0;
+        return ($leavesApp) ? $leavesApp->leave_category()->first()->name : 0;
     }
 }
 

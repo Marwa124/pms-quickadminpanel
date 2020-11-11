@@ -44,7 +44,7 @@ class LeaveApplication extends Model implements HasMedia
 
     const APPLICATION_STATUS_SELECT = [
         'pending'  => 'Pending',
-        'accepted' => 'Accepted',
+        'accepted' => 'Approved',
         'rejected' => 'Rejected',
     ];
 

@@ -3,6 +3,7 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccountDetail;
 use Modules\HR\Http\Requests\Destroy\MassDestroyClientMeetingRequest;
 use Modules\HR\Http\Requests\Store\StoreClientMeetingRequest;
 use Modules\HR\Http\Requests\Update\UpdateClientMeetingRequest;
@@ -93,7 +94,8 @@ class ClientMeetingsController extends Controller
     {
         abort_if(Gate::denies('employee_request_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('hr::admin.clientMeetings.create', compact('users'));
     }

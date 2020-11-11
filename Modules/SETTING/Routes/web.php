@@ -18,9 +18,9 @@ Route::prefix('setting')->group(function() {
 Route::group(['as' => 'setting.config.', 'prefix' => 'admin/setting', 'middleware' => ['auth']],function() {
 
     // Overtimes
-    Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
+    // Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
     // Route::post('overtimes/media', 'OvertimeController@storeMedia')->name('overtimes.storeMedia');
-    Route::post('overtimes/ckmedia', 'OvertimeController@storeCKEditorImages')->name('overtimes.storeCKEditorImages');
+    // Route::post('overtimes/ckmedia', 'OvertimeController@storeCKEditorImages')->name('overtimes.storeCKEditorImages');
     Route::get('config', 'ConfigsController@index')->name('index');
     Route::put('config', 'ConfigsController@update')->name('update');
     // Route::resource('config', 'ConfigsController');

@@ -1,23 +1,29 @@
 @extends('layouts.admin')
 @section('content')
 @inject('salaryTemplateModel', 'App\Models\SalaryTemplate')
-@can('account_detail_create')
-    <div style="margin-bottom: 10px;" class="row">
+<div class="row">
+    @can('account_detail_create')
+        <div style="margin-bottom: 10px;" class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-success" href="{{ route('admin.account-details.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.accountDetail.title_singular') }}
+                </a>
+            </div>
+        </div>
+    @endcan
+    <div style="" class="row d-flex ml-auto">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.account-details.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.accountDetail.title_singular') }}
-            </a>
+            <select data-column="0" class="form-control filter-select" name="" id="">
+                <option value="0">Active Users</option>
+                <option value="1">Unactive Users</option>
+            </select>
         </div>
     </div>
-@endcan
+</div>
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.accountDetail.title_singular') }} {{ trans('global.list') }}
     </div>
-    {{-- <select data-column="0" class="form-control filter-select" name="filter-select" id="">
-        <option value="active">Active Users</option>
-        <option value="unactive">Unactive Users</option>
-    </select> --}}
     <div class="card-body">
         <div class="table-responsive" style="overflow-x: hidden !important;">
             <table class="display responsive nowrap table table-bordered table-striped table-hover datatable datatable-AccountDetail" style="width:100%">
@@ -29,12 +35,6 @@
                         <th>
                             {{ trans('cruds.accountDetail.fields.avatar') }}
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.accountDetail.fields.id') }}
-                        </th> --}}
-                        <th>
-                            {{ trans('cruds.accountDetail.fields.user') }}
-                        </th>
                         <th>
                             {{ trans('cruds.accountDetail.fields.fullname') }}
                         </th>
@@ -42,7 +42,7 @@
                             {{ trans('cruds.accountDetail.fields.email') }}
                         </th>
                         <th>
-                            {{ trans('cruds.accountDetail.fields.banned') }}
+                            {{ trans('cruds.accountDetail.fields.phone_number') }}
                         </th>
                         <th>
                             {{ trans('cruds.accountDetail.fields.joining_date') }}
@@ -65,44 +65,6 @@
                         <th>
                             Actions
                         </th>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            @inject('usersModel', 'App\Models\User')
-                            <select class="search">
-                                <option value="All" disabled selected>All</option>
-                                <option value="active">Active</option>
-                                <option value="banned">Banned</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -134,12 +96,6 @@
                                     </a>
                                 @endif
                             </td>
-                            {{-- <td>
-                                {{ $accountDetail->id ?? '' }}
-                            </td> --}}
-                            <td>
-                                {{ $accountDetail->user->name ?? '' }}
-                            </td>
                             <td>
                                 {{ $accountDetail->fullname ?? '' }}
                             </td>
@@ -147,7 +103,7 @@
                                 {{ $accountDetail->user->email ?? '' }}
                             </td>
                             <td>
-                                {{ ($accountDetail->user->banned == 0) ? 'Active' : 'Banned' }}
+                                {{ $accountDetail->mobile ?? '' }}
                             </td>
                             <td>
                                 {{ $accountDetail->joining_date ?? '' }}
@@ -203,16 +159,6 @@
 
                     @endforeach
                 </tbody>
-                {{-- <tfoot>
-                    <tr>
-                        <td>
-                            <select data-column="0" class="form-control filter-select" name="" id="">
-                                <option value="active">Active Users</option>
-                                <option value="unactive">Unactive Users</option>
-                            </select>
-                        </td>
-                    </tr>
-                </tfoot> --}}
             </table>
         </div>
     </div>
@@ -271,19 +217,10 @@
           .columns.adjust();
   });
 
-  $('.datatable thead').on('input', '.search', function () {
-      let strict = $(this).attr('strict') || false
-      let value = strict && this.value ? "^" + this.value + "$" : this.value
-      table
-        .column($(this).parent().index())
-        .search(value, strict)
-        .draw()
-  });
-
   $(".filter-select").change(function(){
 console.log($(this).val());
     $.ajax({
-        headers: {'x-csrf-token': _token},
+        // headers: {'x-csrf-token': _token},
         type: 'GET',
         url: "{{route('admin.account-details.index')}}",
         dataType: 'html',
@@ -291,18 +228,10 @@ console.log($(this).val());
             selectFilter: $(this).val(),
         },
         success: function(data){
-            // table.column( data )
-            $('body').html(data)
-            // console.log($('tbody').html(data));
+            console.log(data);
+            $('tbody').html(data)
         }
     })
-
-
-    //   table.column( $(this).data('column') )
-    //   .search($(this).val())
-    //   .draw();
-    //   console.log($(this).val());
-    //   console.log($(this).data('column'));
 
   })
 

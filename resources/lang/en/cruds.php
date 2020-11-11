@@ -582,6 +582,7 @@ return [
             'fullname_helper'        => ' ',
             'email'                => 'email',
             'email_helper'         => ' ',
+            'phone_number'         => 'Phone Number',
             'employment_id'                => 'Employment id',
             'employment_id_helper'         => ' ',
             'department'                => 'department',
