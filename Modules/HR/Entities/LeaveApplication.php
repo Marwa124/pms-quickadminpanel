@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -91,6 +92,11 @@ class LeaveApplication extends Model implements HasMedia
     public function leave_category()
     {
         return $this->belongsTo(LeaveCategory::class, 'leave_category_id');
+    }
+
+    public function notification()
+    {
+        return $this->hasOne(Notification::class);
     }
 
     public function getLeaveStartDateAttribute($value)

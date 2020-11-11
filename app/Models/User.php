@@ -185,7 +185,7 @@ class User extends Authenticatable implements HasMedia
 
     public function setDateOfJoinAttribute($value)
     {
-        // $this->attributes['date_of_join'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        $this->attributes['date_of_join'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function getDateOfInsuranceAttribute($value)
@@ -195,6 +195,11 @@ class User extends Authenticatable implements HasMedia
 
     public function setDateOfInsuranceAttribute($value)
     {
-        // $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function notifications()
+    {
+        return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
     }
 }

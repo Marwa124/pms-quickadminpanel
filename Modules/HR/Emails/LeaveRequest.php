@@ -41,18 +41,25 @@ class LeaveRequest extends Mailable
         $account = AccountDetail::where('user_id', $this->user_id)->select('user_id', 'fullname')->first();
         $email = User::where('id', $account->user_id)->first()->email;
 
-        $attachment = str_replace('storage', 'storage/app/public', $this->details->attachments->getUrl());
-        $array = explode('.', $this->details->attachments->getUrl());
-        $extension = strtolower(end($array));
-
         $name = $account->fullname;
+
+        if ($this->details->attachments) {
+            $attachment = str_replace('storage', 'storage/app/public', $this->details->attachments->getUrl());
+            $array = explode('.', $this->details->attachments->getUrl());
+            $extension = strtolower(end($array));
+
+            return $this->from($email, $name)
+                ->subject('Pending Leave Request ')
+                ->view('hr::admin.leaveApplications.leaveMail')
+                ->attach($attachment, [
+                    'as' => 'leaveRequest.'.$extension,
+                    'mime' => 'application/'.$extension,
+                ])
+                ->with(['details' => $this->details, 'leave_category' => $this->leave_category]);
+        }
         return $this->from($email, $name)
-            ->subject('Pending Leave Request ')
-            ->view('hr::admin.leaveApplications.leaveMail')
-            ->attach($attachment, [
-                'as' => 'leaveRequest.'.$extension,
-                'mime' => 'application/'.$extension,
-            ])
-            ->with(['details' => $this->details, 'leave_category' => $this->leave_category]);
+                ->subject('Pending Leave Request ')
+                ->view('hr::admin.leaveApplications.leaveMail')
+                ->with(['details' => $this->details, 'leave_category' => $this->leave_category]);
     }
 }

@@ -171,6 +171,9 @@
 @if(isset($vacation) && $vacation->attachments)
     var file = {!! json_encode($vacation->attachments) !!}
         this.options.addedfile.call(this, file)
+	// this.options.thumbnail.call(this, file);
+	// this.emit("complete", file);
+
     file.previewElement.classList.add('dz-complete')
     $('form').append('<input type="hidden" name="attachments" value="' + file.file_name + '">')
     this.options.maxFiles = this.options.maxFiles - 1

@@ -5,6 +5,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\AccountDetail;
+use App\Models\Notification;
 use Modules\HR\Http\Requests\Destroy\MassDestroyLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Store\StoreLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Update\UpdateLeaveApplicationRequest;
@@ -140,6 +141,21 @@ class LeaveApplicationsController extends Controller
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
         Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
                 ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
+
+
+        $notification = Notification::create([
+            'title'   => $leave_category,
+            'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+            'model_id' => $leaveApplication->id,
+            'model_type' => 'Modules\HR\Entities\LeaveApplication',
+        ]);
+        // $notification = $leaveApplication->notification()->create([
+        //     'title'   => $leave_category,
+        //     'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+        // ]);
+
+        $notification->users()->attach($request->user_id);
+
         // dd(new LeaveRequest($leaveApplication));
         // $department_head_employee = AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->email;
         // $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();

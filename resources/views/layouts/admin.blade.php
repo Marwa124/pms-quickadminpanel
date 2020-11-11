@@ -54,6 +54,41 @@
                     </li>
                 @endif
 
+                <!--User Notification-->
+                <ul class="c-header-nav ml-auto">
+                    <li class="c-header-nav-item dropdown notifications-menu">
+                        <a href="#" class="c-header-nav-link" data-toggle="dropdown">
+                            <i class="far fa-bell"></i>
+                                @if($notificationCount > 0)
+                                    <span class="badge badge-warning navbar-badge">
+                                        {{$notificationCount}}
+                                    </span>
+                                @endif
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            @if(count($notifications = \Auth::user()->notifications()->withPivot('is_read')->limit(10)->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
+                                @foreach($notifications as $notify)
+                                    <div class="dropdown-item">
+                                        <a href="" target="_blank" rel="noopener noreferrer">
+                                            @if($notify->pivot->is_read === 0) <strong> @endif
+                                                {{ $notify->title }}
+                                                <p class="text-muted fa-sm">{{ implode(' ', array_slice(explode(' ', $notify->content), 0, 5))}}</p>
+                                                @if($notify->pivot->is_read === 0) </strong> @endif
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="text-center">
+                                    {{ trans('global.no_alerts') }}
+                                </div>
+                            @endif
+                        </div>
+                    </li>
+                </ul>
+                <!--End User Notification-->
+
+
+                <!--User Alert-->
                 <ul class="c-header-nav ml-auto">
                     <li class="c-header-nav-item dropdown notifications-menu">
                         <a href="#" class="c-header-nav-link" data-toggle="dropdown">
@@ -84,10 +119,12 @@
                         </div>
                     </li>
                 </ul>
+                <!--End User Alert-->
+
 
             </ul>
         </header>
-        <?php 
+        <?php
             $systemClockIn = false;
             $allUserLeaves = auth()->user()->leaveApplications()->get();
             foreach ($allUserLeaves as $key => $value) {

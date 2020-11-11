@@ -177,6 +177,8 @@ return [
 
         Jorenvh\Share\Providers\ShareServiceProvider::class,
 
+        App\Providers\ViewServiceProvider::class,
+
     ],
 
     /*
