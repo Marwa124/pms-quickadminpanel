@@ -56,13 +56,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      // Designations
      Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
      Route::resource('designations', 'DesignationsController');
-
-    //  // Account Details
-    //  Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
-    //  Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
-    //  Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
-    //  Route::resource('account-details', 'AccountDetailsController');
-
+     
      // Overtimes
      Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
      Route::post('overtimes/media', 'OvertimeController@storeMedia')->name('overtimes.storeMedia');

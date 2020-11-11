@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyAccountDetailRequest;
 use App\Http\Requests\StoreAccountDetailRequest;
 use App\Http\Requests\UpdateAccountDetailRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\AccountDetail;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\SetTime;
@@ -16,6 +17,8 @@ use Illuminate\Http\Request;
 use Modules\HR\Entities\Department;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AccountDetailsController extends Controller
 {
@@ -27,32 +30,52 @@ class AccountDetailsController extends Controller
 
         // $accountDetails = AccountDetail::all();
         $accountDetails = [];
-        // $users = User::where('banned', 0)->get();
-        $users = User::all();
-
-        // if (request()->selectFilter) {
-        //     $users = User::where('banned', 1)->get();
-        // }
-
+        $users = User::where('banned', 0)->get();
+        // $users = User::all();
+        
+        if (request()->all()) {
+            $users = User::where('banned', request()->selectFilter)->get();
+            foreach ($users as $key => $value) {
+                $accountDetails[] = $value->accountDetail()->first();
+            }
+            return view('admin.accountDetails.filter', compact('accountDetails'));
+        }
+        
         foreach ($users as $key => $value) {
             $accountDetails[] = $value->accountDetail()->first();
         }
-        // dump($accountDetails);
 
         return view('admin.accountDetails.index', compact('accountDetails'));
     }
 
-    public function filterSelect(Request $request)
+    public function passwordReset(Request $request)
     {
-        $banned = $request->selectFilter == 'active' ? 0 : 1;
-        $users = User::where('banned', $banned)->get();
-        foreach ($users as $key => $value) {
-            $accountDetails[] = $value->accountDetail()->first();
+        $rules = [
+            'old_password' => 'required',
+            'password' => ['required', 'confirmed']
+        ];
+        $messages = [
+            // 'old-password.required' => 'كلمه السر الحاليه مطلوبه',
+            // 'new-password.required' => 'كلمه السر مطلوبه'
+        ];
+        $this->validate($request, $rules, $messages);
+
+        $user = Auth::user()->role ? (Auth::user()->role->title == 'Admin' ? true : false) : false;
+        $owner = (Auth::user()->id == $request->userId) ? true : false;
+        $userObject = User::find($request->userId);
+
+        if ($owner || $user) {
+            if(Hash::check($request->input('old_password'), $userObject->password))
+            {
+                //the password match..
+                $userObject->password = bcrypt($request->input('password'));
+                $userObject->save();
+                return response()->json('Password Updated Successfully');
+            }
+            return response()->json('Password Mismatch');
         }
-
-        return view('admin.accountDetails.filter', compact('accountDetails'));
     }
-
+    
     public function create()
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');

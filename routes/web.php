@@ -107,6 +107,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
     Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
     Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
+    Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
     Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select');
     Route::resource('account-details', 'AccountDetailsController');
 

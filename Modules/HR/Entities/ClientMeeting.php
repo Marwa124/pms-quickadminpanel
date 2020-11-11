@@ -18,6 +18,10 @@ class ClientMeeting extends Model
         'updated_at',
         'deleted_at',
     ];
+    
+    protected $casts = [
+        'attendees' => 'array',
+    ];
 
     protected $time = [
         'from_time',

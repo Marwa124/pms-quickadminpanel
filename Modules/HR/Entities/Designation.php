@@ -48,6 +48,11 @@ class Designation extends Model
         return $this->belongsTo(Department::class, 'department_id');
     }
 
+    public function designationLeader()
+    {
+        return $this->belongsTo(User::class, 'designation_leader_id');
+    }
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);

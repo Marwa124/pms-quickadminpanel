@@ -10,7 +10,7 @@
     <div class="card-body">
         <form method="POST" action="{{ route("hr.admin.client-meetings.store") }}" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label class="required" for="user_id">{{ trans('cruds.clientMeeting.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                     @foreach($users as $id => $user)
@@ -23,7 +23,34 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.clientMeeting.fields.user_helper') }}</span>
+            </div> --}}
+
+
+
+
+            <div class="form-group">
+                <label>{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
+                <select class="form-control" name="attendees[]" id="attendees" multiple="multiple">
+                    @foreach($users as $key => $label)
+                        <option value="{{ $key }}" {{ old('attendees') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('attendees'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('attendees') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.meetingMinute.fields.attendees_helper') }}</span>
             </div>
+
+
+
+
+
+
+
+
+
             <div class="form-group">
                 <label for="day">{{ trans('cruds.clientMeeting.fields.day') }}</label>
                 <input class="form-control date {{ $errors->has('day') ? 'is-invalid' : '' }}" type="text" name="day" id="day" value="{{ old('day') }}">
@@ -87,5 +114,14 @@
         </form>
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $('#attendees').select2();
+        })
+    </script>
 
 @endsection

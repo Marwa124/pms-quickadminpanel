@@ -7,22 +7,33 @@
     </td>
     <td>
         @if($accountDetail->avatar)
-            <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank" style="display: inline-block">
-                <img src="{{ $accountDetail->avatar->getUrl('thumb') }}">
+            <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
+                <img class="rounded-circle img-thumbnail d-flex m-auto"
+                src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
+            </a>
+            {{-- <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
+                <img class="rounded-circle img-thumbnail d-flex m-auto"
+                src="{{ $accountDetail->avatar->getUrl('thumb') }}">
+            </a> --}}
+        @else
+            <a href="javascript:void(0)" style="display: inline-block">
+                <img class="rounded-circle img-thumbnail"
+                style="display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: 30%;"
+                src="{{ asset('images/default.png') }}">
             </a>
         @endif
-    </td>
-    {{-- <td>
-        {{ $accountDetail->id ?? '' }}
-    </td> --}}
-    <td>
-        {{ $accountDetail->user->name ?? '' }}
     </td>
     <td>
         {{ $accountDetail->fullname ?? '' }}
     </td>
     <td>
         {{ $accountDetail->user->email ?? '' }}
+    </td>
+    <td>
+        {{ $accountDetail->mobile ?? '' }}
     </td>
     <td>
         {{ $accountDetail->joining_date ?? '' }}
@@ -38,7 +49,7 @@
             $designatonName = $accountDetail->designation;
             $salary = $designatonName ? $salaryTemplateModel::where('salary_grade', $designatonName->designation_name)->select('basic_salary')->first() : '';
         ?>
-        {{ $salary ? $salary->basic_salary : '' }}
+        {{  $salary ? 'EGY ' .number_format($salary->basic_salary, 0, ',', '.') : ''}}
     </td>
     <td>
         @can('account_detail_show')
