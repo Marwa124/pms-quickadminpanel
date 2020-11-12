@@ -1,14 +1,27 @@
 @extends('layouts.admin')
 @section('content')
-@can('leave_application_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('hr.admin.leave-applications.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.leaveApplication.title_singular') }}
-            </a>
+<div class="row">
+    @can('leave_application_create')
+        <div style="margin-bottom: 10px;" class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-success" href="{{ route('hr.admin.leave-applications.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.leaveApplication.title_singular') }}
+                </a>
+            </div>
         </div>
-    </div>
-@endcan
+    @endcan
+    @can('leave_application_delete')
+        <div style="" class="row d-flex ml-auto">
+            <div class="col-lg-12">
+                <select data-column="0" class="form-control filter-select" name="" id="">
+                    <option value="0">Active</option>
+                    <option value="1">Trashed Leaves</option>
+                </select>
+            </div>
+        </div>
+    @endcan
+</div>
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.leaveApplication.title_singular') }} {{ trans('global.list') }}
@@ -92,24 +105,33 @@
   dtButtons.push(deleteButton)
 @endcan
 
+
+
   let dtOverrideGlobals = {
     buttons: dtButtons,
     processing: true,
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    ajax: "{{ route('hr.admin.leave-applications.index') }}",
+    ajax: {
+        url: "{{ route('hr.admin.leave-applications.index') }}",
+        type: 'get',
+        data: function (d) {
+            d.trashed= $(".filter-select").val();
+        },
+    },
+    // ajax: "{{ route('hr.admin.leave-applications.index') }}",
     columns: [
-      { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{ data: 'user_name', name: 'user_name' },
-{ data: 'leave_category_name', name: 'leave_category.name' },
-{ data: 'leave_type', name: 'leave_type' },
-{ data: 'hours', name: 'hours' },
-{ data: 'application_status', name: 'application_status' },
-{ data: 'leave_start_date', name: 'leave_start_date' },
-{ data: 'leave_end_date', name: 'leave_end_date' },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
+        { data: 'placeholder', name: 'placeholder' },
+        { data: 'id', name: 'id' },
+        { data: 'user_name', name: 'user_name' },
+        { data: 'leave_category_name', name: 'leave_category.name' },
+        { data: 'leave_type', name: 'leave_type' },
+        { data: 'hours', name: 'hours' },
+        { data: 'application_status', name: 'application_status' },
+        { data: 'leave_start_date', name: 'leave_start_date' },
+        { data: 'leave_end_date', name: 'leave_end_date' },
+        { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
@@ -123,6 +145,20 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
+
+  $(".filter-select").change(function(){
+    table.draw();
+  })
+
+
+
+//   $(".forceDestroy").click(function(e){
+//       e.preventDefault();
+//         console.log("sdkjvcbk");
+
+//   })
+
+
 
 });
 

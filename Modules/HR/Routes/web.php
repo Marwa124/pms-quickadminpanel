@@ -56,7 +56,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      // Designations
      Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
      Route::resource('designations', 'DesignationsController');
-     
+
      // Overtimes
      Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
      Route::post('overtimes/media', 'OvertimeController@storeMedia')->name('overtimes.storeMedia');
@@ -83,6 +83,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Leave Applications
      Route::delete('leave-applications/destroy', 'LeaveApplicationsController@massDestroy')->name('leave-applications.massDestroy');
+     Route::post('leave-applications/force-destroy/{id}', 'LeaveApplicationsController@forceDelete')->name('leave-applications.forceDestroy');
      Route::post('leave-applications/media', 'LeaveApplicationsController@storeMedia')->name('leave-applications.storeMedia');
      Route::post('leave-applications/ckmedia', 'LeaveApplicationsController@storeCKEditorImages')->name('leave-applications.storeCKEditorImages');
      Route::resource('leave-applications', 'LeaveApplicationsController');

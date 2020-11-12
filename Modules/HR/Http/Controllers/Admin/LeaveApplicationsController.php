@@ -30,32 +30,70 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        // dd($request->all());
+
+
         if ($request->ajax()) {
             $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
-            $table = Datatables::of($query);
-            // dd($table);
 
-            // dd(LeaveApplication::with(['user', 'leave_category']));
+            // if ($request->trashed) {
+            //     // $query->where('deleted_at', '!=', NULL);
+            //     $query->onlyTrashed();
+            // } else {
+            //     $query->where('deleted_at', NULL);
+            // }
+
+            $table = Datatables::of($query);
+
+            // dd($table->make(true));
+
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
             $table->addColumn('status_color', '&nbsp;');
 
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'leave_application_show';
-                $editGate      = 'leave_application_edit';
-                $deleteGate    = 'leave_application_delete';
-                $modalId       = 'hr.';
-                $crudRoutePart = 'leave-applications';
+            $table->editColumn('actions', function ($row) use ($request){
+                if ($request->get('trashed')) {
+                    $viewGate      = '';
+                    $editGate      = '';
+                    $deleteGate    = 'leave_application_delete';
+                    $deleteRestore    = 'delete_restore';
+                    $modalId       = 'hr.';
+                    $crudRoutePart = 'leave-applications';
 
-                return view('partials.datatablesActions', compact(
-                    'viewGate',
-                    'editGate',
-                    'deleteGate',
-                    'modalId',
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
+                    return view('partials.datatablesActions', compact(
+                        'viewGate',
+                        'editGate',
+                        'deleteGate',
+                        'deleteRestore',
+                        'modalId',
+                        'crudRoutePart',
+                        'row'
+                    ));
+                }else{
+                    $viewGate      = 'leave_application_show';
+                    $editGate      = 'leave_application_edit';
+                    $deleteGate    = 'leave_application_delete';
+                    $modalId       = 'hr.';
+                    $crudRoutePart = 'leave-applications';
+
+                    return view('partials.datatablesActions', compact(
+                        'viewGate',
+                        'editGate',
+                        'deleteGate',
+                        'modalId',
+                        'crudRoutePart',
+                        'row'
+                    ));
+                }
+
+            })->filter(function ($instance) use ($request) {
+                if ($request->get('trashed')) {
+                    $instance->onlyTrashed();
+                }else{
+                    $instance->where('deleted_at', NULL);
+                }
+            })
+            ->rawColumns(['status']);
 
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : "";
@@ -103,8 +141,12 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
-
+        // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        $activeUsers = User::where('banned', 0)->get();
+        foreach ($activeUsers as $key => $value) {
+            $users[] = $value->accountDetail()->pluck('fullname', 'user_id');
+        }
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('hr::admin.leaveApplications.create', compact('users', 'leave_categories'));
@@ -220,17 +262,50 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $leaveApplication->delete();
+        if ($leaveApplication->trashed()) {
+            $leaveApplication->forceDelete();
+        } else {
+            $leaveApplication->delete();
+        }
+
+        // $leaveApplication->delete();
+
+        return back();
+    }
+
+    public function forceDelete(Request $request)
+    {
+        abort_if(Gate::denies('leave_application_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // dd($request->all());
+        $id = $request->id;
+        $action = $request->action;
+
+        if ($action == 'delete') {
+            LeaveApplication::destroy($id);
+        } else if ($action == 'force_delete') {
+            LeaveApplication::onlyTrashed()->where('id', $id)->forceDelete();
+        } else if ($action == 'restore') {
+            LeaveApplication::onlyTrashed()->where('id', $id)->restore();
+        }
 
         return back();
     }
 
     public function massDestroy(MassDestroyLeaveApplicationRequest $request)
     {
-        LeaveApplication::whereIn('id', request('ids'))->delete();
+        if (LeaveApplication::whereIn('id', request('ids'))->onlyTrashed()) {
+            LeaveApplication::whereIn('id', request('ids'))->forceDelete();
+        } else {
+            LeaveApplication::whereIn('id', request('ids'))->delete();
+        }
+
+        // LeaveApplication::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+
 
     public function storeCKEditorImages(Request $request)
     {

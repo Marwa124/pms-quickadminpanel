@@ -218,7 +218,7 @@
   });
 
   $(".filter-select").change(function(){
-console.log($(this).val());
+// console.log($(this).val());
     $.ajax({
         // headers: {'x-csrf-token': _token},
         type: 'GET',
@@ -229,7 +229,7 @@ console.log($(this).val());
         },
         success: function(data){
             console.log(data);
-            $('tbody').html(data)
+            // $('tbody').html(data)
         }
     })
 
