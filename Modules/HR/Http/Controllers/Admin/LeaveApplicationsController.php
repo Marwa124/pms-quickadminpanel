@@ -30,22 +30,60 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // dd($request->all());
-
-
         if ($request->ajax()) {
-            $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
 
-            // if ($request->trashed) {
-            //     // $query->where('deleted_at', '!=', NULL);
-            //     $query->onlyTrashed();
-            // } else {
-            //     $query->where('deleted_at', NULL);
-            // }
+            if ($request->get('leaveTypes') == 'myLeaves') {
+                $query = LeaveApplication::where('user_id', auth()->user()->id)->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+            }elseif($request->get('leaveTypes') == 'pending') {
+                $userRole = auth()->user()->role()->first()->title;
+                $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
+                if ($userRole == 'Board Members' || $userRole == 'Admin') {
+                    // All pending leaves for board and admin
+                    $query = LeaveApplication::where('application_status', 'pending')->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+                }elseif ($isDepartmentHead) {
+                    $leaveAppIds = [];
+                    $designations = $isDepartmentHead->departmentDesignations()->pluck('id')->toArray();
+                    foreach (LeaveApplication::where('application_status', 'pending')->get() as $key => $value) {
+                        $userDesignation = AccountDetail::select('designation_id')->find($value->user_id);
+                        if (in_array($userDesignation->designation_id, $designations))
+                        {
+                            $leaveAppIds[] = $value->id;
+                        }
+                    }
+                    // Shows only users pending leaves having designation in which head department is responsible for.
+                    $query = LeaveApplication::whereIn('id', $leaveAppIds)->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+                }else{
+                    // Only Users leaves
+                    $query = LeaveApplication::where('user_id', auth()->user()->id)->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+                }
+            }else{
+                // All Leaves
+
+                $userRole = auth()->user()->role()->first()->title;
+                $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
+                if ($userRole == 'Board Members' || $userRole == 'Admin') {
+                    // All pending leaves for board and admin
+                    $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+                }elseif ($isDepartmentHead) {
+                    $leaveAppIds = [];
+                    $designations = $isDepartmentHead->departmentDesignations()->pluck('id')->toArray();
+                    foreach (LeaveApplication::all() as $key => $value) {
+                        $userDesignation = AccountDetail::select('designation_id')->find($value->user_id);
+                        if (in_array($userDesignation->designation_id, $designations))
+                        {
+                            $leaveAppIds[] = $value->id;
+                        }
+                    }
+                    // Shows only users pending leaves having designation in which head department is responsible for.
+                    $query = LeaveApplication::whereIn('id', $leaveAppIds)->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+                }
+
+
+                // All Leaves
+                // $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
+            }
 
             $table = Datatables::of($query);
-
-            // dd($table->make(true));
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
@@ -249,9 +287,6 @@ class LeaveApplicationsController extends Controller
         $attachment = str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl());
 
         // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
-        // dd($v);
-        // dd($leaveApplication->attachments->getUrl());
-        // dd(env('APP_URL'));
 
         $leaveApplication->load('user', 'leave_category');
 
