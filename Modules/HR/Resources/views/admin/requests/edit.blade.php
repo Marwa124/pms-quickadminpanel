@@ -23,7 +23,7 @@
                             <?php $checkOldValues = in_array($key, $clientMeeting->users);  ?>
                             <option value="{{$key}}" @if($checkOldValues)selected="selected"@endif {{ $key == 0 ? 'disabled' : '' }}>{{$item}}</option>
 
-                           @endif
+                        @endif
                         @endforeach
                     @endforeach
                 </select>

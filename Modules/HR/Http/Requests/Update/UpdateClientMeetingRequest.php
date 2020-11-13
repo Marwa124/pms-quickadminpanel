@@ -17,6 +17,12 @@ class UpdateClientMeetingRequest extends FormRequest
     public function rules()
     {
         return [
+            'users'     => [
+                'required',
+            ],
+            'request_type' => [
+                'required',
+            ],
             'status' => [
                 'string',
                 'nullable',

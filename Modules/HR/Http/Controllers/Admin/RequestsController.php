@@ -129,12 +129,17 @@ class RequestsController extends Controller
         return view('hr::admin.requests.edit', compact('users', 'clientMeeting'));
     }
 
-    public function update(UpdateClientMeetingRequest $request, ClientMeeting $clientMeeting)
+    public function update(UpdateClientMeetingRequest $request, $id)
     {
-        $request['approved_by'] = $request->user()->id;
-        $clientMeeting->update($request->all());
+        $clientMeeting = ClientMeeting::findOrFail($id);
+        try {
+            $request['approved_by'] = $request->user()->id;
+            $clientMeeting->update($request->all());
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
 
-        return redirect()->route('hr.admin.requests.index');
+        return redirect()->route('hr.admin.requests.index')->withSuccess("Request Updated Successfully");
     }
 
     public function show(ClientMeeting $clientMeeting)

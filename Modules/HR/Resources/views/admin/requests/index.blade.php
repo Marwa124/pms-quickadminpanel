@@ -16,6 +16,14 @@
         {{ trans('cruds.clientMeeting.title_singular') }} {{ trans('global.list') }}
     </div>
 
+    <div class="message">
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        @endif
+    </div>
+
     <div class="card-body">
         <div class="table-responsive">
             <!-- <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-ClientMeeting"> -->
@@ -179,6 +187,8 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
+
+  $('.message').delay(3000).slideUp(800);
 
 });
 
