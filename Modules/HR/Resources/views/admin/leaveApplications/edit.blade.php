@@ -12,7 +12,7 @@
         }
         // auth()->user()->id = 11;
     } catch (\Throwable $th) {
-        dd($th->getMessage());
+        $th->getMessage();
     }
 ?>
 

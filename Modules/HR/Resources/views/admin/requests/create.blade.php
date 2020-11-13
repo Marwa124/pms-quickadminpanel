@@ -8,48 +8,40 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("hr.admin.client-meetings.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.requests.store") }}" enctype="multipart/form-data">
             @csrf
-            {{-- <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.clientMeeting.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('user'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.clientMeeting.fields.user_helper') }}</span>
-            </div> --}}
-
-
-
-
             <div class="form-group">
-                <label>{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
-                <select class="form-control" name="attendees[]" id="attendees" multiple="multiple">
-                    @foreach($users as $key => $label)
-                        <option value="{{ $key }}" {{ old('attendees') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $label }}</option>
+                <label class="required">{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
+                <select class="form-control" name="users[]" id="attendees" multiple="multiple">
+                    @foreach($users as $label)
+                        @foreach ($label as $key => $item)
+                           @if ($key != 0)
+                            <option value="{{ $key }}" {{ old('users') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $item }}</option>
+                           @endif
+                        @endforeach
                     @endforeach
                 </select>
-                @if($errors->has('attendees'))
+                @if($errors->has('users'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('attendees') }}
+                        {{ $errors->first('users') }}
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.meetingMinute.fields.attendees_helper') }}</span>
             </div>
-
-
-
-
-
-
-
-
+            <div class="form-group">
+                <label class="required">Request Type</label>
+                <select class="form-control" name="request_type" id="request_type">
+                    <option value disabled {{ old('request_type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach($clientMeetingModel::REQUEST_TYPE_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('request_type', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('request_type'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('request_type') }}
+                    </div>
+                @endif
+            </div>
 
             <div class="form-group">
                 <label for="day">{{ trans('cruds.clientMeeting.fields.day') }}</label>

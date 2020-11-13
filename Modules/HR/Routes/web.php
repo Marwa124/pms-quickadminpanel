@@ -36,9 +36,9 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     // Monthly Attendances
     Route::resource('monthly-attendances', 'MonthlyAttendancesController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
-    // Client Meetings
-    Route::delete('client-meetings/destroy', 'ClientMeetingsController@massDestroy')->name('client-meetings.massDestroy');
-    Route::resource('client-meetings', 'ClientMeetingsController');
+    // Requests
+    Route::delete('requests/destroy', 'RequestsController@massDestroy')->name('requests.massDestroy');
+    Route::resource('requests', 'RequestsController');
 
     // Survey
     // Route::delete('survey/destroy', 'SurveyController@massDestroy')->name('survey.massDestroy');

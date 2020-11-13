@@ -2,7 +2,7 @@
 
 namespace Modules\HR\Http\Requests\Store;
 
-use Modules\HR\Entities\ClientMeeting;
+use Modules\HR\Entities\Request;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
@@ -17,9 +17,11 @@ class StoreClientMeetingRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'     => [
+            'users'     => [
                 'required',
-                'integer',
+            ],
+            'request_type' => [
+                'required',
             ],
             'day' => [
                 'date_format:' . config('panel.date_format'),

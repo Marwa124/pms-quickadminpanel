@@ -9,27 +9,47 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("hr.admin.client-meetings.update", [$clientMeeting->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.requests.update", [$clientMeeting->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
+
             <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.clientMeeting.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $clientMeeting->user->id ?? '') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                <label class="required">{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
+                <select class="form-control" name="users[]" id="attendees" multiple="multiple">
+                    @foreach($users as $label)
+                        @foreach ($label as $key => $item)
+                        @if ($key != 0)
+
+                            <?php $checkOldValues = in_array($key, $clientMeeting->users);  ?>
+                            <option value="{{$key}}" @if($checkOldValues)selected="selected"@endif {{ $key == 0 ? 'disabled' : '' }}>{{$item}}</option>
+
+                           @endif
+                        @endforeach
                     @endforeach
                 </select>
-                @if($errors->has('user'))
+                @if($errors->has('users'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
+                        {{ $errors->first('users') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.clientMeeting.fields.user_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.meetingMinute.fields.attendees_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required">Request Type</label>
+                <select class="form-control" name="request_type" id="request_type">
+                    @foreach($clientMeetingModel::REQUEST_TYPE_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('request_type', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('request_type'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('request_type') }}
+                    </div>
+                @endif
             </div>
             <div class="form-group">
                 <label class="required">{{ trans('cruds.clientMeeting.fields.day_hour') }}</label>
                 <select class="form-control {{ $errors->has('day_hour') ? 'is-invalid' : '' }}" name="day_hour" id="day_hour" required>
-                    <option value disabled {{ old('day_hour',  $clientMeeting->day_hour) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                     @foreach($clientMeetingModel::MEETING_STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('day_hour', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
@@ -61,7 +81,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.clientMeeting.fields.to_time_helper') }}</span>
             </div>
-            @if (Auth::user()->id != $clientMeeting->user->id)
+            @if (!Auth::user()->id)
                 <div class="form-group">
                     <label>{{ trans('cruds.clientMeeting.fields.status') }}</label>
                     @foreach($clientMeetingModel::APPROVE_RADIO as $key => $label)
@@ -96,4 +116,13 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $('#attendees').select2();
+        })
+    </script>
+
 @endsection

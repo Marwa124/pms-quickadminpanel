@@ -880,8 +880,8 @@ return [
         'title_singular' => 'Attendance',
     ],
     'clientMeeting'           => [
-        'title'          => 'Client Meetings',
-        'title_singular' => 'Client Meeting',
+        'title'          => 'Requests',
+        'title_singular' => 'Request',
         'fields'         => [
             'id'                       => 'ID',
             'id_helper'                => ' ',

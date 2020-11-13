@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,9 +19,9 @@ class ClientMeeting extends Model
         'updated_at',
         'deleted_at',
     ];
-    
+
     protected $casts = [
-        'attendees' => 'array',
+        'users' => 'array',
     ];
 
     protected $time = [
@@ -44,6 +45,16 @@ class ClientMeeting extends Model
         'hour' => 'Hour',
     ];
 
+    const REQUEST_TYPE_SELECT = [
+        'survey'  => 'Survey',
+        'client_meeting' => 'Client Meeting',
+    ];
+
+    const REQUEST_COLOR = [
+        'survey'  => 'pink',
+        'client_meeting' => 'tomato',
+    ];
+
     const STATUS_SELECT = [
         'pending'  => 'Pending',
         'approve'   => 'Approved',
@@ -63,7 +74,7 @@ class ClientMeeting extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     public function getCreatedDayAttribute($value)

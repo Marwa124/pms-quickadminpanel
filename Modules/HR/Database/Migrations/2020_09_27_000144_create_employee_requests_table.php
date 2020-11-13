@@ -17,7 +17,9 @@ class CreateEmployeeRequestsTable extends Migration
             $table->string('status')->default('pending')->comment('pending, approved, rejected');
             $table->longText('comments')->nullable();
             $table->string('approved_by')->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
+            // $table->integer('user_id')->unsigned()->nullable();
+            $table->string('users')->nullable();
+            $table->enum('request_type', ['survey', 'client_meeting'])->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

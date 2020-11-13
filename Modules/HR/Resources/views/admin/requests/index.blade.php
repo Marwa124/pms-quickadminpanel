@@ -5,7 +5,7 @@
 @can('employee_request_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('hr.admin.client-meetings.create') }}">
+            <a class="btn btn-success" href="{{ route('hr.admin.requests.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.clientMeeting.title_singular') }}
             </a>
         </div>
@@ -50,18 +50,18 @@
                 </thead>
                 <tbody>
                     @foreach($clientMeetingModel::all() as $key => $meeting)
-                
+
                         <tr data-entry-id="{{ $meeting->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{-- @foreach ($meetingMinute->attendees as $item)
+                                @foreach ($meeting->users as $item)
                                 @php
                                 $userName = App\Models\AccountDetail::where('user_id', $item)->pluck('fullname')->first();
                                 @endphp
                                 {{ $userName ?? '' }} <?php echo "</br>"; ?>
-                                @endforeach --}}
+                                @endforeach
                             </td>
                             <td>
                                 {{ $meeting->day ?? '' }}
@@ -80,19 +80,19 @@
                             </td>
                             <td>
                                 @can('employee_request_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.client-meetings.show', $meeting->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.requests.show', $meeting->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('employee_request_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.client-meetings.edit', $meeting->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.requests.edit', $meeting->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('employee_request_delete')
-                                    <form action="{{ route('hr.admin.client-meetings.destroy', $meeting->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('hr.admin.requests.destroy', $meeting->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -121,7 +121,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('hr.admin.client-meetings.massDestroy') }}",
+    url: "{{ route('hr.admin.requests.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
@@ -153,7 +153,7 @@
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    // ajax: "{{ route('hr.admin.client-meetings.index') }}",
+    // ajax: "{{ route('hr.admin.requests.index') }}",
     // columns: [
     //     { data: 'placeholder', name: 'placeholder' },
     //     { data: 'id', name: 'id' },

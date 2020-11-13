@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-class ClientMeetingsController extends Controller
+class RequestsController extends Controller
 {
     public function index(Request $request)
     {
@@ -25,22 +25,20 @@ class ClientMeetingsController extends Controller
             $table = DataTables::of($query);
 
             $table->addColumn('status_color', ' ');
+            $table->addColumn('request_color', ' ');
 
-            // dd(LeaveApplication::with(['user', 'leave_category']));
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
             $table->addColumn('status_color', '&nbsp;');
-
-            // $table->editColumn('status_color', function ($row) {
-            //     return $row->status && ClientMeeting::STATUS_COLOR[$row->status] ? ClientMeeting::STATUS_COLOR[$row->status] : 'none';
-            // });
+            $table->addColumn('request_color', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
                 $viewGate      = 'employee_request_show';
                 $editGate      = 'employee_request_edit';
                 $deleteGate    = 'employee_request_delete';
                 $modalId       = 'hr.';
-                $crudRoutePart = 'client_meetings';
+                // $crudRoutePart = 'client_meetings';
+                $crudRoutePart = 'requests';
 
                 return view('partials.datatablesActions', compact(
                     'viewGate',
@@ -52,8 +50,14 @@ class ClientMeetingsController extends Controller
                 ));
             });
 
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : "";
+            // $table->editColumn('id', function ($row) {
+            //     return $row->id ? $row->id : "";
+            // });
+            $table->editColumn('request_color', function ($row) {
+                return $row->request_type && ClientMeeting::REQUEST_COLOR[$row->request_type] ? ClientMeeting::REQUEST_COLOR[$row->request_type] : 'none';
+            });
+            $table->editColumn('request_type', function ($row) {
+                return $row->request_type ? ClientMeeting::REQUEST_TYPE_SELECT[$row->request_type] : '';
             });
             $table->editColumn('day', function ($row) {
                 return $row->day ? $row->day : '';
@@ -80,43 +84,49 @@ class ClientMeetingsController extends Controller
             return $table->make(true);
         }
 
-        return view('hr::admin.clientMeetings.index');
+        return view('hr::admin.requests.index');
 
 
 
 
-        // $clientMeetings = ClientMeeting::all();
+        // $requests = ClientMeeting::all();
 
-        // return view('hr::admin.clientMeetings.index', compact('clientMeetings'));
+        // return view('hr::admin.requests.index', compact('requests'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('employee_request_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $users = AccountDetail::where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
-        return view('hr::admin.clientMeetings.create', compact('users'));
+        return view('hr::admin.requests.create', compact('users'));
     }
 
     public function store(StoreClientMeetingRequest $request)
     {
         // dd($request->all());
-        $clientMeetings = ClientMeeting::create($request->all());
+        $requests = ClientMeeting::create($request->all());
 
-        return redirect()->route('hr.admin.client-meetings.index');
+        return redirect()->route('hr.admin.requests.index');
     }
 
-    public function edit(ClientMeeting $clientMeeting)
+    public function edit($id)
     {
         abort_if(Gate::denies('employee_request_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
-        $clientMeeting->load('user');
+        $clientMeeting = ClientMeeting::findOrFail($id);
 
-        return view('hr::admin.clientMeetings.edit', compact('users', 'clientMeeting'));
+        return view('hr::admin.requests.edit', compact('users', 'clientMeeting'));
     }
 
     public function update(UpdateClientMeetingRequest $request, ClientMeeting $clientMeeting)
@@ -124,7 +134,7 @@ class ClientMeetingsController extends Controller
         $request['approved_by'] = $request->user()->id;
         $clientMeeting->update($request->all());
 
-        return redirect()->route('hr.admin.client-meetings.index');
+        return redirect()->route('hr.admin.requests.index');
     }
 
     public function show(ClientMeeting $clientMeeting)
@@ -133,7 +143,7 @@ class ClientMeetingsController extends Controller
 
         $clientMeeting->load('user');
 
-        return view('hr::admin.clientMeetings.show', compact('clientMeeting'));
+        return view('hr::admin.requests.show', compact('clientMeeting'));
     }
 
     public function destroy(ClientMeeting $clientMeeting)
